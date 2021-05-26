@@ -27,7 +27,7 @@ packages="$packages xf86-video-intel"
 packages="$packages zsh-autosuggestions zsh-syntax-highlighting"
 
 # System Tools
-packages="$packages gnome-tweak-tool"
+packages="$packages gnome-tweak-tool gnome-system-monitor"
 packages="$packages evince eog gedit gnome-calculator totem"
 packages="$packages gnome-disk-utility"
 packages="$packages pacman-contrib"
@@ -58,10 +58,13 @@ packages="$packages noto-fonts-emoji"
 packages="$packages lib32-fontconfig"
 
 # Icons
-packages="$packages arc-icon-theme"
+packages="$packages arc-icon-theme luv-icon-theme-git"
 
 # Vim
 packages="$packages vim"
+
+# VSCodium
+packages="$packages vscodium-bin vscodium-bin-marketplace"
 
 # Spotify
 packages="$packages spotify-adblock-git"
