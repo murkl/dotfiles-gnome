@@ -14,10 +14,11 @@ packages="$packages gnome-shell-extension-gsconnect"
 packages="$packages gnome-shell-extension-dash-to-dock-gnome40-git"
 packages="$packages gnome-shell-extension-just-perfection-desktop-git"
 packages="$packages gnome-shell-extension-arch-update"
-packages="$packages gnome-shell-extension-espresso-git"
+packages="$packages gnome-shell-extension-caffeine-git"
 packages="$packages gnome-shell-extension-sound-output-device-chooser"
 packages="$packages gnome-shell-extension-appindicator-git"
 packages="$packages gnome-shell-extension-clipboard-indicator-git"
+packages="$packages gnome-shell-extension-status-area-horizontal-spacing"
 
 # Driver
 packages="$packages xf86-video-intel"
@@ -86,7 +87,7 @@ THEME_INSTALL_DIR=$HOME/.cache/WhiteSur-gtk-theme-master
 THEME_CSS_FILE=$HOME/.themes/WhiteSur-light/gnome-shell/gnome-shell.css
 
 START='#panel .panel-button .system-status-icon {'
-CONTENT='  icon-size: 16px;\n  padding: 4px 8px;\n  margin: 0 1px;'
+CONTENT='  icon-size: 16px;\n  padding: 4px 10px;\n  margin: 0 1px;'
 END='}'
 
 rm -rf "$THEME_INSTALL_DIR"
