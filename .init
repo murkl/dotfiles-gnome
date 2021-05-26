@@ -33,6 +33,9 @@ packages="$packages pacman-contrib"
 packages="$packages man-db"
 packages="$packages hunspell hunspell-en_us hunspell-de"
 
+# Hide mouse pointer
+packages="$packages unclutter"  
+
 # Codecs
 packages="$packages gst-libav"
 
@@ -53,20 +56,20 @@ packages="$packages ttf-liberation"
 packages="$packages noto-fonts-emoji"
 packages="$packages lib32-fontconfig"
 
-# Neovim
-packages="$packages neovim neovim-plug"
-
-# Hide mouse pointer
-packages="$packages unclutter"          
-
-# Kodi
-packages="$packages kodi-x11 kodi-addon-inputstream-adaptive"
-
-# Steam
-packages="$packages steam"
-
 # Icons
 packages="$packages arc-icon-theme"
+
+# Vim
+packages="$packages vim"
+
+# Spotify
+packages="$packages spotify-adblock-git"
+
+# Kodi
+#packages="$packages kodi-x11 kodi-addon-inputstream-adaptive"
+
+# Steam
+#packages="$packages steam"
 
 # Install packages
 paru --noconfirm --needed --sudoloop -Syyu $packages
