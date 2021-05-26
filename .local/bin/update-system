@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# ECOS CORE UPDATE
+ecos --update
+
+# DOTFILES UPDATE
+ecos --print-title 'ECOS DOTFILES UPDATE'
+cd "$HOME" && dots pull
+
+# PACKAGE UPDATE
+ecos --print-title 'FETCH PACKAGE UPDATES'
+sudo pacman -Syy
+
+# PACKAGE UPGRADE
+ecos --print-title 'SYSTEM PACKAGE UPGRADE'
+pacman -Qu
+echo ''
+read -p "Continue with any Key..."
+if ! paru -Su --noconfirm; then
+    echo -e "ERROR: paru"
+    exit 1
+fi
+wait
+
+# FINISH
+ecos --print-title 'SYSTEM UPDATE FINISHED'
+echo ''
+read -p "Close with <ENTER>..."

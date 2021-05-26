@@ -1,0 +1,28 @@
+# Colorize
+alias ls="ls -lA -h --group-directories-first --color=auto"
+alias diff="diff --color=auto"
+alias grep="grep --color=auto"
+
+# Shortcuts
+alias q="exit"
+alias s="sudo"
+alias ll="ls"
+alias ka="killall"
+alias gt="gotop"
+alias fetch="neofetch"
+
+# Packages
+alias paci="paru -S"
+alias pacu="paru -Syyu --noconfirm"
+alias pacrm="sudo pacman -Rns"
+alias pacrmo='sudo pacman -Rs $(pacman -Qtdq)'
+alias pacs="paru -Ss"
+alias pacls="pacman -Qe"
+alias dotu='dots status && dots commit -am update && dots push'
+
+# Git
+alias gs="git status"
+alias gu="git pull"
+alias gp="git push"
+alias gc="git commit -am"
+alias ga="git add ."

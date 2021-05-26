@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# PACKAGES
+##################################################
+
+packages=""
+
+# Gnome Minimal -  https://archlinux.org/groups/x86_64/gnome/
+packages="$packages gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
+
+# Gnome Shell Extensions
+packages="$packages gnome-shell-extensions"
+packages="$packages gnome-shell-extension-gsconnect"
+packages="$packages gnome-shell-extension-dash-to-dock-gnome40-git"
+packages="$packages gnome-shell-extension-just-perfection-desktop-git"
+
+# Driver
+packages="$packages xf86-video-intel"
+
+# ZSH
+packages="$packages zsh-autosuggestions zsh-syntax-highlighting"
+
+# System Tools
+packages="$packages gnome-tweak-tool"
+packages="$packages evince eog gedit gnome-calculator totem"
+packages="$packages gnome-disk-utility"
+packages="$packages pacman-contrib"
+packages="$packages man-db"
+packages="$packages hunspell hunspell-en_us hunspell-de"
+
+# Codecs
+packages="$packages gst-libav"
+
+# Archive Manager
+packages="$packages file-roller zip unzip unrar"
+
+# Apps
+packages="$packages firefox"
+packages="$packages gnome-calendar"
+packages="$packages gnome-weather"
+packages="$packages gnome-music"
+packages="$packages geary"
+packages="$packages keepassxc"
+
+# Fonts
+packages="$packages ttf-dejavu"
+packages="$packages ttf-liberation"
+packages="$packages noto-fonts-emoji"
+packages="$packages lib32-fontconfig"
+
+# Neovim
+packages="$packages neovim neovim-plug"
+
+# Hide mouse pointer
+packages="$packages unclutter"          
+
+# Kodi
+packages="$packages kodi-x11 kodi-addon-inputstream-adaptive"
+
+# Steam
+packages="$packages steam"
+
+# Install packages
+paru --noconfirm --needed --sudoloop -Syyu $packages
+
+
+# SERVICES
+##################################################
+sudo systemctl enable gdm.service
+
+
+# THEME
+##################################################
+THEME_INSTALL_DIR=$HOME/Downloads/WhiteSur-gtk-theme-master
+THEME_CSS_FILE=$HOME/.themes/WhiteSur-light/gnome-shell/gnome-shell.css
+
+START='#panel .panel-button .system-status-icon {'
+CONTENT='  icon-size: 16px;\n  padding: 4px 8px;\n  margin: 0 1px;'
+END='}'
+
+# Theme WhiteSur (https://github.com/vinceliuice/WhiteSur-gtk-theme)
+$THEME_INSTALL_DIR/install.sh --icon simple --nautilus-style default --size 280 --background blank --theme default --normalshowapps --panel default
+
+# https://fahdshariff.blogspot.com/2012/12/sed-mutli-line-replacement-between-two.html
+sed -ni "/$START/{p;:a;N;/$END/!ba;s/.*\n/$CONTENT\n/};p" "$THEME_CSS_FILE"
