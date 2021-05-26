@@ -1,31 +1,15 @@
 #!/bin/sh
 
-#################################################
 # PATH
-#################################################
-
 export PATH="$PATH:$HOME/.local/bin"
-
-
-#################################################
-# EXPORT ENV VARS
-#################################################
 
 # XDG
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-# X11
-#export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
-#export XAUTHORITY="$XDG_CACHE_HOME/xauthority"
-
 # ZSH
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-
-# CONSOLE DEFAULT
-export TERMINAL="kitty"
-export EDITOR="nvim"
 
 # CLEAN HOME
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
