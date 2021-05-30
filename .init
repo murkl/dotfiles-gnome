@@ -1,5 +1,23 @@
 #!/bin/bash
 
+##################################################
+
+# Gnome Shell Login
+# Choose before login with your username the session 'Gnome with X11' instead of  'Gnome'
+
+#################################################
+
+# Arch Update Indicator
+# https://github.com/RaphaelRochet/arch-update/wiki
+# Check Update Command
+# /bin/sh -c "(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1"
+
+# Update Command
+# gnome-terminal -e 'sh -c  "update-system" '
+
+##################################################
+
+
 # PACKAGES
 ##################################################
 
@@ -17,6 +35,7 @@ packages="$packages gnome-shell-extension-dash-to-dock-gnome40-git"
 packages="$packages gnome-shell-extension-gsconnect"
 packages="$packages gnome-shell-extension-caffeine-git"
 packages="$packages gnome-shell-extension-clipboard-indicator-git"
+packages="$packages gnome-shell-extension-blur-my-shell-git"
 
 # Driver
 packages="$packages xf86-video-intel"
@@ -28,6 +47,7 @@ packages="$packages zsh-autosuggestions zsh-syntax-highlighting"
 packages="$packages gnome-tweak-tool gnome-system-monitor"
 packages="$packages evince eog gedit gnome-calculator totem"
 packages="$packages gnome-disk-utility"
+packages="$packages gnome-screenshot"
 packages="$packages pacman-contrib"
 packages="$packages man-db"
 packages="$packages hunspell hunspell-en_us hunspell-de"
@@ -103,7 +123,7 @@ STATUS_CONTENT='  icon-size: 14px;\n  padding: 4px 10px;\n  margin: 0 1px;'
 STATUS_END='}'
 
 STATUS_PADDING_START='#panel .panel-button {'
-STATUS_PADDING_CONTENT='  -natural-hpadding: 2px;\n  -minimum-hpadding: 4px;\n  font-weight: normal;\n  color: white;\n  transition-duration: 150ms;\n  border-radius: 6px;'
+STATUS_PADDING_CONTENT='  -natural-hpadding: 4px;\n  -minimum-hpadding: 4px;\n  font-weight: normal;\n  color: white;\n  transition-duration: 150ms;\n  border-radius: 6px;'
 STATUS_PADDING_END='}'
 
 # https://fahdshariff.blogspot.com/2012/12/sed-mutli-line-replacement-between-two.html

@@ -9,11 +9,11 @@ cd "$HOME" && dots pull
 
 # PACKAGE UPDATE
 ecos --print-title 'FETCH PACKAGE UPDATES'
-sudo pacman -Syy
+paru -Syy
 
 # PACKAGE UPGRADE
 ecos --print-title 'SYSTEM PACKAGE UPGRADE'
-pacman -Qu
+paru -Qu
 echo ''
 read -p "Continue with any Key..."
 if ! paru -Su --noconfirm; then
