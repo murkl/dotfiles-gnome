@@ -1,26 +1,30 @@
 #!/bin/bash
 
 ##################################################
+# GNOME SHELL LOGIN
+##################################################
+# Choose before login with your username the session 'Gnome with X11' instead of 'Gnome'
 
-# Gnome Shell Login
-# Choose before login with your username the session 'Gnome with X11' instead of  'Gnome'
-
+##################################################
+# ARCH UPDATE INDICATOR
 #################################################
-
-# Arch Update Indicator
 # https://github.com/RaphaelRochet/arch-update/wiki
-# Check Update Command
+
+# Settings: Check Update Command
 # /bin/sh -c "(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1"
 
-# Update Command
-# gnome-terminal -e 'sh -c  "update-system" '
+# Settings: Update Command
+# gnome-terminal -e 'sh -c  "update-system"'
 
 ##################################################
+# FIREFOX THEME
+##################################################
+# Start Firefox once and execute command:
+# $HOME/.cache/theme/tweaks.sh --firefox
 
-
+##################################################
 # PACKAGES
 ##################################################
-
 packages=""
 
 # Gnome Minimal -  https://archlinux.org/groups/x86_64/gnome/
@@ -53,8 +57,11 @@ packages="$packages pacman-contrib"
 packages="$packages man-db"
 packages="$packages hunspell hunspell-en_us hunspell-de"
 
+# Misc
+packages="$packages wmctrl zenity ffmpeg youtube-dl"
+
 # Hide mouse pointer
-packages="$packages unclutter"  
+packages="$packages unclutter"
 
 # Codecs
 packages="$packages gst-libav"
@@ -66,7 +73,7 @@ packages="$packages file-roller zip unzip unrar"
 packages="$packages firefox"
 packages="$packages gnome-calendar"
 packages="$packages gnome-weather"
-packages="$packages gnome-music"
+packages="$packages rhythmbox-plugin-alternative-toolbar-git"
 packages="$packages geary"
 packages="$packages keepassxc"
 packages="$packages libreoffice-still-de"
@@ -98,15 +105,15 @@ packages="$packages spotify-adblock-git"
 # Install packages
 paru --noconfirm --needed --sudoloop -Syyu $packages
 
-
+##################################################
 # SERVICES
 ##################################################
 sudo systemctl enable gdm.service
 
-
+##################################################
 # THEME
 ##################################################
-THEME_INSTALL_DIR=$HOME/.cache/WhiteSur-gtk-theme-master
+THEME_INSTALL_DIR=$HOME/.cache/theme
 THEME_CSS_FILE=$HOME/.themes/WhiteSur-light/gnome-shell/gnome-shell.css
 
 rm -rf "$THEME_INSTALL_DIR"
