@@ -144,8 +144,10 @@ show_menu() {
 			task_pid=$(echo "$line" | cut -f 1 -d '|')
 			task_name=$(echo "$line" | cut -f 3 -d '|')
 			if [ "$task_name" = "$zenity_result" ]; then
-				kill_pid "$task_pid"
-				notify-send "Canceled: $task_name"
+				if zenity --question --width=220 --text="Cancel: $task_name?"; then
+					kill_pid "$task_pid"
+					notify-send "Canceled: $task_name"
+				fi
 			fi
 		done <$PROCESS_FILE
 		show_menu
@@ -159,7 +161,6 @@ show_menu() {
 		show_menu
 		;;
 	esac
-
 }
 
 #--------------------------------
@@ -169,7 +170,7 @@ dl_music() {
 	# Ask for converter
 	convert_enabled=false
 
-	if zenity --question --width=210 --text="Convert to 432Hz?"; then
+	if zenity --question --width=220 --text="Convert to 432Hz?"; then
 		convert_enabled=true
 	fi
 
