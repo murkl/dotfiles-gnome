@@ -131,7 +131,7 @@ show_menu() {
 		done <$PROCESS_FILE
 	fi
 
-	zenity_result="$(zenity --list --height=200 --hide-header --column="" --title='Downloads' --cancel-label='Back' --extra-button='Settings ➤' --ok-label='Stop' "${tasks_array[@]}")"
+	zenity_result="$(zenity --list --height=200 --hide-header --column="" --title='Running Downloads' --cancel-label='Back' --extra-button='Settings ➤' --ok-label='Stop' "${tasks_array[@]}")"
 	zenity_result_button="${?}-${zenity_result}"
 	case "$zenity_result_button" in
 	'1-')
