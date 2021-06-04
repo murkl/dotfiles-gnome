@@ -120,7 +120,7 @@ show_menu() {
 
 	tasks_array=()
 	if [ ! -s "$PROCESS_FILE" ]; then
-		tasks_array+=("No Running Downloads")
+		tasks_array+=('∅ Downloads empty')
 	else
 		# Read every line from process file
 		while IFS= read -r line; do
