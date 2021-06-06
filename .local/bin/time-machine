@@ -20,9 +20,9 @@ STATE_FILE="$HOME/.cache/$SCRIPT_ID.state"
 RSYNC_ARGS="--numeric-ids --links --hard-links --one-file-system --itemize-changes --times --recursive --perms --owner --group --stats --human-readable"
 
 # Config defaults
-DESKTOP_ICON='true'
-BACKUP_SOURCE='$HOME'
-BACKUP_DESTINATION=''
+DESKTOP_ICON="true"
+BACKUP_SOURCE="$HOME"
+BACKUP_DESTINATION=""
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # WRAPPER
