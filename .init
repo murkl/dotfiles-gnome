@@ -40,6 +40,8 @@ packages="$packages gnome-shell-extension-gsconnect"
 packages="$packages gnome-shell-extension-caffeine-git"
 packages="$packages gnome-shell-extension-clipboard-indicator-git"
 packages="$packages gnome-shell-extension-blur-my-shell-git"
+packages="$packages gnome-shell-extension-just-perfection-desktop-git"
+packages="$packages gnome-shell-extension-status-area-horizontal-spacing"
 
 # Driver
 packages="$packages xf86-video-intel"
