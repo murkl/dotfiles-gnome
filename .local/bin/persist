@@ -255,36 +255,6 @@ dl_music() {
 
 #------------------------------------------------------------
 
-dl_movie() {
-
-	# Ask for movie title
-	movie_title=$(zenity --entry --title="Movie Title" --entry-text="") || main
-	if [ "$movie_title" = "" ]; then
-		notify "Title was empty"
-		main
-		return 1
-	fi
-
-	# Download
-	notify "Download: $movie_title"
-	mkdir -p "$MOVIE_DOWNLOAD_DIR"
-
-	(
-		if ! youtube-dl -f 'bestvideo,bestaudio' --output "$MOVIE_DOWNLOAD_DIR/$movie_title.%(ext)s" "$1"; then
-			notify "Error: $movie_title"
-			exit 1
-		fi
-
-		notify "Finished: $movie_title"
-	) &
-
-	# Set process
-	TASK_PID="$!"
-	echo "$TASK_PID|MOVIE|$movie_title" >>"$PROCESS_FILE"
-}
-
-#------------------------------------------------------------
-
 dl_video() {
 
 	# Ask for quality
@@ -324,6 +294,36 @@ dl_video() {
 	# Set process
 	TASK_PID="$!"
 	echo "$TASK_PID|VIDEO|$video_title" >>"$PROCESS_FILE"
+}
+
+#------------------------------------------------------------
+
+dl_movie() {
+
+	# Ask for movie title
+	movie_title=$(zenity --entry --title="Movie Title" --entry-text="") || main
+	if [ "$movie_title" = "" ]; then
+		notify "Title was empty"
+		main
+		return 1
+	fi
+
+	# Download
+	notify "Download: $movie_title"
+	mkdir -p "$MOVIE_DOWNLOAD_DIR"
+
+	(
+		if ! youtube-dl --output "$MOVIE_DOWNLOAD_DIR/$movie_title.%(ext)s" "$1"; then
+			notify "Error: $movie_title"
+			exit 1
+		fi
+
+		notify "Finished: $movie_title"
+	) &
+
+	# Set process
+	TASK_PID="$!"
+	echo "$TASK_PID|MOVIE|$movie_title" >>"$PROCESS_FILE"
 }
 
 #------------------------------------------------------------
