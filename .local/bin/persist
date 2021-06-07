@@ -214,7 +214,6 @@ dl_music() {
 	(echo $(youtube-dl --get-title --restrict-filenames $1) >"/tmp/$SCRIPT_ID.fetch") | zenity --progress --pulsate --auto-close --no-cancel --auto-kill --title="Fetching Meta Information..."
 	music_title=$(<"/tmp/$SCRIPT_ID.fetch")
 
-	#music_title="$(printf "$music_title" | dmenu -i -p "Music Title:")" || exit 1
 	music_title=$(zenity --entry --title="Music Title" --entry-text="$music_title") || main
 	if [ "$music_title" = "" ]; then
 		notify "Title was empty"
@@ -227,7 +226,7 @@ dl_music() {
 	mkdir -p "$MUSIC_DOWNLOAD_DIR"
 
 	(
-		if ! youtube-dl -x -f bestaudio/best --audio-format mp3 --metadata-from-title "%(artist)s - %(title)s" --restrict-filenames -o "$MUSIC_DOWNLOAD_DIR/$music_title.%(ext)s" "$1"; then
+		if ! youtube-dl -f 'bestaudio/best' --extract-audio --audio-quality 0 --audio-format mp3 --metadata-from-title "%(artist)s - %(title)s" --restrict-filenames -o "$MUSIC_DOWNLOAD_DIR/$music_title.%(ext)s" "$1"; then
 			notify "Error: $music_title"
 			exit 1
 		fi
@@ -237,9 +236,8 @@ dl_music() {
 			input_file="$MUSIC_DOWNLOAD_DIR/$music_title.mp3"
 			file_name="${input_file%.*}"
 			file_extension="${input_file##*.}"
-
 			output_file="$file_name (432Hz).$file_extension"
-			if ! ffmpeg -y -i "$input_file" -filter:a "atempo=0.98182" "$output_file"; then
+			if ! ffmpeg -y -i "$input_file" -filter:a "atempo=0.98182" -ab 256k "$output_file"; then
 				return 1
 			fi
 			if [ -f "$output_file" ]; then
@@ -260,7 +258,6 @@ dl_music() {
 dl_movie() {
 
 	# Ask for movie title
-	#movie_title="$(dmenu -i -p "Movie Title:")"
 	movie_title=$(zenity --entry --title="Movie Title" --entry-text="") || main
 	if [ "$movie_title" = "" ]; then
 		notify "Title was empty"
@@ -273,7 +270,7 @@ dl_movie() {
 	mkdir -p "$MOVIE_DOWNLOAD_DIR"
 
 	(
-		if ! youtube-dl -f best --output "$MOVIE_DOWNLOAD_DIR/$movie_title.%(ext)s" "$1"; then
+		if ! youtube-dl -f 'bestvideo,bestaudio' --output "$MOVIE_DOWNLOAD_DIR/$movie_title.%(ext)s" "$1"; then
 			notify "Error: $movie_title"
 			exit 1
 		fi
@@ -294,7 +291,6 @@ dl_video() {
 	(echo $(youtube-dl --get-title --restrict-filenames $1) >"/tmp/$SCRIPT_ID.fetch") | zenity --progress --pulsate --auto-close --no-cancel --auto-kill --title="Fetching Meta Information..."
 	video_title=$(<"/tmp/$SCRIPT_ID.fetch")
 
-	#video_title="$(printf "$video_title" | dmenu -i -p "Video Title:")" || exit 1
 	video_title=$(zenity --entry --title="Video Title" --entry-text="$video_title") || main
 	if [ "$video_title" = "" ]; then
 		notify "Title was empty"
@@ -307,7 +303,7 @@ dl_video() {
 	mkdir -p "$VIDEO_DOWNLOAD_DIR"
 
 	(
-		if ! youtube-dl -f best --restrict-filenames -o "$VIDEO_DOWNLOAD_DIR/$video_title.%(ext)s" "$1"; then
+		if ! youtube-dl -f 'bestvideo,bestaudio' --restrict-filenames -o "$VIDEO_DOWNLOAD_DIR/$video_title.%(ext)s" "$1"; then
 			notify "Error: $video_title"
 			exit 1
 		fi
