@@ -287,6 +287,16 @@ dl_movie() {
 
 dl_video() {
 
+	# Ask for quality
+	if ! quality_result="$(zenity --list --height=200 --hide-header --column="" --title="Video Quality" --cancel-label='Cancel' --ok-label='Download' 'Original' '1080p' '720p' '480p' '240p')"; then
+		main
+	fi
+	if [ "$quality_result" = "Original" ]; then
+		video_quality=10000
+	else
+		video_quality=$(echo "$quality_result" | tr 'p' ' ')
+	fi
+
 	# Fetch title
 	(echo $(youtube-dl --get-title --restrict-filenames $1) >"/tmp/$SCRIPT_ID.fetch") | zenity --progress --pulsate --auto-close --no-cancel --auto-kill --title="Fetching Meta Information..."
 	video_title=$(<"/tmp/$SCRIPT_ID.fetch")
@@ -303,7 +313,7 @@ dl_video() {
 	mkdir -p "$VIDEO_DOWNLOAD_DIR"
 
 	(
-		if ! youtube-dl -f 'bestvideo,bestaudio' --restrict-filenames -o "$VIDEO_DOWNLOAD_DIR/$video_title.%(ext)s" "$1"; then
+		if ! youtube-dl -f "bestvideo[height<=$video_quality]+bestaudio/best[height<=$video_quality]" --restrict-filenames -o "$VIDEO_DOWNLOAD_DIR/$video_title.%(ext)s" "$1"; then
 			notify "Error: $video_title"
 			exit 1
 		fi
