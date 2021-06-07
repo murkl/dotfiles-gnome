@@ -87,7 +87,7 @@ packages="$packages noto-fonts-emoji"
 packages="$packages lib32-fontconfig"
 
 # Icons
-packages="$packages arc-icon-theme luv-icon-theme-git"
+packages="$packages qogir-icon-theme-git luv-icon-theme-git"
 
 # Vim
 packages="$packages vim"
@@ -124,12 +124,14 @@ git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$THEME_INSTALL_
 # Theme WhiteSur (https://github.com/vinceliuice/WhiteSur-gtk-theme)
 $THEME_INSTALL_DIR/install.sh --icon simple --nautilus-style default --size 280 --background blank --theme default --normalshowapps --panel default
 
+# Disable App Icon
 APP_START='#panel .panel-button .app-menu-icon {'
 APP_CONTENT='  width: 0;\n  height: 0;\n  margin: 0;'
 APP_END='}'
 
+# Modify Tray Icon Space
 STATUS_START='#panel .panel-button .system-status-icon {'
-STATUS_CONTENT='  icon-size: 14px;\n  padding: 4px 10px;\n  margin: 0 1px;'
+STATUS_CONTENT='  icon-size: 16px;\n  padding: 4px 10px;\n  margin: 0 1px;'
 STATUS_END='}'
 
 STATUS_PADDING_START='#panel .panel-button {'

@@ -175,13 +175,13 @@ show_settings_menu() {
 create_backup() {
 
     if ! [ -d "$BACKUP_SOURCE" ]; then
-        notify "BACKUP_SOURCE: <b>$BACKUP_SOURCE</b> not found"
+        notify "Source not set"
         show_main_menu
         return 1
     fi
 
     if ! [ -d "$BACKUP_DESTINATION" ]; then
-        notify "BACKUP_DESTINATION: <b>$BACKUP_DESTINATION</b> not found"
+        notify "HDD not mounted"
         show_main_menu
         return 1
     fi
@@ -189,7 +189,6 @@ create_backup() {
     (
         cd "$BACKUP_SOURCE" || exit 1
         rm -f "$LOG_FILE"
-        notify "Backup started..."
         if ! rsync $RSYNC_ARGS --exclude-from="$EXCLUDE_FILE" . "$BACKUP_DESTINATION/$TIMESTAMP/" --link-dest="$BACKUP_DESTINATION/latest/" >>$LOG_FILE 2>&1; then
             notify "Backup failed: rsync error"
             exit 1
