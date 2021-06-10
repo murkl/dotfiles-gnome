@@ -31,6 +31,7 @@ packages=""
 packages="$packages gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
 
 # Gnome Shell Extensions
+packages="$packages chrome-gnome-shell-git"
 packages="$packages gnome-shell-extensions"
 packages="$packages gnome-shell-extension-appindicator-git"
 packages="$packages gnome-shell-extension-sound-output-device-chooser"
@@ -111,6 +112,7 @@ paru --noconfirm --needed --sudoloop -Syyu $packages
 # SERVICES
 ##################################################
 sudo systemctl enable gdm.service
+sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "/etc/gdm/custom.conf"
 
 ##################################################
 # THEME
