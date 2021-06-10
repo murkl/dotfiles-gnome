@@ -126,6 +126,7 @@ git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$THEME_INSTALL_
 
 # Theme WhiteSur (https://github.com/vinceliuice/WhiteSur-gtk-theme)
 $THEME_INSTALL_DIR/install.sh --icon simple --nautilus-style default --size 280 --background blank --theme default --normalshowapps --panel default
+$THEME_INSTALL_DIR/tweaks.sh --firefox
 
 # Disable App Icon
 APP_START='#panel .panel-button .app-menu-icon {'
