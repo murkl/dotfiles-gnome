@@ -62,7 +62,7 @@ packages="$packages hunspell hunspell-en_us hunspell-de"
 packages="$packages gvfs gvfs-mtp gvfs-smb"
 
 # Misc
-packages="$packages wmctrl zenity ffmpeg youtube-dl"
+packages="$packages wmctrl zenity ffmpeg youtube-dl rsync"
 
 # Hide mouse pointer
 packages="$packages unclutter"
