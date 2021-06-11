@@ -28,7 +28,7 @@
 ##################################################
 
 # https://wiki.archlinux.org/title/Bumblebee 
-# paru nvidia-390xx xf86-video-intel bumblebee lib32-virtualgl lib32-nvidia-390xx-utils
+# paru -S mesa nvidia-390xx lib32-nvidia-390xx-utils xf86-video-intel bumblebee bbswitch primus lib32-virtualgl
 # sudo gpasswd -a $USER bumblebee
 # sudo systemctl enable bumblebeed.service
  
@@ -39,7 +39,7 @@
 ##################################################
 # Refresh Mirrorlist
 ##################################################
-# sudo pacman -S reflector
+# paru -S reflector
 # sudo reflector --verbose --country 'Germany' -l 15 -p https --sort rate --save /etc/pacman.d/mirrorlist
 
 ##################################################
