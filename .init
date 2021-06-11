@@ -136,8 +136,6 @@ sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "/etc/gdm/custom.con
 ##################################################
 # SAMBA
 ##################################################
-print_title "CONFIGURE SAMBA"
-
 if [ ! -f "/etc/samba/smb.conf" ]; then
     {
         echo "[global]"
@@ -148,8 +146,6 @@ if [ ! -f "/etc/samba/smb.conf" ]; then
 fi
 
 sudo systemctl enable smb.service
-
-echo -e "DONE"
 
 ##################################################
 # THEME
