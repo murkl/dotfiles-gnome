@@ -40,7 +40,7 @@
 # Refresh Mirrorlist
 ##################################################
 # sudo pacman -S reflector
-# sudo reflector --verbose --country 'Germany' -l 50 -p https --sort rate --save /etc/pacman.d/mirrorlist
+# sudo reflector --verbose --country 'Germany' -l 15 -p https --sort rate --save /etc/pacman.d/mirrorlist
 
 ##################################################
 # PACKAGES
