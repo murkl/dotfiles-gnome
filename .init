@@ -22,6 +22,19 @@
 # Start Firefox once and execute command:
 # $HOME/.cache/theme/tweaks.sh --firefox
 
+
+##################################################
+# NVIDIA DRIVER
+##################################################
+
+# https://wiki.archlinux.org/title/Bumblebee 
+# paru nvidia-390xx xf86-video-intel bumblebee lib32-virtualgl lib32-nvidia-390xx-utils
+# sudo gpasswd -a $USER bumblebee
+# sudo systemctl enable bumblebeed.service
+ 
+# Test
+# optirun glxspheres64
+
 ##################################################
 # PACKAGES
 ##################################################
@@ -33,7 +46,8 @@ packages="$packages gdm gnome-shell gnome-control-center gnome-terminal nautilus
 # Gnome Shell Extensions
 packages="$packages chrome-gnome-shell-git"
 packages="$packages gnome-shell-extensions"
-packages="$packages gnome-shell-extension-appindicator-git"
+#packages="$packages gnome-shell-extension-appindicator-git"
+packages="$packages gnome-shell-extension-tray-icons-reloaded-git"
 packages="$packages gnome-shell-extension-sound-output-device-chooser"
 packages="$packages gnome-shell-extension-arch-update"
 packages="$packages gnome-shell-extension-dash-to-dock-gnome40-git"
