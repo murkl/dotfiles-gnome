@@ -65,6 +65,7 @@ packages="$packages xf86-video-intel"
 packages="$packages zsh-autosuggestions-git zsh-syntax-highlighting-git"
 
 # System Tools
+packages="$packages gnome-keyring"
 packages="$packages gnome-tweak-tool gnome-system-monitor"
 packages="$packages evince eog gedit gnome-calculator totem"
 packages="$packages gnome-disk-utility"
