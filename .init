@@ -22,16 +22,15 @@
 # Start Firefox once and execute command:
 # $HOME/.cache/theme/tweaks.sh --firefox
 
-
 ##################################################
 # NVIDIA DRIVER
 ##################################################
 
-# https://wiki.archlinux.org/title/Bumblebee 
+# https://wiki.archlinux.org/title/Bumblebee
 # paru -S mesa nvidia-390xx lib32-nvidia-390xx-utils xf86-video-intel bumblebee bbswitch primus lib32-virtualgl
 # sudo gpasswd -a $USER bumblebee
 # sudo systemctl enable bumblebeed.service
- 
+
 # Test
 # optirun glxspheres64
 
@@ -68,7 +67,7 @@ packages="$packages gnome-shell-extension-status-area-horizontal-spacing"
 packages="$packages xf86-video-intel"
 
 # ZSH
-packages="$packages zsh-autosuggestions-git zsh-syntax-highlighting-git"
+packages="$packages zsh-autosuggestions zsh-syntax-highlighting"
 
 # System Tools
 packages="$packages gnome-keyring"
@@ -121,7 +120,7 @@ packages="$packages vim"
 packages="$packages vscodium-bin vscodium-bin-marketplace"
 
 # Spotify
-packages="$packages spotify-adblock-git"
+#packages="$packages spotify-adblock-git"
 
 # Kodi
 #packages="$packages kodi-x11 kodi-addon-inputstream-adaptive"
@@ -137,7 +136,6 @@ paru --noconfirm --needed --sudoloop -Syyu $packages
 ##################################################
 sudo systemctl enable gdm.service
 sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "/etc/gdm/custom.conf"
-
 
 ##################################################
 # SAMBA
@@ -163,7 +161,7 @@ rm -rf "$THEME_INSTALL_DIR"
 git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$THEME_INSTALL_DIR"
 
 # Theme WhiteSur (https://github.com/vinceliuice/WhiteSur-gtk-theme)
-$THEME_INSTALL_DIR/install.sh --icon simple --nautilus-style stable --size 280 --background blank --theme default --normalshowapps --panel default
+$THEME_INSTALL_DIR/install.sh --icon simple --nautilus-style glassy --size 280 --background blank --theme default --normalshowapps --panel default
 $THEME_INSTALL_DIR/tweaks.sh --firefox
 
 # Disable App Icon
