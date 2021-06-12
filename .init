@@ -150,6 +150,8 @@ if [ ! -f "/etc/samba/smb.conf" ]; then
 fi
 
 sudo systemctl enable smb.service
+sudo systemctl enable nmb.service
+sudo systemctl enable avahi-daemon
 
 ##################################################
 # THEME
