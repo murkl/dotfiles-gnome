@@ -191,6 +191,7 @@ create_backup() {
         rm -f "$LOG_FILE"
         if ! rsync $RSYNC_ARGS --exclude-from="$EXCLUDE_FILE" . "$BACKUP_DESTINATION/$TIMESTAMP/" --link-dest="$BACKUP_DESTINATION/latest/" >>$LOG_FILE 2>&1; then
             notify "Backup failed: rsync error"
+            zenity --text-info --width=600 --height=400 --title="Log" --cancel-label="Exit" --ok-label="Close" --font="monospace" --filename="$LOG_FILE"
             exit 1
         fi
         wait
