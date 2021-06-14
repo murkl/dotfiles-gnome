@@ -1,0 +1,205 @@
+#!/bin/bash
+SCRIPT_TITLE="Wino"
+SCRIPT_ID="wino"
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# VARIABLES
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
+SCRIPT_FILE="$SCRIPT_DIR/$(basename "$0")"
+SCRIPT_ICON="$HOME/.local/share/icons/$SCRIPT_ID.svg"
+
+WINE="wine"
+
+# Working dir
+WORKING_DIR="$PWD"
+
+WINE_PREFIX_DIR="$WORKING_DIR/prefix"
+LAUNCH_CONFIG="$WORKING_DIR/$SCRIPT_ID.conf"
+
+# Defaults
+WINE_64="true"
+MODULES="sandbox"
+APP_EXE=""
+APP_ARG=""
+
+# Source launch config file
+if [ -f "$LAUNCH_CONFIG" ]; then
+    . "$LAUNCH_CONFIG"
+fi
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# WRAPPER
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+zenity() {
+    /usr/bin/zenity --name="$SCRIPT_ID" --width=320 --height=180 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
+}
+
+notify() {
+    notify-send --icon="$SCRIPT_ICON" "$SCRIPT_TITLE" "$1"
+}
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# DEPENDENCIES
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+if ! [ -x "$(command -v $WINE)" ]; then
+    notify "ERROR: wine not installed"
+    exit 1
+fi
+
+if ! [ -x "$(command -v winetricks)" ]; then
+    notify "ERROR: winetricks not installed"
+    exit 1
+fi
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# FUNCTIONS
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+main() {
+
+    cd "$WORKING_DIR" || exit 1
+    echo "WORKING DIR: $PWD"
+
+    # Show main menu
+    show_main_menu
+}
+
+#------------------------------------------------------------
+
+check_conf_file() {
+
+    if ! [ -f "$LAUNCH_CONFIG" ]; then
+        # TODO
+        # check_config "WINE_64" "$WINE_64"
+        echo "Creating $LAUNCH_CONFIG..."
+        {
+            echo "WINE_64=$WINE_64"
+            echo "MODULES=$MODULES"
+            echo "APP_EXE=$APP_EXE"
+            echo "APP_ARG=$APP_ARG"
+        } >"$LAUNCH_CONFIG"
+    fi
+
+    # Source launch config file
+    . "$LAUNCH_CONFIG"
+
+}
+
+#------------------------------------------------------------
+
+check_prefix_dir() {
+
+    if ! [ -d "$WINE_PREFIX_DIR" ]; then
+        echo "Creating wine prefix..."
+        wine_arch="win32"
+        if [ "$WINE_64" = "true" ]; then
+            wine_arch="win64"
+        fi
+        env WINEARCH="$wine_arch" env WINEPREFIX="$WINE_PREFIX_DIR" wineboot -u
+        wait
+    fi
+
+}
+
+#------------------------------------------------------------
+
+show_main_menu() {
+
+    if ! zenity_result="$(zenity --list --hide-header --column="" --title="$SCRIPT_TITLE" --text="$latest_txt" --cancel-label='Exit' --ok-label='Ok' 'Run EXE' 'Create Prefix' 'Edit Config')"; then
+        exit 0
+    fi
+    case "$zenity_result" in
+    'Run'*)
+        check_conf_file
+        check_prefix_dir
+        start_wine
+        ;;
+    'Create'*)
+        check_conf_file
+        check_prefix_dir
+        ;;
+    'Edit'*)
+        check_conf_file
+        xdg-open "$WORKING_DIR"
+        ;;
+    esac
+}
+
+#------------------------------------------------------------
+
+start_wine() {
+
+    cd "$WINE_PREFIX_DIR" || exit 1
+
+    if ! [ -f "$APP_EXE" ]; then
+        echo "Installation..."
+
+        FILE=$(zenity --file-selection --title="Select a File")
+
+        case $? in
+        0)
+            echo "\"$FILE\" selected."
+            env WINEPREFIX="$WINE_PREFIX_DIR" "$WINE" "$FILE"
+            wait
+
+            if [ "$WINETRICKS_MODULES" != "" ]; then
+                env WINEPREFIX="$WINE_PREFIX_DIR" winetricks $MODULES
+                wait
+            fi
+            ;;
+        1)
+            echo "No file selected."
+            ;;
+        -1)
+            echo "An unexpected error has occurred."
+            ;;
+        esac
+
+    else
+        env WINEPREFIX="$WINE_PREFIX_DIR" "$WINE" "$APP_EXE" $APP_ARG
+        wait
+    fi
+
+}
+
+#------------------------------------------------------------
+
+kill_pid() {
+    pid_kill="$1"
+    print_children_pid() {
+        local children_pid
+        children_pid="$(pgrep -P "$1")"
+        for pid in $children_pid; do
+            print_children_pid "$pid"
+        done
+        if [ "$children_pid" != "" ]; then
+            printf "$children_pid "
+        fi
+    }
+    pid_array=()
+    pid_array+=("$pid_kill")
+    pid_array+=($(print_children_pid "$pid_kill"))
+    for pid in ${pid_array[@]}; do
+        kill -9 "$pid"
+    done
+}
+
+#--------------------------------------------------------------
+
+check_config() {
+    config_key="$1"
+    config_value="$2"
+    if ! grep -qrnw "$LAUNCH_CONFIG" -e "$config_key=*"; then
+        echo "$config_key=\"$config_value\"" >>"$LAUNCH_CONFIG"
+    fi
+}
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# MAIN
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+main "$@"
