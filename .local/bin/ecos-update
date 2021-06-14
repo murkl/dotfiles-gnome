@@ -13,7 +13,7 @@ if ! chmod +x "$ECOS_CORE"; then
 fi
 
 # ECOS CORE UPDATE
-"$ECOS_CORE" --update
+"$ECOS_CORE" --update-system
 
 # DOTFILES UPDATE
 "$ECOS_CORE" --print-title 'ECOS DOTFILES UPDATE'
