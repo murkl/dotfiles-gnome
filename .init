@@ -14,7 +14,7 @@
 # /bin/sh -c "(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1"
 
 # Settings: Update Command
-# gnome-terminal -e 'sh -c  "update-system"'
+# gnome-terminal -e 'sh -c  "ecos-update"'
 
 ##################################################
 # FIREFOX THEME
