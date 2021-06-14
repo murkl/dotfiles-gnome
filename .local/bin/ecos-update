@@ -1,8 +1,12 @@
 #!/bin/bash
-ECOS_CORE="$HOME/.local/bin/ecos"
 ECOS_URL="https://raw.githubusercontent.com/murkl/ecos/main/ecos"
 
-mkdir -p "$HOME/.local/bin"
+BIN_DIR="$HOME/.local/bin"
+ECOS_CORE="$BIN_DIR/ecos"
+
+mkdir -p "$BIN_DIR"
+
+# Download new version
 if ! curl -s -L "$ECOS_URL" >"$ECOS_CORE"; then
     echo "ERROR: ECOS CORE DOWNLOAD"
     exit 1
@@ -12,44 +16,5 @@ if ! chmod +x "$ECOS_CORE"; then
     exit 1
 fi
 
-# ECOS CORE UPDATE
+# Update
 "$ECOS_CORE" --update-system
-
-# DOTFILES UPDATE
-"$ECOS_CORE" --print-title 'ECOS DOTFILES UPDATE'
-cd "$HOME" && dots pull
-
-# PACKAGE UPDATE
-"$ECOS_CORE" --print-title 'FETCH PACKAGE UPDATES'
-paru -Syy
-
-# PACKAGE UPGRADE
-"$ECOS_CORE" --print-title 'UPGRADE SYSTEM PACKAGES'
-paru -Qu
-echo ''
-read -p "Continue with any Key..."
-if ! paru -Su --noconfirm; then
-    echo -e "ERROR: paru"
-    exit 1
-fi
-wait
-
-# INIT DOTFILES
-"$ECOS_CORE" --print-title 'ECOS UPDATE FINISHED'
-echo ''
-read -p "Init Dotfiles now? [y/n]: " user_input
-
-if [ "$user_input" = "y" ]; then
-
-    "$ECOS_CORE" --print-title 'INIT DOTFILES'
-    "$HOME/.init"
-    wait
-    "$ECOS_CORE" --print-title 'INIT FINISHED'
-    echo ""
-    read -p "Press any Key to close..."
-    exit 0
-
-else
-    echo "Dotfiles Init skipped..."
-    exit 0
-fi
