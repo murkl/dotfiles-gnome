@@ -29,7 +29,7 @@ BACKUP_DESTINATION=""
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 zenity() {
-    /usr/bin/zenity --name="$SCRIPT_ID" --width=320 --height=120 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
+    /usr/bin/zenity --name="$SCRIPT_ID" --width=320 --height=180 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
 }
 
 notify() {
