@@ -1,18 +1,30 @@
-#!/bin/sh
+#!/bin/bash
+ECOS_CORE="$HOME/.local/bin/ecos"
+ECOS_URL="https://raw.githubusercontent.com/murkl/ecos/main/ecos"
+
+mkdir -p "$HOME/.local/bin"
+if ! curl -s -L "$ECOS_URL" >"$ECOS_CORE"; then
+    echo "ERROR: ECOS CORE DOWNLOAD"
+    exit 1
+fi
+if ! chmod +x "$ECOS_CORE"; then
+    echo "ERROR: ECOS CORE NOT FOUND"
+    exit 1
+fi
 
 # ECOS CORE UPDATE
-ecos --update
+"$ECOS_CORE" --update
 
 # DOTFILES UPDATE
-ecos --print-title 'ECOS DOTFILES UPDATE'
+"$ECOS_CORE" --print-title 'ECOS DOTFILES UPDATE'
 cd "$HOME" && dots pull
 
 # PACKAGE UPDATE
-ecos --print-title 'FETCH PACKAGE UPDATES'
+"$ECOS_CORE" --print-title 'FETCH PACKAGE UPDATES'
 paru -Syy
 
 # PACKAGE UPGRADE
-ecos --print-title 'SYSTEM PACKAGE UPGRADE'
+"$ECOS_CORE" --print-title 'UPGRADE SYSTEM PACKAGES'
 paru -Qu
 echo ''
 read -p "Continue with any Key..."
@@ -23,6 +35,6 @@ fi
 wait
 
 # FINISH
-ecos --print-title 'SYSTEM UPDATE FINISHED'
+"$ECOS_CORE" --print-title 'ECOS UPDATE FINISHED'
 echo ''
 read -p "Close with <ENTER>..."
