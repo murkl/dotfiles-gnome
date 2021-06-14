@@ -27,12 +27,13 @@
 ##################################################
 
 # https://wiki.archlinux.org/title/Bumblebee
-# paru -S mesa nvidia-390xx lib32-nvidia-390xx-utils xf86-video-intel bumblebee bbswitch primus lib32-virtualgl
+# paru -S mesa nvidia-390xx lib32-nvidia-390xx-utils bumblebee bbswitch primus lib32-virtualgl
 # sudo gpasswd -a $USER bumblebee
 # sudo systemctl enable bumblebeed.service
 
 # Test
 # optirun glxspheres64
+# primusrun glxspheres64
 
 ##################################################
 # Refresh Mirrorlist
