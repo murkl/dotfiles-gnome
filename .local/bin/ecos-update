@@ -21,7 +21,7 @@ cd "$HOME" && dots pull
 
 # PACKAGE UPDATE
 "$ECOS_CORE" --print-title 'FETCH PACKAGE UPDATES'
-paru -Syy
+#paru -Syy
 
 # PACKAGE UPGRADE
 "$ECOS_CORE" --print-title 'UPGRADE SYSTEM PACKAGES'
@@ -37,4 +37,14 @@ wait
 # FINISH
 "$ECOS_CORE" --print-title 'ECOS UPDATE FINISHED'
 echo ''
-read -p "Close with <ENTER>..."
+read -p "Init Dotfiles now? [y/n]: " user_input
+
+if [ "$user_input" = "y" ]; then
+    "$ECOS_CORE" --print-title 'INIT DOTFILES'
+    "$HOME/.init"
+    wait
+    "$ECOS_CORE" --print-title 'INIT FINISHED'
+    echo ""
+    read -p "Press any Key to close..."
+    exit 0
+fi
