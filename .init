@@ -27,6 +27,7 @@
 ##################################################
 
 # https://wiki.archlinux.org/title/Bumblebee
+# (optional): paru -S xf86-video-intel
 # paru -S mesa nvidia-390xx lib32-nvidia-390xx-utils bumblebee bbswitch primus lib32-virtualgl
 # sudo gpasswd -a $USER bumblebee
 # sudo systemctl enable bumblebeed.service
