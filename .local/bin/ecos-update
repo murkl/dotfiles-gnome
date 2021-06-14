@@ -34,17 +34,22 @@ if ! paru -Su --noconfirm; then
 fi
 wait
 
-# FINISH
+# INIT DOTFILES
 "$ECOS_CORE" --print-title 'ECOS UPDATE FINISHED'
 echo ''
 read -p "Init Dotfiles now? [y/n]: " user_input
 
 if [ "$user_input" = "y" ]; then
+
     "$ECOS_CORE" --print-title 'INIT DOTFILES'
     "$HOME/.init"
     wait
     "$ECOS_CORE" --print-title 'INIT FINISHED'
     echo ""
     read -p "Press any Key to close..."
+    exit 0
+
+else
+    echo "Dotfiles Init skipped..."
     exit 0
 fi
