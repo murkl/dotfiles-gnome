@@ -21,7 +21,7 @@ cd "$HOME" && dots pull
 
 # PACKAGE UPDATE
 "$ECOS_CORE" --print-title 'FETCH PACKAGE UPDATES'
-#paru -Syy
+paru -Syy
 
 # PACKAGE UPGRADE
 "$ECOS_CORE" --print-title 'UPGRADE SYSTEM PACKAGES'
