@@ -17,12 +17,9 @@ SOURCE_FILE="$SCRIPT_HOME/sources"
 WHITE_LIST_FILE="$SCRIPT_HOME/whitelist"
 
 TIMESTAMP="$(date +%Y-%m-%d)"
-LOG_FILE="$HOME/.cache/$SCRIPT_ID.log"
-# TODO: sdudo
-# HOSTS_FILE='/etc/hosts'
-HOSTS_FILE='/tmp/hosts-test'
-HOSTS_ORIGINAL_FILE="$HOSTS_FILE.original"
-HOSTS_HORST_FILE="$HOSTS_FILE.horst"
+HOSTS_FILE='/etc/hosts'
+HOSTS_ORIGINAL_FILE="$SCRIPT_HOME/hosts"
+HOSTS_VERSION_FILE="$SCRIPT_HOME/version"
 
 # Config defaults
 DESKTOP_ICON="true"
@@ -56,17 +53,6 @@ fi
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 main() {
-
-    # Init
-    init
-
-    # Show main menu
-    zenity_main_menu
-}
-
-#------------------------------------------------------------
-
-init() {
 
     # Create script home
     mkdir -p "$SCRIPT_HOME"
@@ -114,6 +100,9 @@ init() {
             echo "$desktop_file removed"
         fi
     fi
+
+    # OPEN MAIN MENU
+    zenity_main_menu
 }
 
 #------------------------------------------------------------
@@ -128,16 +117,16 @@ print_zenity_header() {
 
     # TEXT STATUS
     txt_status='<span font_family="monospace" foreground="#d39487" font="11">         ✘  disabled</span>'
-    if [ -f "$HOSTS_HORST_FILE" ]; then
+    if [ -f "$HOSTS_VERSION_FILE" ]; then
         txt_status='<span font_family="monospace" foreground="#75ad15" font="11">         ✔  enabled</span>'
     fi
 
     # TEXT UPDATE
     #txt_update='<span font_family="monospace" foreground="#5a5a5a" font="8">            ↺ new updates available</span>'
     txt_update=''
-    if [ -f "$HOSTS_HORST_FILE" ]; then
-        #txt_update="$(cat "$LATEST_UPDATE_FILE")"
-        txt_update='2021-06-28'
+    if [ -f "$HOSTS_VERSION_FILE" ]; then
+        #txt_update='2021-06-28'
+        txt_update="$(cat "$HOSTS_VERSION_FILE")"
         txt_update='<span font_family="monospace" foreground="#a6a6a6" font="11">         ↺  '$txt_update'</span>\n'
     fi
 
@@ -151,13 +140,13 @@ zenity_main_menu() {
 
     # STATUS BUTTON TEXT
     txt_button_status='Enable'
-    if [ -f "$HOSTS_HORST_FILE" ]; then
+    if [ -f "$HOSTS_VERSION_FILE" ]; then
         txt_button_status='Disable'
     fi
 
     # ZENITY
     zenity_result=''
-    if [ -f "$HOSTS_HORST_FILE" ]; then
+    if [ -f "$HOSTS_VERSION_FILE" ]; then
         if ! zenity_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' 'Update' "$txt_button_status" 'Settings')"; then
             exit 0
         fi
@@ -173,7 +162,15 @@ zenity_main_menu() {
         zenity_horst_enable
         ;;
     "$txt_button_status")
-        horst_toggle
+        if [ ! -f "$HOSTS_VERSION_FILE" ]; then
+            # ENABLE HORST
+            zenity_horst_enable
+        else
+            # DISABLE HORST
+            zenity_horst_disable
+        fi
+        # Reload script
+        main
         ;;
     'Settings')
         zenity_settings_menu
@@ -184,8 +181,9 @@ zenity_main_menu() {
 #------------------------------------------------------------
 
 zenity_settings_menu() {
-    if ! zenity_result="$(zenity --height=280 --list --hide-header --column="" --title="Settings" --text="$(print_zenity_header)" --cancel-label='Back' --ok-label='Ok' 'Edit Configuration' 'Edit Source List' 'Edit White List' 'Edit Original Hosts' 'Edit Hosts (temp)')"; then
+    if ! zenity_result="$(zenity --height=280 --list --hide-header --column="" --title="Settings" --text="$(print_zenity_header)" --cancel-label='Back' --ok-label='Ok' 'Edit Configuration' 'Show Hosts' 'Edit Hosts' 'Edit Source List' 'Edit White List')"; then
         main
+        return 1
     fi
     case "$zenity_result" in
     'Edit Configuration')
@@ -209,18 +207,15 @@ zenity_settings_menu() {
         fi
         zenity_settings_menu
         ;;
-    "Edit Original Hosts")
+    "Edit Hosts")
         if result=$(zenity --text-info --width=800 --height=600 --title="$HOSTS_ORIGINAL_FILE" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$HOSTS_ORIGINAL_FILE"); then
             echo "$result" >"$HOSTS_ORIGINAL_FILE"
             notify "$HOSTS_ORIGINAL_FILE saved"
         fi
         zenity_settings_menu
         ;;
-    "Edit Hosts (temp)")
-        if result=$(zenity --text-info --width=800 --height=600 --title="$HOSTS_FILE" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$HOSTS_FILE"); then
-            echo "$result" >"$HOSTS_FILE"
-            notify "$HOSTS_FILE saved"
-        fi
+    "Show Hosts")
+        zenity --text-info --width=800 --height=600 --title="$HOSTS_FILE" --ok-label="Close" --cancel-label="Back" --font="monospace" --filename="$HOSTS_FILE"
         zenity_settings_menu
         ;;
     esac
@@ -228,100 +223,102 @@ zenity_settings_menu() {
 
 #------------------------------------------------------------
 
-horst_toggle() {
-    if [ ! -f "$HOSTS_HORST_FILE" ]; then
-        # ENABLE HORST
-        zenity_horst_enable
-    else
-        # DISABLE HORST
-        zenity_horst_disable
-    fi
-    # Reload script
-    main
-}
-
-#------------------------------------------------------------
-
 zenity_horst_enable() {
+    root_password="$1"
 
     # ROOT PASSWORD
-    root_password=$(zenity --width=280 --height=120 --entry --hide-text --text "Enter Root Password")
-
-    # SUB PROCESS
-    state_file="/tmp/$SCRIPT_ID.state"
-    (
-        if [ ! -f "$HOSTS_FILE" ]; then
-            {
-                echo '127.0.0.1    localhost'
-                echo '::1          localhost'
-            } >"/tmp/$SCRIPT_ID-hosts.tmp"
-
-            echo -e "$root_password\n" | sudo -S -s -- cp "/tmp/$SCRIPT_ID-hosts.tmp" "$HOSTS_FILE"
-            echo "Default $HOSTS_FILE created"
-        fi
-
-        # TODO: Backup /etc/hosts if no /etc/hosts.backup already exists
-        if [ ! -f "$HOSTS_ORIGINAL_FILE" ]; then
-            echo -e "$root_password\n" | sudo -S -s -- cp "$HOSTS_FILE" "$HOSTS_ORIGINAL_FILE" && echo "Backup created: $HOSTS_FILE -> $HOSTS_ORIGINAL_FILE"
-        fi
-
-        # Temp
-        tmp_hosts='/tmp/hosts.tmp'
-        echo -e "$root_password\n" | sudo -S -s -- rm -f "$tmp_hosts"
-        echo -e "$root_password\n" | sudo -S -s -- rm -f "$HOSTS_FILE"
-
-        # TODO: Merge source lists from temp dir to /etc/hosts...
-        echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
-        echo -e "# GENERATED BY HORST" >>"$tmp_hosts"
-        echo -e "# GENERATED DATE: $TIMESTAMP" >>"$tmp_hosts"
-        echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
-
-        echo -e "\n# !!! DO NOT EDIT !!!\n" >>"$tmp_hosts"
-        echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
-        echo -e "# ORIGINAL HOSTS FILE" >>"$tmp_hosts"
-        echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
-        cat "$HOSTS_ORIGINAL_FILE" >>"$tmp_hosts"
-
-        echo -e "\n# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
-        echo -e "# HORST AD BLOCKER" >>"$tmp_hosts"
-        echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
-
-        # TODO: Download from source list to tmp dir...
-        echo "Update hosts..."
-        echo -e "$root_password\n" | sudo -S -s -- rm -f "$tmp_hosts.horst"
-        curl -L https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -o "$tmp_hosts.horst"
-        echo -e "$root_password\n" | sudo -S -s -- cp "$tmp_hosts.horst" "$HOSTS_HORST_FILE"
-        cat "$tmp_hosts.horst" >>"$tmp_hosts"
-
-        echo -e "$root_password\n" | sudo -S -s -- cp "$tmp_hosts" "$HOSTS_FILE"
-
-        echo "$HOSTS_FILE updated"
-
-        # SUCCESS
-        echo "SUCCESS" >"$state_file"
-    ) &
-
-    # Capture pid and show progress dialog
-    task_pid="$!"
-    echo "$task_pid" >"$state_file"
-    tail -f /dev/null --pid $task_pid | (zenity --width=280 --height=120 --progress --cancel-label="Cancel" --text="<b>Ad Blocker Update...</b>\n" --pulsate --auto-close || (kill_pid "$task_pid" && echo "CANCELED" >"$state_file"))
-
-    hosts_status_state=$(<"$state_file")
-    rm -f "$state_file"
-
-    if [ "$hosts_status_state" = "SUCCESS" ]; then
-        notify "Update successful"
-        zenity_main_menu
-    fi
-
-    if [ "$hosts_status_state" = "CANCELED" ]; then
-        notify "Update canceled"
-        zenity_main_menu
-    fi
-
-    root_password=""
     sudo -k
+    if [ "$1" = "" ]; then
+        if ! root_password="$(zenity --width=280 --height=120 --entry --hide-text --text="Root Password")"; then
+            main
+            return 1
+        fi
+    fi
 
+    # CHECK ROOT PASSWORD
+    if ! echo "$root_password" | sudo -S true; then
+        echo "Wrong root password"
+        notify "Wrong root password"
+        return 1
+    else
+        # SUB PROCESS
+        state_file="/tmp/$SCRIPT_ID.state"
+        (
+            if [ ! -f "$HOSTS_FILE" ]; then
+                {
+                    echo '127.0.0.1    localhost'
+                    echo '::1          localhost'
+                } >"/tmp/$SCRIPT_ID-hosts.tmp"
+
+                echo -e "$root_password\n" | sudo -S mv "/tmp/$SCRIPT_ID-hosts.tmp" "$HOSTS_FILE"
+                echo "Default $HOSTS_FILE created"
+            fi
+
+            if [ ! -f "$HOSTS_ORIGINAL_FILE" ]; then
+                cp "$HOSTS_FILE" "$HOSTS_ORIGINAL_FILE" && echo "Backup created: $HOSTS_FILE -> $HOSTS_ORIGINAL_FILE"
+            fi
+
+            # Temp
+            tmp_hosts='/tmp/hosts.tmp'
+            echo "$root_password" | sudo -S rm -f "$tmp_hosts"
+            echo "$root_password" | sudo -S rm -f "$HOSTS_FILE"
+
+            # TODO: Merge source lists from temp dir to /etc/hosts...
+            echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+            echo -e "# GENERATED BY HORST" >>"$tmp_hosts"
+            echo -e "# GENERATED DATE: $TIMESTAMP" >>"$tmp_hosts"
+            echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+
+            echo -e "\n# !!! DO NOT EDIT !!!\n" >>"$tmp_hosts"
+            echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+            echo -e "# ORIGINAL HOSTS FILE" >>"$tmp_hosts"
+            echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+            cat "$HOSTS_ORIGINAL_FILE" >>"$tmp_hosts"
+
+            echo -e "\n# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+            echo -e "# HORST AD BLOCKER" >>"$tmp_hosts"
+            echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+
+            # TODO: Download from source list to tmp dir...
+            echo "Update hosts..."
+            echo "$root_password" | sudo -S rm -f "$tmp_hosts.horst"
+            curl -L https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -o "$tmp_hosts.horst"
+            # cp "$tmp_hosts.horst" "$HOSTS_VERSION_FILE"
+            # SET VERSION
+            echo "$TIMESTAMP" >"$HOSTS_VERSION_FILE"
+            cat "$tmp_hosts.horst" >>"$tmp_hosts"
+
+            echo "$root_password" | sudo -S cp "$tmp_hosts" "$HOSTS_FILE"
+
+            echo "$HOSTS_FILE updated"
+
+            # SUCCESS
+            echo "SUCCESS" >"$state_file"
+        ) &
+
+        # Capture pid and show progress dialog
+        task_pid="$!"
+        echo "$task_pid" >"$state_file"
+        tail -f /dev/null --pid $task_pid | (zenity --width=280 --height=120 --progress --cancel-label="Cancel" --text="<b>Ad Blocker Update...</b>\n" --pulsate --auto-close || (kill_pid "$task_pid" && echo "CANCELED" >"$state_file"))
+
+        hosts_status_state=$(<"$state_file")
+        rm -f "$state_file"
+
+        if [ "$hosts_status_state" = "SUCCESS" ]; then
+            notify "Update successful"
+        fi
+
+        if [ "$hosts_status_state" = "CANCELED" ]; then
+            notify "Update canceled"
+        fi
+
+        # Clear
+        root_password=""
+        sudo -k
+    fi
+
+    # Go to menu
+    zenity_main_menu
 }
 
 #------------------------------------------------------------
@@ -329,29 +326,41 @@ zenity_horst_enable() {
 zenity_horst_disable() {
 
     # ROOT PASSWORD
-    root_password=$(zenity --width=280 --height=120 --entry --hide-text --text "Enter Root Password")
-
-    if [ -f "$HOSTS_ORIGINAL_FILE" ]; then
-        echo -e "$root_password\n" | sudo -S -s -- rm -f "$HOSTS_FILE"
-        echo -e "$root_password\n" | sudo -S -s -- cp "$HOSTS_ORIGINAL_FILE" "$HOSTS_FILE" && echo "$HOSTS_FILE reverted"
-    else
-        echo "$HOSTS_ORIGINAL_FILE not found"
-        root_password=""
-        sudo -k
-        exit 1
-    fi
-
-    if [ -f "$HOSTS_HORST_FILE" ]; then
-        echo -e "$root_password\n" | sudo -S -s -- rm "$HOSTS_HORST_FILE" && echo "$HOSTS_HORST_FILE removed"
-    else
-        echo "$HOSTS_HORST_FILE not found"
-        root_password=""
-        sudo -k
-        exit 1
-    fi
-
-    root_password=""
     sudo -k
+    if ! root_password="$(zenity --width=280 --height=120 --entry --hide-text --text="Root Password")"; then
+        main
+    else
+        # CHECK ROOT PASSWORD
+        if ! echo "$root_password" | sudo -S true; then
+            echo "Wrong root password"
+            notify "Wrong root password"
+            return 1
+        else
+
+            if [ -f "$HOSTS_ORIGINAL_FILE" ]; then
+                echo "$root_password" | sudo -S cp -f "$HOSTS_ORIGINAL_FILE" "$HOSTS_FILE" && echo "$HOSTS_FILE reverted"
+                rm -f "$HOSTS_ORIGINAL_FILE"
+            else
+                echo "$HOSTS_ORIGINAL_FILE not found"
+                root_password=""
+                sudo -k
+                return 1
+            fi
+
+            if [ -f "$HOSTS_VERSION_FILE" ]; then
+                rm "$HOSTS_VERSION_FILE" && echo "$HOSTS_VERSION_FILE removed"
+            else
+                echo "$HOSTS_VERSION_FILE not found"
+                root_password=""
+                sudo -k
+                return 1
+            fi
+
+            # Clear
+            root_password=""
+            sudo -k
+        fi
+    fi
 }
 
 #------------------------------------------------------------
