@@ -30,7 +30,7 @@ export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR/npm"
 # JAVA
 export JDK_HOME="/usr/lib/jvm/java-11-openjdk/"
 export JAVA_HOME="$JDK_HOME"
-export _JAVA_AWT_WM_NONREPARENTING=1
+#export _JAVA_AWT_WM_NONREPARENTING=1
 
 # Hide mouse pointer
 unclutter --timeout 5 -jitter 50 --ignore-scrolling &

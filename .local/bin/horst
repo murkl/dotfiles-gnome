@@ -1,0 +1,394 @@
+#!/bin/bash
+SCRIPT_TITLE="Horst"
+SCRIPT_ID="horst"
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# VARIABLES
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
+SCRIPT_FILE="$SCRIPT_DIR/$(basename "$0")"
+SCRIPT_HOME="$HOME/.config/$SCRIPT_ID"
+SCRIPT_CONFIG="$SCRIPT_HOME/config"
+SCRIPT_ICON="$HOME/.local/share/icons/$SCRIPT_ID.svg"
+
+# https://github.com/StevenBlack/hosts
+SOURCE_FILE="$SCRIPT_HOME/sources"
+WHITE_LIST_FILE="$SCRIPT_HOME/whitelist"
+
+TIMESTAMP="$(date +%Y-%m-%d)"
+LOG_FILE="$HOME/.cache/$SCRIPT_ID.log"
+# TODO: sdudo
+# HOSTS_FILE='/etc/hosts'
+HOSTS_FILE='/tmp/hosts-test'
+HOSTS_ORIGINAL_FILE="$HOSTS_FILE.original"
+HOSTS_HORST_FILE="$HOSTS_FILE.horst"
+
+# Config defaults
+DESKTOP_ICON="true"
+FILTER_PORN="true"
+FILTER_GAMBLING="false"
+FILTER_SOCIAL="false"
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# WRAPPER
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+zenity() {
+    /usr/bin/zenity --name="$SCRIPT_ID" --width=300 --height=230 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
+}
+
+notify() {
+    notify-send --icon="$SCRIPT_ICON" "$SCRIPT_TITLE" "$1"
+}
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# DEPENDENCIES
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+if ! [ -x "$(command -v /usr/bin/zenity)" ]; then
+    notify-send "ERROR: zenity not installed"
+    exit 1
+fi
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# FUNCTIONS
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+main() {
+
+    # Init
+    init
+
+    # Show main menu
+    zenity_main_menu
+}
+
+#------------------------------------------------------------
+
+init() {
+
+    # Create script home
+    mkdir -p "$SCRIPT_HOME"
+
+    # Check config
+    check_config 'DESKTOP_ICON' "$DESKTOP_ICON"
+    check_config 'FILTER_PORN' "$FILTER_PORN"
+    check_config 'FILTER_GAMBLING' "$FILTER_GAMBLING"
+    check_config 'FILTER_SOCIAL' "$FILTER_SOCIAL"
+
+    # Import script config file
+    . "$SCRIPT_CONFIG"
+
+    # Create source file
+    if [ ! -f "$SOURCE_FILE" ]; then
+        {
+            echo 'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts'
+        } >>"$SOURCE_FILE"
+        echo "$SOURCE_FILE created"
+    fi
+
+    # Create white list file
+    if [ ! -f "$WHITE_LIST_FILE" ]; then
+        touch "$WHITE_LIST_FILE"
+        echo "$WHITE_LIST_FILE created"
+    fi
+
+    # Create or remove desktop icon
+    desktop_file="$HOME/.local/share/applications/$SCRIPT_ID.desktop"
+    if [ "$DESKTOP_ICON" = "true" ]; then
+        if [ ! -f "$desktop_file" ]; then
+            {
+                echo "[Desktop Entry]"
+                echo "Name=$SCRIPT_TITLE"
+                echo "Icon=$SCRIPT_ICON"
+                echo "Exec=\"$SCRIPT_FILE\""
+                echo "Type=Application"
+            } >>"$desktop_file"
+            chmod +x "$desktop_file"
+            echo "$desktop_file created"
+        fi
+    else
+        if [ -f "$desktop_file" ]; then
+            rm -f "$desktop_file"
+            echo "$desktop_file removed"
+        fi
+    fi
+}
+
+#------------------------------------------------------------
+
+print_zenity_header() {
+
+    # TEXT ICON
+    txt_icon='<span font_family="monospace" foreground="#79a9dc" font="24">    ☮</span>'
+
+    # TEXT TITLE
+    txt_title='<span font_family="monospace" foreground="#79a9dc" font="16"> '$SCRIPT_TITLE'</span>'
+
+    # TEXT STATUS
+    txt_status='<span font_family="monospace" foreground="#d39487" font="11">         ✘  disabled</span>'
+    if [ -f "$HOSTS_HORST_FILE" ]; then
+        txt_status='<span font_family="monospace" foreground="#75ad15" font="11">         ✔  enabled</span>'
+    fi
+
+    # TEXT UPDATE
+    #txt_update='<span font_family="monospace" foreground="#5a5a5a" font="8">            ↺ new updates available</span>'
+    txt_update=''
+    if [ -f "$HOSTS_HORST_FILE" ]; then
+        #txt_update="$(cat "$LATEST_UPDATE_FILE")"
+        txt_update='2021-06-28'
+        txt_update='<span font_family="monospace" foreground="#a6a6a6" font="11">         ↺  '$txt_update'</span>\n'
+    fi
+
+    # Print header
+    echo "$txt_icon$txt_title\n$txt_status\n$txt_update"
+}
+
+#------------------------------------------------------------
+
+zenity_main_menu() {
+
+    # STATUS BUTTON TEXT
+    txt_button_status='Enable'
+    if [ -f "$HOSTS_HORST_FILE" ]; then
+        txt_button_status='Disable'
+    fi
+
+    # ZENITY
+    zenity_result=''
+    if [ -f "$HOSTS_HORST_FILE" ]; then
+        if ! zenity_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' 'Update' "$txt_button_status" 'Settings')"; then
+            exit 0
+        fi
+    else
+        if ! zenity_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' "$txt_button_status" 'Settings')"; then
+            exit 0
+        fi
+    fi
+
+    # ZENITY RESULT
+    case "$zenity_result" in
+    'Update')
+        zenity_horst_enable
+        ;;
+    "$txt_button_status")
+        horst_toggle
+        ;;
+    'Settings')
+        zenity_settings_menu
+        ;;
+    esac
+}
+
+#------------------------------------------------------------
+
+zenity_settings_menu() {
+    if ! zenity_result="$(zenity --height=280 --list --hide-header --column="" --title="Settings" --text="$(print_zenity_header)" --cancel-label='Back' --ok-label='Ok' 'Edit Configuration' 'Edit Source List' 'Edit White List' 'Edit Original Hosts' 'Edit Hosts (temp)')"; then
+        main
+    fi
+    case "$zenity_result" in
+    'Edit Configuration')
+        if result=$(zenity --text-info --width=400 --height=200 --title="Configuration" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$SCRIPT_CONFIG"); then
+            echo "$result" >"$SCRIPT_CONFIG"
+            notify "Configuration saved"
+        fi
+        zenity_settings_menu
+        ;;
+    'Edit Source List')
+        if result=$(zenity --text-info --width=600 --height=400 --title="Source List" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$SOURCE_FILE"); then
+            echo "$result" >"$SOURCE_FILE"
+            notify "Source List saved"
+        fi
+        zenity_settings_menu
+        ;;
+    'Edit White List')
+        if result=$(zenity --text-info --width=600 --height=400 --title="White List" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$WHITE_LIST_FILE"); then
+            echo "$result" >"$WHITE_LIST_FILE"
+            notify "White List saved"
+        fi
+        zenity_settings_menu
+        ;;
+    "Edit Original Hosts")
+        if result=$(zenity --text-info --width=800 --height=600 --title="$HOSTS_ORIGINAL_FILE" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$HOSTS_ORIGINAL_FILE"); then
+            echo "$result" >"$HOSTS_ORIGINAL_FILE"
+            notify "$HOSTS_ORIGINAL_FILE saved"
+        fi
+        zenity_settings_menu
+        ;;
+    "Edit Hosts (temp)")
+        if result=$(zenity --text-info --width=800 --height=600 --title="$HOSTS_FILE" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$HOSTS_FILE"); then
+            echo "$result" >"$HOSTS_FILE"
+            notify "$HOSTS_FILE saved"
+        fi
+        zenity_settings_menu
+        ;;
+    esac
+}
+
+#------------------------------------------------------------
+
+horst_toggle() {
+    if [ ! -f "$HOSTS_HORST_FILE" ]; then
+        # ENABLE HORST
+        zenity_horst_enable
+    else
+        # DISABLE HORST
+        zenity_horst_disable
+    fi
+    # Reload script
+    main
+}
+
+#------------------------------------------------------------
+
+zenity_horst_enable() {
+
+    # ROOT PASSWORD
+    root_password=$(zenity --width=280 --height=120 --entry --hide-text --text "Enter Root Password")
+
+    # SUB PROCESS
+    state_file="/tmp/$SCRIPT_ID.state"
+    (
+        if [ ! -f "$HOSTS_FILE" ]; then
+            {
+                echo '127.0.0.1    localhost'
+                echo '::1          localhost'
+            } >"/tmp/$SCRIPT_ID-hosts.tmp"
+
+            echo -e "$root_password\n" | sudo -S -s -- cp "/tmp/$SCRIPT_ID-hosts.tmp" "$HOSTS_FILE"
+            echo "Default $HOSTS_FILE created"
+        fi
+
+        # TODO: Backup /etc/hosts if no /etc/hosts.backup already exists
+        if [ ! -f "$HOSTS_ORIGINAL_FILE" ]; then
+            echo -e "$root_password\n" | sudo -S -s -- cp "$HOSTS_FILE" "$HOSTS_ORIGINAL_FILE" && echo "Backup created: $HOSTS_FILE -> $HOSTS_ORIGINAL_FILE"
+        fi
+
+        # Temp
+        tmp_hosts='/tmp/hosts.tmp'
+        echo -e "$root_password\n" | sudo -S -s -- rm -f "$tmp_hosts"
+        echo -e "$root_password\n" | sudo -S -s -- rm -f "$HOSTS_FILE"
+
+        # TODO: Merge source lists from temp dir to /etc/hosts...
+        echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+        echo -e "# GENERATED BY HORST" >>"$tmp_hosts"
+        echo -e "# GENERATED DATE: $TIMESTAMP" >>"$tmp_hosts"
+        echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+
+        echo -e "\n# !!! DO NOT EDIT !!!\n" >>"$tmp_hosts"
+        echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+        echo -e "# ORIGINAL HOSTS FILE" >>"$tmp_hosts"
+        echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+        cat "$HOSTS_ORIGINAL_FILE" >>"$tmp_hosts"
+
+        echo -e "\n# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+        echo -e "# HORST AD BLOCKER" >>"$tmp_hosts"
+        echo -e "# //////////////////////////////////////////////////////////" >>"$tmp_hosts"
+
+        # TODO: Download from source list to tmp dir...
+        echo "Update hosts..."
+        echo -e "$root_password\n" | sudo -S -s -- rm -f "$tmp_hosts.horst"
+        curl -L https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -o "$tmp_hosts.horst"
+        echo -e "$root_password\n" | sudo -S -s -- cp "$tmp_hosts.horst" "$HOSTS_HORST_FILE"
+        cat "$tmp_hosts.horst" >>"$tmp_hosts"
+
+        echo -e "$root_password\n" | sudo -S -s -- cp "$tmp_hosts" "$HOSTS_FILE"
+
+        echo "$HOSTS_FILE updated"
+
+        # SUCCESS
+        echo "SUCCESS" >"$state_file"
+    ) &
+
+    # Capture pid and show progress dialog
+    task_pid="$!"
+    echo "$task_pid" >"$state_file"
+    tail -f /dev/null --pid $task_pid | (zenity --width=280 --height=120 --progress --cancel-label="Cancel" --text="<b>Ad Blocker Update...</b>\n" --pulsate --auto-close || (kill_pid "$task_pid" && echo "CANCELED" >"$state_file"))
+
+    hosts_status_state=$(<"$state_file")
+    rm -f "$state_file"
+
+    if [ "$hosts_status_state" = "SUCCESS" ]; then
+        notify "Update successful"
+        zenity_main_menu
+    fi
+
+    if [ "$hosts_status_state" = "CANCELED" ]; then
+        notify "Update canceled"
+        zenity_main_menu
+    fi
+
+    root_password=""
+    sudo -k
+
+}
+
+#------------------------------------------------------------
+
+zenity_horst_disable() {
+
+    # ROOT PASSWORD
+    root_password=$(zenity --width=280 --height=120 --entry --hide-text --text "Enter Root Password")
+
+    if [ -f "$HOSTS_ORIGINAL_FILE" ]; then
+        echo -e "$root_password\n" | sudo -S -s -- rm -f "$HOSTS_FILE"
+        echo -e "$root_password\n" | sudo -S -s -- cp "$HOSTS_ORIGINAL_FILE" "$HOSTS_FILE" && echo "$HOSTS_FILE reverted"
+    else
+        echo "$HOSTS_ORIGINAL_FILE not found"
+        root_password=""
+        sudo -k
+        exit 1
+    fi
+
+    if [ -f "$HOSTS_HORST_FILE" ]; then
+        echo -e "$root_password\n" | sudo -S -s -- rm "$HOSTS_HORST_FILE" && echo "$HOSTS_HORST_FILE removed"
+    else
+        echo "$HOSTS_HORST_FILE not found"
+        root_password=""
+        sudo -k
+        exit 1
+    fi
+
+    root_password=""
+    sudo -k
+}
+
+#------------------------------------------------------------
+
+kill_pid() {
+    pid_kill="$1"
+    print_children_pid() {
+        local children_pid
+        children_pid="$(pgrep -P "$1")"
+        for pid in $children_pid; do
+            print_children_pid "$pid"
+        done
+        if [ "$children_pid" != "" ]; then
+            printf "$children_pid "
+        fi
+    }
+    pid_array=()
+    pid_array+=("$pid_kill")
+    pid_array+=($(print_children_pid "$pid_kill"))
+    for pid in ${pid_array[@]}; do
+        kill -9 "$pid"
+    done
+}
+
+#--------------------------------------------------------------
+
+check_config() {
+    config_key="$1"
+    config_value="$2"
+    mkdir -p "$SCRIPT_HOME" && touch "$SCRIPT_CONFIG"
+    if ! grep -qrnw "$SCRIPT_CONFIG" -e "$config_key=*"; then
+        echo "$config_key=\"$config_value\"" >>"$SCRIPT_CONFIG"
+    fi
+}
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# MAIN
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+main "$@"

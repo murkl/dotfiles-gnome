@@ -3,7 +3,7 @@
 ##################################################
 # GNOME SHELL LOGIN
 ##################################################
-# Choose before login with your username the session 'Gnome with X11' instead of 'Gnome'
+# [X] Choose before login with your username the session 'Gnome with X11' instead of 'Gnome'
 
 ##################################################
 # ARCH UPDATE INDICATOR
@@ -27,8 +27,9 @@
 ##################################################
 
 # https://wiki.archlinux.org/title/Bumblebee
-# (optional): paru -S xf86-video-intel
 # paru -S mesa nvidia-390xx lib32-nvidia-390xx-utils bumblebee bbswitch primus lib32-virtualgl
+# (optional): paru -S xf86-video-intel
+
 # sudo gpasswd -a $USER bumblebee
 # sudo systemctl enable bumblebeed.service
 
@@ -66,7 +67,7 @@ packages="$packages gnome-shell-extension-just-perfection-desktop-git"
 packages="$packages gnome-shell-extension-status-area-horizontal-spacing"
 
 # Driver
-packages="$packages xf86-video-intel"
+#packages="$packages xf86-video-intel"
 
 # ZSH
 packages="$packages zsh-autosuggestions zsh-syntax-highlighting"

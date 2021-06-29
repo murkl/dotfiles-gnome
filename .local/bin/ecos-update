@@ -18,3 +18,7 @@ fi
 
 # Update
 "$ECOS_CORE" --update-system
+
+# Sleep
+sleep 1
+exit 0
