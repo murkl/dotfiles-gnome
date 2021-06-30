@@ -1,5 +1,5 @@
 #!/bin/bash
-SCRIPT_TITLE="Ecowave"
+SCRIPT_TITLE="EcoWave"
 SCRIPT_ID="ecowave"
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -18,7 +18,7 @@ SYSTEMD_SERVICE_FILE="/etc/systemd/system/$SYSTEMD_SERVICE_NAME"
 # CONFIG
 WLAN_MODULE=''
 POWER_MAX=''
-SERVICE_ENABLED=''
+AUTOSTART_ENABLED=''
 DESKTOP_ICON=''
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -42,13 +42,18 @@ zenity() {
 # DEPENDENCIES
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+if ! [ -x "$(command -v /usr/bin/zenity)" ]; then
+	notify "Error: <b>zenity</b> not installed"
+	exit 1
+fi
+
 if ! [ -x "$(command -v iw)" ]; then
-	notify-send "ERROR: iw not installed"
+	notify "Error: <b>iw</b> not installed"
 	exit 1
 fi
 
 if ! [ -x "$(command -v iwconfig)" ]; then
-	notify-send "ERROR: wireless_tools not installed"
+	notify "Error: <b>wireless_tools</b> not installed"
 	exit 1
 fi
 
@@ -66,32 +71,50 @@ main() {
 	# TITLE
 	txt_title=' <span font_family="monospace" foreground="#A3BE8C" font="18"><b>       '$SCRIPT_TITLE'</b></span>'
 
+	# ESSID
+	essid_value=$(iwconfig $WLAN_MODULE | grep -e 'ESSID:*' | cut -d':' -f2 | cut -d'"' -f2)
+	if [[ "$essid_value" = *"off/any"* ]]; then
+		set_config "WLAN_MODULE" ''
+		notify "ESSID not found. WLAN Module connected?"
+		main
+		return
+	fi
+
+	essid_txt_title='  <span font_family="monospace" foreground="#2E3440" font="10">ESSID:</span>'
+	essid_txt=$essid_txt_title'     <span font_family="monospace" foreground="#2E3440" font="10"><b>'$essid_value'</b></span>'
+
+	# MODULE
 	wlan_module_txt=''
 	if [ "$WLAN_MODULE" != "" ]; then
-		wlan_module_txt_title='  <span font_family="monospace" foreground="#2E3440" font="10">MODULE</span>'
+		essid_value=$(iwconfig $WLAN_MODULE | grep -e 'ESSID:*' | cut -d':' -f2 | cut -d'"' -f2)
+		wlan_module_txt_title='  <span font_family="monospace" foreground="#2E3440" font="10">Module:</span>'
 		wlan_module_txt=$wlan_module_txt_title'   <span font_family="monospace" foreground="#2E3440" font="10"><b>'$WLAN_MODULE'</b></span>'
 	fi
 
 	# BIT RATE INFO
 	bit_rate_value=$(iwconfig $WLAN_MODULE | grep -o 'Bit Rate=[0-9]*' | cut -d'=' -f2)
 	if [ "$bit_rate_value" = "" ]; then
+		set_config "WLAN_MODULE" ''
 		notify "WLAN Bit Rate not found. WLAN Module down?"
-		exit 0
+		main
+		return
 	fi
-	bit_rate_txt_title='  <span font_family="monospace" foreground="#2E3440" font="10">RATE</span>'
-	bit_rate_txt=$bit_rate_txt_title'       <span font_family="monospace" foreground="#2E3440" font="10"><b>'$bit_rate_value' Mb/s</b></span>'
+	bit_rate_txt_title='  <span font_family="monospace" foreground="#2E3440" font="10">Rate:</span>'
+	bit_rate_txt=$bit_rate_txt_title'        <span font_family="monospace" foreground="#2E3440" font="10"><b>'$bit_rate_value' Mb/s</b></span>'
 
 	# TX POWER INFO
 	tx_power_value=$(iwconfig $WLAN_MODULE | grep -o 'Tx-Power=[0-9]*' | cut -d'=' -f2)
 	if [ "$tx_power_value" = "" ]; then
+		set_config "WLAN_MODULE" ''
 		notify "WLAN TX POWER not found. WLAN Module down?"
-		exit 0
+		main
+		return
 	fi
-	tx_power_txt_title='  <span font_family="monospace" foreground="#2E3440" font="10">POWER</span>'
+	tx_power_txt_title='  <span font_family="monospace" foreground="#2E3440" font="10">Power:</span>'
 	tx_power_txt=$tx_power_txt_title'     <span font_family="monospace" foreground="#2E3440" font="10"><b>'$tx_power_value' dBm</b></span>'
 
 	# HEADER
-	header_txt="$txt_title\n\n$wlan_module_txt\n$bit_rate_txt\n$tx_power_txt"
+	header_txt="$txt_title\n\n$essid_txt\n$wlan_module_txt\n$bit_rate_txt\n$tx_power_txt"
 
 	# SET MAX VALUE
 	if [ $tx_power_value -gt $POWER_MAX ]; then
@@ -99,8 +122,6 @@ main() {
 	fi
 
 	# ZENITY
-
-	#zenity_result=$(zenity --scale --min-value=1 --max-value=$POWER_MAX --value="$tx_power_value" --step 1 --cancel-label='Exit' --extra-button='Settings ➤' --ok-label='Save' --text "\t\t\t\t\t$bit_rate_current Mb/s")
 	zenity_result=$(zenity --scale --min-value=1 --max-value=$POWER_MAX --value="$tx_power_value" --step 1 --cancel-label='Exit' --extra-button='Settings ➤' --ok-label='Save' --text="$header_txt")
 
 	# ZENITY RESULT
@@ -129,7 +150,7 @@ init_config() {
 	# Defaults
 	WLAN_MODULE=''
 	POWER_MAX='10'
-	SERVICE_ENABLED='true'
+	AUTOSTART_ENABLED='true'
 	DESKTOP_ICON='true'
 
 	# Create dirs
@@ -138,7 +159,7 @@ init_config() {
 	# Check config
 	check_config "WLAN_MODULE" "$WLAN_MODULE"
 	check_config "POWER_MAX" "$POWER_MAX"
-	check_config "SERVICE_ENABLED" "$SERVICE_ENABLED"
+	check_config "AUTOSTART_ENABLED" "$AUTOSTART_ENABLED"
 	check_config "DESKTOP_ICON" "$DESKTOP_ICON"
 
 	# Import script config file
@@ -166,7 +187,27 @@ init_config() {
 		# Reload config
 		. "$SCRIPT_CONFIG"
 
-		notify "New Interface <b>$interface</b>"
+		log "New Interface $interface"
+	fi
+
+	# CHECK WLAN MODULE
+	if [ "$WLAN_MODULE" != "" ]; then
+		module_checked=false
+		interface_array=()
+		while read wlan_line; do
+			if [ "$wlan_line" = "$WLAN_MODULE" ]; then
+				log "WLAN Module found: $WLAN_MODULE"
+				module_checked=true
+				break
+			fi
+		done < <(ip link | awk -F: '$0 !~ "lo|vir|tun|enp|^[^0-9]"{print $2;getline}')
+
+		if [ "$module_checked" = "false" ]; then
+			notify "WLAN Module not found"
+			set_config "WLAN_MODULE" ''
+			init_config
+			return
+		fi
 	fi
 
 	# Create or remove desktop icon
@@ -212,7 +253,7 @@ set_tx_power() {
 	else
 
 		# CREATE SERVICE
-		if [ "$SERVICE_ENABLED" = "true" ]; then
+		if [ "$AUTOSTART_ENABLED" = "true" ]; then
 			# Create Service file
 			{
 				echo '[Unit]'
@@ -243,45 +284,9 @@ set_tx_power() {
 		sh -c "echo $root_password | sudo -S iwconfig $WLAN_MODULE txpower $tx_power"
 
 		# SUCCESS
-		notify "Power set to <b>$tx_power</b>"
+		notify "Power set to <b>$tx_power dBm</b>"
 		main
 	fi
-}
-
-#--------------------------------------------------------------
-
-print_zenity_header() {
-
-	# TITLE
-	txt_title=' <span font_family="monospace" foreground="#81A1C1" font="12"><b>'$SCRIPT_TITLE'</b></span>'
-
-	# STATUS
-	icon_status='  <span font_family="monospace" foreground="#BF616A" font="12">✗</span> '
-	txt_status='  <span font_family="monospace" foreground="#2E3440" font="9">disabled</span>'
-	if check_horst_enabled; then
-		icon_status='  <span font_family="monospace" foreground="#A3BE8C" font="12">✔</span> '
-		txt_status='  <span font_family="monospace" foreground="#2E3440" font="9">enabled</span>'
-	fi
-
-	# SOURCE
-	icon_source=''
-	txt_source=''
-	if check_horst_enabled; then
-		icon_source='  <span font_family="monospace" foreground="#EBCB8B" font="12">★</span> '
-		txt_source='  <span font_family="monospace" foreground="#2E3440" font="9">'$(count_sources)' Sources</span>\n'
-	fi
-
-	# UPDATE
-	icon_update=''
-	txt_update=''
-	if check_horst_enabled; then
-		icon_update='  <span font_family="monospace" foreground="#B48EAD" font="12">↺</span> '
-		txt_update="$(cat "$HOSTS_VERSION_FILE")"
-		txt_update='  <span font_family="monospace" foreground="#2E3440" font="9">'$txt_update'</span>\n'
-	fi
-
-	# Print header
-	echo "$txt_title\n$icon_status$txt_status\n$icon_source$txt_source$icon_update$txt_update"
 }
 
 #------------------------------------------------------------
