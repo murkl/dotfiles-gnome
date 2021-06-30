@@ -172,7 +172,7 @@ zenity_main_menu() {
             exit 0
         fi
     else
-        if ! zenity_result="$(zenity --height=180  --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' "$txt_button_status" 'Settings')"; then
+        if ! zenity_result="$(zenity --height=180 --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' "$txt_button_status" 'Settings')"; then
             exit 0
         fi
     fi
@@ -270,7 +270,7 @@ execute_white_list() {
 #------------------------------------------------------------
 
 check_horst_enabled() {
-    if [ -f "$HOSTS_FILE" ] && [ -f "$HOSTS_BACKUP_FILE" ] && [ -f "$HOSTS_VERSION_FILE" ]; then
+    if [ -f "$HOSTS_FILE" ] && [ -f "$HOSTS_VERSION_FILE" ]; then
         return 0
     else
         return 1
@@ -299,7 +299,7 @@ zenity_horst_enable() {
         if [ -f "$CACHE_DIR/hosts" ] && [ -f "$CACHE_DIR/version" ]; then
 
             # CREATE HOSTS BACKUP
-            if [ ! -f "$HOSTS_BACKUP_FILE" ]; then
+            if [ -f "$HOSTS_FILE" ] && [ ! -f "$HOSTS_BACKUP_FILE" ]; then
                 echo -e "$root_password\n" | sudo -S cp "$HOSTS_FILE" "$HOSTS_BACKUP_FILE" && echo "Backup created: $HOSTS_FILE -> $HOSTS_BACKUP_FILE"
             fi
 
@@ -440,7 +440,7 @@ zenity_horst_update() {
     fi
 
     # Go to menu
-    zenity_main_menu
+    main
 }
 
 #------------------------------------------------------------
