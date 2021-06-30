@@ -40,7 +40,7 @@ notify() {
 }
 
 zenity() {
-    /usr/bin/zenity --name="$SCRIPT_ID" --width=300 --height=230 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
+    /usr/bin/zenity --name="$SCRIPT_ID" --width=280 --height=240 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
 }
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -124,7 +124,7 @@ main() {
 print_zenity_header() {
 
     # TITLE
-    txt_title=' <span font_family="monospace" foreground="#81A1C1" font="12"><b>'$SCRIPT_TITLE'</b></span>'
+    txt_title='\t\t\t\t <span font_family="monospace" foreground="#81A1C1" font="12"><b>'$SCRIPT_TITLE'</b></span>'
 
     # STATUS
     icon_status='  <span font_family="monospace" foreground="#BF616A" font="12">✗</span> '
