@@ -21,7 +21,7 @@ HOSTS_VERSION_FILE="$SCRIPT_HOME/version"
 HOSTS_FILE='/etc/hosts'
 HOSTS_BACKUP_FILE="$HOSTS_FILE.bak"
 
-TIMESTAMP="$(date +%Y-%m-%d)"
+TIMESTAMP="$(date '+%Y-%m-%d %H:%M')"
 TEMP_DIR="/tmp/$SCRIPT_ID-$TIMESTAMP"
 CACHE_DIR="$HOME/.cache/$SCRIPT_ID"
 
