@@ -28,7 +28,7 @@ MOVIE_DOWNLOAD_DIR='$HOME/Downloads/Movies'
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 zenity() {
-	/usr/bin/zenity --name="$SCRIPT_ID" --width=420 --height=140 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
+	/usr/bin/zenity --name="$SCRIPT_ID" --width=430 --height=130 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
 }
 
 notify() {

@@ -134,8 +134,8 @@ print_zenity_header() {
         latest_path=$(readlink "$BACKUP_DESTINATION/latest")
         status_txt="$(basename "${latest_path}")"
     fi
-    status_icon='  <span font_family="monospace" foreground="'$status_color'" font="12">'$status_icon'</span> '
-    status_txt=' <span font_family="monospace" foreground="#2E3440" font="9">'$status_txt'</span>'
+    status_icon='  <span font_family="monospace" foreground="'$status_color'" font="12"><b>'$status_icon'</b></span> '
+    status_txt=' <span font_family="monospace" foreground="#2E3440" font="9"><b>'$status_txt'</b></span>'
 
     echo -e "$txt_title\n\n$status_icon$status_txt"
 }
@@ -221,7 +221,8 @@ create_backup() {
     # Capture pid and show progress dialog
     task_pid="$!"
     echo "$task_pid" >"$STATE_FILE"
-    tail -f /dev/null --pid $task_pid | (zenity --progress --cancel-label="Cancel Backup" --text="<b>Creating Snapshot...</b>\n" --pulsate --auto-close || (kill_pid "$task_pid" && echo "CANCELED" >"$STATE_FILE"))
+    txt_title='\t\t\t\t<span font_family="monospace" foreground="#A3BE8C" font="12"><b>'$SCRIPT_TITLE'</b></span>'
+    tail -f /dev/null --pid $task_pid | (zenity --progress --width=320 --height=180 --cancel-label="Cancel Backup" --text="$txt_title\n\n\t\t\t\t <b>Creating Snapshot</b>\n" --pulsate --auto-close || (kill_pid "$task_pid" && echo "CANCELED" >"$STATE_FILE"))
 
     backup_state=$(<"$STATE_FILE")
 
