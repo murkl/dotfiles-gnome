@@ -134,7 +134,7 @@ main() {
 		set_tx_power "$zenity_result"
 		;;
 	'1-Settings'*)
-		if settings_result=$(zenity --text-info --width=400 --height=200 --title="Settings" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$SCRIPT_CONFIG"); then
+		if settings_result=$(zenity --text-info --width=400 --height=200 --title="Settings" --ok-label="Save" --cancel-label="Back" --font="monospace" --editable --filename="$SCRIPT_CONFIG"); then
 			echo "$settings_result" >"$SCRIPT_CONFIG"
 			notify "Settings saved"
 		fi

@@ -29,7 +29,7 @@ BACKUP_DESTINATION=""
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 zenity() {
-    /usr/bin/zenity --name="$SCRIPT_ID" --width=320 --height=180 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
+    /usr/bin/zenity --name="$SCRIPT_ID" --width=340 --height=200 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
 }
 
 notify() {
@@ -114,18 +114,35 @@ init() {
 
 #------------------------------------------------------------
 
-show_main_menu() {
+print_zenity_header() {
 
-    latest_txt="<b>∅ HDD not mounted</b>"
+    # TITLE
+    txt_title='\t\t\t\t<span font_family="monospace" foreground="#A3BE8C" font="12"><b>'$SCRIPT_TITLE'</b></span>'
+
+    # STATUS
+    status_icon='∅'
+    status_color='#BF616A'
+    status_txt='HDD not mounted'
     if [ -d "$BACKUP_DESTINATION" ]; then
-        latest_txt="<b>↺ no snapshot found</b>"
+        status_icon='↺'
+        status_color='#B48EAD'
+        status_txt='no snapshot found'
     fi
     if [ -s "$BACKUP_DESTINATION/latest" ]; then
+        status_icon='↺'
+        status_color='#A3BE8C'
         latest_path=$(readlink "$BACKUP_DESTINATION/latest")
-        latest_txt="$(basename "${latest_path}")"
-        latest_txt="<b>↺ $latest_txt</b>"
+        status_txt="$(basename "${latest_path}")"
     fi
-    if ! zenity_result="$(zenity --list --hide-header --column="" --title="$SCRIPT_TITLE" --text="$latest_txt" --cancel-label='Exit' --ok-label='Ok' 'Create Snapshot' 'Browse Snapshots' 'Settings')"; then
+    status_icon='  <span font_family="monospace" foreground="'$status_color'" font="12">'$status_icon'</span> '
+    status_txt=' <span font_family="monospace" foreground="#2E3440" font="9">'$status_txt'</span>'
+
+    echo -e "$txt_title\n\n$status_icon$status_txt"
+}
+
+show_main_menu() {
+
+    if ! zenity_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' 'Create Snapshot' 'Browse Snapshots' 'Settings')"; then
         exit 0
     fi
     case "$zenity_result" in
@@ -149,19 +166,21 @@ show_main_menu() {
 #------------------------------------------------------------
 
 show_settings_menu() {
-    if ! zenity_result="$(zenity --list --hide-header --column="" --title="Settings" --cancel-label='Back' --ok-label='Ok' 'Edit Configuration' 'Edit Excludes')"; then
+    if ! zenity_result="$(zenity --list --hide-header --column="" --title="Settings" --text="$(print_zenity_header)" --cancel-label='Back' --ok-label='Ok' 'Edit Configuration' 'Edit Excludes')"; then
         main
     fi
     case "$zenity_result" in
     'Edit Configuration')
-        if result=$(zenity --text-info --width=600 --height=400 --title="Configuration" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$SCRIPT_CONFIG"); then
+        if result=$(zenity --text-info --width=550 --height=300 --title="Configuration" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$SCRIPT_CONFIG"); then
             echo "$result" >"$SCRIPT_CONFIG"
             notify "Configuration saved"
+            main
+            return
         fi
         show_settings_menu
         ;;
     'Edit Excludes')
-        if result=$(zenity --text-info --width=600 --height=400 --title="Excludes" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$EXCLUDE_FILE"); then
+        if result=$(zenity --text-info --width=550 --height=300 --title="Excludes" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$EXCLUDE_FILE"); then
             echo "$result" >"$EXCLUDE_FILE"
             notify "Excludes saved"
         fi

@@ -5,9 +5,10 @@ SCRIPT_ID="wino"
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # VARIABLES
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
 SCRIPT_DIR="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
 SCRIPT_FILE="$SCRIPT_DIR/$(basename "$0")"
+SCRIPT_HOME="$HOME/.config/$SCRIPT_ID"
+SCRIPT_CONFIG="$SCRIPT_HOME/config"
 SCRIPT_ICON="$HOME/.local/share/icons/$SCRIPT_ID.svg"
 
 WINE="wine"
@@ -19,15 +20,16 @@ WINE_PREFIX_DIR="$WORKING_DIR/prefix"
 LAUNCH_CONFIG="$WORKING_DIR/$SCRIPT_ID.conf"
 
 # Defaults
+DESKTOP_ICON="true"
 WINE_64="true"
 MODULES="sandbox"
 APP_EXE=""
 APP_ARG=""
 
 # Source launch config file
-if [ -f "$LAUNCH_CONFIG" ]; then
-    . "$LAUNCH_CONFIG"
-fi
+#if [ -f "$LAUNCH_CONFIG" ]; then
+#    . "$LAUNCH_CONFIG"
+#fi
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # WRAPPER
@@ -61,6 +63,36 @@ fi
 
 main() {
 
+    # Create dirs
+    mkdir -p "$SCRIPT_HOME"
+
+    # Check config
+    check_config 'DESKTOP_ICON' "$DESKTOP_ICON"
+
+    # Import script config file
+    . "$SCRIPT_CONFIG"
+
+    # Create or remove desktop icon
+    desktop_file="$HOME/.local/share/applications/$SCRIPT_ID.desktop"
+    if [ "$DESKTOP_ICON" = "true" ]; then
+        if [ ! -f "$desktop_file" ]; then
+            {
+                echo "[Desktop Entry]"
+                echo "Name=$SCRIPT_TITLE"
+                echo "Icon=$SCRIPT_ICON"
+                echo "Exec=\"$SCRIPT_FILE\""
+                echo "Type=Application"
+            } >>"$desktop_file"
+            chmod +x "$desktop_file"
+            echo "$desktop_file created"
+        fi
+    else
+        if [ -f "$desktop_file" ]; then
+            rm -f "$desktop_file"
+            echo "$desktop_file removed"
+        fi
+    fi
+
     cd "$WORKING_DIR" || exit 1
     echo "WORKING DIR: $PWD"
 
@@ -77,6 +109,7 @@ check_conf_file() {
         # check_config "WINE_64" "$WINE_64"
         echo "Creating $LAUNCH_CONFIG..."
         {
+            echo "DESKTOP_ICON=$DESKTOP_ICON"
             echo "WINE_64=$WINE_64"
             echo "MODULES=$MODULES"
             echo "APP_EXE=$APP_EXE"
@@ -193,8 +226,9 @@ kill_pid() {
 check_config() {
     config_key="$1"
     config_value="$2"
-    if ! grep -qrnw "$LAUNCH_CONFIG" -e "$config_key=*"; then
-        echo "$config_key=\"$config_value\"" >>"$LAUNCH_CONFIG"
+    mkdir -p "$SCRIPT_HOME" && touch "$SCRIPT_CONFIG"
+    if ! grep -qrnw "$SCRIPT_CONFIG" -e "$config_key=*"; then
+        echo "$config_key=\"$config_value\"" >>"$SCRIPT_CONFIG"
     fi
 }
 

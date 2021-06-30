@@ -220,6 +220,8 @@ zenity_settings_menu() {
         if result=$(zenity --text-info --width=600 --height=400 --title="Configuration" --ok-label="Save" --cancel-label="Cancel" --font="monospace" --editable --filename="$SCRIPT_CONFIG"); then
             echo "$result" >"$SCRIPT_CONFIG"
             notify "Configuration saved"
+            main
+            return
         fi
         zenity_settings_menu
         ;;
