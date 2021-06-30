@@ -31,12 +31,17 @@ APP_ARG=""
 # WRAPPER
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-zenity() {
-    /usr/bin/zenity --name="$SCRIPT_ID" --width=320 --height=180 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
+log() {
+    printf '%s\n' "$(date "+%Y-%m-%d %H:%M:%S") $SCRIPT_ID | $1"
 }
 
 notify() {
+    log "$1"
     notify-send --icon="$SCRIPT_ICON" "$SCRIPT_TITLE" "$1"
+}
+
+zenity() {
+    /usr/bin/zenity --name="$SCRIPT_ID" --width=320 --height=180 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
 }
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -105,22 +110,25 @@ print_zenity_header() {
     txt_title='\t\t\t\t\t<span font_family="monospace" foreground="#81A1C1" font="12"><b>'$SCRIPT_TITLE'</b></span>'
 
     # STATUS
-    status_icon='↺'
-    status_color='#BF616A'
-    status_txt='Containe: 0'
+    recipes_icon='Templates:'
+    recipes_color='#2E3440'
+    recipes_txt='0'
     if [ -d "$CONTAINER_DIR" ]; then
         container_array=()
         while IFS= read -r -d '' container; do
             container_array+=("$container")
         done < <(find "$CONTAINER_DIR" -name "*.wino" -print0)
-        status_icon='↺'
-        status_color='#B48EAD'
-        status_txt="Container: ${#container_array[@]}"
+        recipes_icon='Templates:'
+        recipes_color='#2E3440'
+        recipes_txt="${#container_array[@]}"
     fi
-    status_icon='  <span font_family="monospace" foreground="'$status_color'" font="12"><b>'$status_icon'</b></span> '
-    status_txt=' <span font_family="monospace" foreground="#2E3440" font="9"><b>'$status_txt'</b></span>'
+    recipes_icon='  <span font_family="monospace" foreground="'$recipes_color'" font="9">'$recipes_icon'</span> '
+    recipes_txt='   <span font_family="monospace" foreground="#2E3440" font="9"><b>'$recipes_txt'</b></span>'
 
-    echo -e "$txt_title\n\n$status_icon$status_txt"
+    container_icon='  <span font_family="monospace" foreground="'$recipes_color'" font="9">Bottles:</span>'
+    container_txt='         <span font_family="monospace" foreground="#2E3440" font="9"><b>0</b></span>'
+
+    echo -e "$txt_title\n\n$recipes_icon$recipes_txt\n$container_icon$container_txt"
 }
 
 #------------------------------------------------------------
@@ -165,23 +173,26 @@ check_prefix_dir() {
 
 show_main_menu() {
 
-    if ! zenity_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' 'List Container' 'New Container' 'Settings')"; then
+    if ! zenity_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' 'Wino Templates' 'Wino Bottles' 'Settings')"; then
         exit 0
     fi
     case "$zenity_result" in
-    'List Container'*)
+    'Wino Templates'*)
         zenity_list_container
+        show_main_menu
         #check_conf_file
         #check_prefix_dir
         #start_wine
         ;;
-    'New Container'*)
-        notify "New Container"
+    'Wino Bottles'*)
+        log "Bottles"
+        show_main_menu
         #check_conf_file
         #check_prefix_dir
         ;;
     'Settings'*)
-        notify "Settings"
+        log "Settings"
+        show_main_menu
         #check_conf_file
         #xdg-open "$WORKING_DIR"
         ;;
@@ -193,7 +204,7 @@ zenity_list_container() {
     # CONTAINER ARRAY
     container_array=()
     while IFS= read -r -d '' container; do
-        container_array+=("$container")
+        container_array+=$(basename "$container")
     done < <(find "$CONTAINER_DIR" -name "*.wino" -print0)
 
     # ZENITY
