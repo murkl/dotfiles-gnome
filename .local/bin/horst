@@ -5,7 +5,6 @@ SCRIPT_ID="horst"
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # VARIABLES
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
 SCRIPT_DIR="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
 SCRIPT_FILE="$SCRIPT_DIR/$(basename "$0")"
 SCRIPT_HOME="$HOME/.config/$SCRIPT_ID"
@@ -31,12 +30,17 @@ DESKTOP_ICON="true"
 # WRAPPER
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-zenity() {
-    /usr/bin/zenity --name="$SCRIPT_ID" --width=300 --height=230 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
+log() {
+    printf '%s\n' "$(date "+%Y-%m-%d %H:%M:%S") $SCRIPT_ID | $1"
 }
 
 notify() {
+    log "$1"
     notify-send --icon="$SCRIPT_ICON" "$SCRIPT_TITLE" "$1"
+}
+
+zenity() {
+    /usr/bin/zenity --name="$SCRIPT_ID" --width=300 --height=230 --title='' --text='' --window-icon="$SCRIPT_ICON" "$@" 2>/dev/null
 }
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -273,19 +277,6 @@ check_horst_enabled() {
 
 #------------------------------------------------------------
 
-check_root_password() {
-    if ! echo "$1" | sudo -S true; then
-        echo "Wrong root password"
-        notify "Wrong root password"
-        return 1
-    else
-        echo "Root password correct"
-        return 0
-    fi
-}
-
-#------------------------------------------------------------
-
 zenity_horst_enable() {
     root_password="$1"
 
@@ -299,6 +290,7 @@ zenity_horst_enable() {
 
     # CHECK ROOT PASSWORD
     if ! check_root_password "$root_password"; then
+        main
         return 1
     else
         # CHECK CACHE
@@ -340,6 +332,7 @@ zenity_horst_update() {
 
     # CHECK ROOT PASSWORD
     if ! check_root_password "$root_password"; then
+        main
         return 1
     else
         # SUB PROCESS
@@ -463,6 +456,7 @@ zenity_horst_disable() {
 
     # CHECK ROOT PASSWORD
     if ! check_root_password "$root_password"; then
+        main
         return 1
     else
         if [ -f "$HOSTS_BACKUP_FILE" ]; then
@@ -527,6 +521,22 @@ kill_pid() {
 }
 
 #--------------------------------------------------------------
+
+check_root_password() {
+    if [ "$1" = "" ]; then
+        notify "Root Password was empty"
+        return 1
+    fi
+    if ! echo "$1" | sudo -S true; then
+        notify "Root Password was wrong"
+        return 1
+    else
+        log "Root password correct..."
+        return 0
+    fi
+}
+
+#------------------------------------------------------------
 
 check_config() {
     config_key="$1"
