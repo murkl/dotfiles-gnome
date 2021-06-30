@@ -172,7 +172,7 @@ zenity_main_menu() {
             exit 0
         fi
     else
-        if ! zenity_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' "$txt_button_status" 'Settings')"; then
+        if ! zenity_result="$(zenity --height=180  --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' "$txt_button_status" 'Settings')"; then
             exit 0
         fi
     fi
@@ -205,12 +205,12 @@ zenity_settings_menu() {
 
     zenity_result=''
     if check_horst_enabled; then
-        if ! zenity_result="$(zenity --height=280 --list --hide-header --column="" --title="Settings" --text="$(print_zenity_header)" --cancel-label='Back' --ok-label='Ok' 'Edit Configuration' 'Generated /etc/hosts' 'Edit Source List' 'Edit White List' 'Edit Hosts')"; then
+        if ! zenity_result="$(zenity --height=290 --list --hide-header --column="" --title="Settings" --text="$(print_zenity_header)" --cancel-label='Back' --ok-label='Ok' 'Edit Configuration' 'Generated /etc/hosts' 'Edit Source List' 'Edit White List' 'Edit Hosts')"; then
             main
             return 1
         fi
     else
-        if ! zenity_result="$(zenity --height=280 --list --hide-header --column="" --title="Settings" --text="$(print_zenity_header)" --cancel-label='Back' --ok-label='Ok' 'Edit Configuration')"; then
+        if ! zenity_result="$(zenity --height=180 --list --hide-header --column="" --title="Settings" --text="$(print_zenity_header)" --cancel-label='Back' --ok-label='Ok' 'Edit Configuration')"; then
             main
             return 1
         fi
