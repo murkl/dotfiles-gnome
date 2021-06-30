@@ -109,17 +109,18 @@ init() {
 
 show_url_menu() {
 
-	zenity_result="$(zenity --entry --title="URL" --cancel-label='Exit' --extra-button='Menu ➤' --ok-label='Download' --entry-text="$TASK_URL")"
-	zenity_result_button="${?}-${zenity_result}"
-	case "$zenity_result_button" in
+	url_result="$(zenity --entry --title="URL" --cancel-label='Exit' --extra-button='Menu ➤' --ok-label='Download' --entry-text="$TASK_URL")"
+	url_result_button="${?}-${url_result}"
+	case "$url_result_button" in
 	'1-')
 		exit 0
 		;;
 	'0-'*)
-		TASK_URL="$zenity_result"
+		TASK_URL="$url_result"
 		if [ "$TASK_URL" = "" ]; then
 			notify "URL was empty"
 			main
+			return 1
 		else
 			show_download_type_menu "$TASK_URL"
 		fi
@@ -136,6 +137,7 @@ show_download_type_menu() {
 
 	if ! zenity_result="$(zenity --list --hide-header --column="" --title="Download Type" --cancel-label='Back' --ok-label='Download' 'Music' 'Movie' 'Video')"; then
 		main
+		return 1
 	fi
 	case "$zenity_result" in
 	'Music')
@@ -260,6 +262,7 @@ dl_video() {
 	# Ask for quality
 	if ! quality_result="$(zenity --list --height=200 --hide-header --column="" --title="Video Quality" --cancel-label='Cancel' --ok-label='Download' 'Original' '1080p' '720p' '480p' '240p')"; then
 		main
+		return 1
 	fi
 	if [ "$quality_result" = "Original" ]; then
 		video_quality=10000

@@ -9,6 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
 SCRIPT_FILE="$SCRIPT_DIR/$(basename "$0")"
 SCRIPT_HOME="$HOME/.config/$SCRIPT_ID"
 SCRIPT_CONFIG="$SCRIPT_HOME/config"
+CONTAINER_DIR="$SCRIPT_HOME/container"
 SCRIPT_ICON="$HOME/.local/share/icons/$SCRIPT_ID.svg"
 
 WINE="wine"
@@ -25,11 +26,6 @@ WINE_64="true"
 MODULES="sandbox"
 APP_EXE=""
 APP_ARG=""
-
-# Source launch config file
-#if [ -f "$LAUNCH_CONFIG" ]; then
-#    . "$LAUNCH_CONFIG"
-#fi
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # WRAPPER
@@ -65,6 +61,7 @@ main() {
 
     # Create dirs
     mkdir -p "$SCRIPT_HOME"
+    mkdir -p "$CONTAINER_DIR"
 
     # Check config
     check_config 'DESKTOP_ICON' "$DESKTOP_ICON"
@@ -98,6 +95,32 @@ main() {
 
     # Show main menu
     show_main_menu
+}
+
+#------------------------------------------------------------
+
+print_zenity_header() {
+
+    # TITLE
+    txt_title='\t\t\t\t\t<span font_family="monospace" foreground="#81A1C1" font="12"><b>'$SCRIPT_TITLE'</b></span>'
+
+    # STATUS
+    status_icon='↺'
+    status_color='#BF616A'
+    status_txt='Containe: 0'
+    if [ -d "$CONTAINER_DIR" ]; then
+        container_array=()
+        while IFS= read -r -d '' container; do
+            container_array+=("$container")
+        done < <(find "$CONTAINER_DIR" -name "*.wino" -print0)
+        status_icon='↺'
+        status_color='#B48EAD'
+        status_txt="Container: ${#container_array[@]}"
+    fi
+    status_icon='  <span font_family="monospace" foreground="'$status_color'" font="12"><b>'$status_icon'</b></span> '
+    status_txt=' <span font_family="monospace" foreground="#2E3440" font="9"><b>'$status_txt'</b></span>'
+
+    echo -e "$txt_title\n\n$status_icon$status_txt"
 }
 
 #------------------------------------------------------------
@@ -142,22 +165,55 @@ check_prefix_dir() {
 
 show_main_menu() {
 
-    if ! zenity_result="$(zenity --list --hide-header --column="" --title="$SCRIPT_TITLE" --text="$latest_txt" --cancel-label='Exit' --ok-label='Ok' 'Run EXE' 'Create Prefix' 'Edit Config')"; then
+    if ! zenity_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' 'List Container' 'New Container' 'Settings')"; then
         exit 0
     fi
     case "$zenity_result" in
-    'Run'*)
-        check_conf_file
-        check_prefix_dir
-        start_wine
+    'List Container'*)
+        zenity_list_container
+        #check_conf_file
+        #check_prefix_dir
+        #start_wine
         ;;
-    'Create'*)
-        check_conf_file
-        check_prefix_dir
+    'New Container'*)
+        notify "New Container"
+        #check_conf_file
+        #check_prefix_dir
         ;;
-    'Edit'*)
-        check_conf_file
-        xdg-open "$WORKING_DIR"
+    'Settings'*)
+        notify "Settings"
+        #check_conf_file
+        #xdg-open "$WORKING_DIR"
+        ;;
+    esac
+}
+
+zenity_list_container() {
+
+    # CONTAINER ARRAY
+    container_array=()
+    while IFS= read -r -d '' container; do
+        container_array+=("$container")
+    done < <(find "$CONTAINER_DIR" -name "*.wino" -print0)
+
+    # ZENITY
+    container_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Back' --extra-button='Remove' --ok-label='Edit' "${container_array[@]}")"
+
+    # ZENITY RESULT
+    container_result_button="${?}-${container_result}"
+    case "$container_result_button" in
+    '1-')
+        show_main_menu
+        return 1
+        ;;
+    '0-'*)
+        notify "Edit"
+        return 1
+        ;;
+
+    '1-Remove'*)
+        notify "Remove"
+        return 1
         ;;
     esac
 }
@@ -165,6 +221,11 @@ show_main_menu() {
 #------------------------------------------------------------
 
 start_wine() {
+
+    # Source launch config file
+    #if [ -f "$LAUNCH_CONFIG" ]; then
+    #    . "$LAUNCH_CONFIG"
+    #fi
 
     cd "$WINE_PREFIX_DIR" || exit 1
 
