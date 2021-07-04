@@ -82,7 +82,7 @@ main() {
                 echo "[Desktop Entry]"
                 echo "Name=$SCRIPT_TITLE"
                 echo "Icon=$SCRIPT_ICON"
-                echo "Exec=\"$SCRIPT_FILE\""
+                echo "Exec=\"$SCRIPT_FILE\" --gui"
                 echo "Type=Application"
             } >>"$desktop_file"
             chmod +x "$desktop_file"
@@ -98,8 +98,29 @@ main() {
     cd "$WORKING_DIR" || exit 1
     echo "WORKING DIR: $PWD"
 
-    # Show main menu
-    show_main_menu
+    # ARGUMENTS
+
+    # Open file
+    if [ -f "$1" ]; then
+        # Run in bottle or create new one
+        zenity_run_bottle
+        return
+    fi
+
+    # Open in dir
+    if [ -d "$1" ]; then
+        # If wino file exists:
+        zenity_bottle_action_menu
+        # else
+        # Create Bottle
+        return
+    fi
+
+    # Default: Show main menu
+    if [ "$1" = "--gui" ]; then
+        show_main_menu
+        return
+    fi
 }
 
 #------------------------------------------------------------
@@ -110,25 +131,22 @@ print_zenity_header() {
     txt_title='\t\t\t\t\t<span font_family="monospace" foreground="#81A1C1" font="12"><b>'$SCRIPT_TITLE'</b></span>'
 
     # STATUS
-    recipes_icon='Templates:'
-    recipes_color='#2E3440'
-    recipes_txt='0'
+    bottles_icon='Bottles:'
+    bottles_color='#2E3440'
+    bottles_txt='0'
     if [ -d "$CONTAINER_DIR" ]; then
         container_array=()
         while IFS= read -r -d '' container; do
             container_array+=("$container")
         done < <(find "$CONTAINER_DIR" -name "*.wino" -print0)
-        recipes_icon='Templates:'
-        recipes_color='#2E3440'
-        recipes_txt="${#container_array[@]}"
+        bottles_icon='Bottles:'
+        bottles_color='#2E3440'
+        bottles_txt="${#container_array[@]}"
     fi
-    recipes_icon='  <span font_family="monospace" foreground="'$recipes_color'" font="9">'$recipes_icon'</span> '
-    recipes_txt='   <span font_family="monospace" foreground="#2E3440" font="9"><b>'$recipes_txt'</b></span>'
+    bottles_icon=' <span font_family="monospace" foreground="'$bottles_color'" font="9"><b>'$bottles_icon'</b></span> '
+    bottles_txt=' <span font_family="monospace" foreground="#2E3440" font="9">'$bottles_txt'</span>'
 
-    container_icon='  <span font_family="monospace" foreground="'$recipes_color'" font="9">Bottles:</span>'
-    container_txt='         <span font_family="monospace" foreground="#2E3440" font="9"><b>0</b></span>'
-
-    echo -e "$txt_title\n\n$recipes_icon$recipes_txt\n$container_icon$container_txt"
+    echo -e "$txt_title\n\n$bottles_icon$bottles_txt"
 }
 
 #------------------------------------------------------------
@@ -173,22 +191,16 @@ check_prefix_dir() {
 
 show_main_menu() {
 
-    if ! zenity_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' 'Wino Templates' 'Wino Bottles' 'Settings')"; then
+    if ! zenity_result="$(zenity --height=220 --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' 'Bottle Manager' 'Settings' 'Help')"; then
         exit 0
     fi
     case "$zenity_result" in
-    'Wino Templates'*)
-        zenity_list_container
+    'Bottle Manager'*)
+        zenity_run_bottle
         show_main_menu
         #check_conf_file
         #check_prefix_dir
         #start_wine
-        ;;
-    'Wino Bottles'*)
-        log "Bottles"
-        show_main_menu
-        #check_conf_file
-        #check_prefix_dir
         ;;
     'Settings'*)
         log "Settings"
@@ -196,19 +208,43 @@ show_main_menu() {
         #check_conf_file
         #xdg-open "$WORKING_DIR"
         ;;
+    'Help'*)
+        log "Help"
+        show_main_menu
+        ;;
     esac
 }
 
-zenity_list_container() {
+zenity_bottle_action_menu() {
+    bottle="$1"
+
+    txt_title='\t\t\t\t\t<span font_family="monospace" foreground="#81A1C1" font="12"><b>'$SCRIPT_TITLE'</b></span>'
+
+    if ! zenity_result="$(zenity --height=260 --list --hide-header --column="" --text="$txt_title\n\n <b>$bottle</b> " --cancel-label='Back' --ok-label='Ok' 'Start' 'Edit' 'Run .exe' 'Winetricks' 'Remove')"; then
+        zenity_run_bottle
+        return 1
+    fi
+    case "$zenity_result" in
+    *'Run .exe'*)
+        show_main_menu
+        return
+        ;;
+
+    esac
+}
+
+#------------------------------------------------------------
+
+zenity_run_bottle() {
 
     # CONTAINER ARRAY
     container_array=()
     while IFS= read -r -d '' container; do
-        container_array+=$(basename "$container")
+        container_array+=("$(basename "$container")")
     done < <(find "$CONTAINER_DIR" -name "*.wino" -print0)
 
     # ZENITY
-    container_result="$(zenity --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Back' --extra-button='Remove' --ok-label='Edit' "${container_array[@]}")"
+    container_result="$(zenity --height=240 --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Back' --extra-button='New ➤' --ok-label='Select' "${container_array[@]}")"
 
     # ZENITY RESULT
     container_result_button="${?}-${container_result}"
@@ -218,17 +254,16 @@ zenity_list_container() {
         return 1
         ;;
     '0-'*)
-        notify "Edit"
-        return 1
+        zenity_bottle_action_menu "$container_result"
+        return 0
         ;;
 
-    '1-Remove'*)
-        notify "Remove"
-        return 1
+    '1-New ➤'*)
+        notify "New"
+        return 0
         ;;
     esac
 }
-
 #------------------------------------------------------------
 
 start_wine() {
