@@ -1,7 +1,6 @@
 #!/bin/bash
 
-
-##################################################
+###########################
 # GNOME SHELL LOGIN
 ##################################################
 # [X] Choose before login with your username the session 'Gnome with X11' instead of 'Gnome'
