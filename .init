@@ -2,15 +2,14 @@
 ##################################################
 # Intel + Vulkan Driver
 ##################################################
-# Packages: xf86-video-intel lib32-mesa vulkan-intel lib32-vulkan-intel
-
-# {
-#    echo 'Section "Device"'
-#    echo '   Identifier  "Intel Graphics"'
-#    echo '   Driver      "intel"'
-#    echo '   Option      "DRI"    "3"'
-#    echo 'EndSection'
-# } > '/etc/X11/xorg.conf.d/20-intel.conf'
+# paru -S xf86-video-intel lib32-mesa vulkan-intel lib32-vulkan-intel
+# sudo vim /etc/X11/xorg.conf.d/20-intel.conf
+#
+# Section "Device"
+#    Identifier  "Intel Graphics"
+#    Driver      "intel"
+#    Option      "DRI"    "3"
+# EndSection
 
 ##################################################
 # GNOME SHELL LOGIN
