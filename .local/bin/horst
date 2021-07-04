@@ -9,7 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
 SCRIPT_FILE="$SCRIPT_DIR/$(basename "$0")"
 SCRIPT_HOME="$HOME/.config/$SCRIPT_ID"
 SCRIPT_CONFIG="$SCRIPT_HOME/config"
-SCRIPT_ICON="$HOME/.local/share/icons/$SCRIPT_ID.svg"
+SCRIPT_ICON="$SCRIPT_ID"
 
 # https://github.com/StevenBlack/hosts
 SOURCE_FILE="$SCRIPT_HOME/sources"
@@ -102,7 +102,7 @@ main() {
                 echo "[Desktop Entry]"
                 echo "Name=$SCRIPT_TITLE"
                 echo "Icon=$SCRIPT_ICON"
-                echo "Exec=\"$SCRIPT_FILE\""
+                echo "Exec=$SCRIPT_ID"
                 echo "Type=Application"
             } >>"$desktop_file"
             chmod +x "$desktop_file"

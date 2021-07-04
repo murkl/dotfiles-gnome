@@ -12,13 +12,13 @@ alias gt="gotop"
 alias fetch="neofetch"
 
 # Packages
-alias paci="paru -S"
+alias paci="paru -S --needed --noconfirm"
 alias pacu="paru -Syyu --noconfirm"
 alias pacrm="sudo pacman -Rns"
 alias pacrmo='sudo pacman -Rs $(pacman -Qtdq)'
 alias pacs="paru -Ss"
 alias pacls="pacman -Qe"
-alias dotu='dots status && dots commit -am update && dots push'
+alias dotu='dots status && dots commit -am auto_commit_update && dots push'
 
 # Git
 alias gs="git status"

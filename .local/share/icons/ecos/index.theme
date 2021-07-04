@@ -1,0 +1,10 @@
+[Icon Theme]
+Name=ecos-icons
+Comment=Ecos Icons
+Inherits=Qogir
+Directories=apps
+
+[apps]
+Size=128
+Context=Applications
+Type=Scalable

@@ -1,6 +1,18 @@
 #!/bin/bash
+##################################################
+# Intel + Vulkan Driver
+##################################################
+# Packages: xf86-video-intel lib32-mesa vulkan-intel lib32-vulkan-intel
 
-###########################
+# {
+#    echo 'Section "Device"'
+#    echo '   Identifier  "Intel Graphics"'
+#    echo '   Driver      "intel"'
+#    echo '   Option      "DRI"    "3"'
+#    echo 'EndSection'
+# } > '/etc/X11/xorg.conf.d/20-intel.conf'
+
+##################################################
 # GNOME SHELL LOGIN
 ##################################################
 # [X] Choose before login with your username the session 'Gnome with X11' instead of 'Gnome'
@@ -65,9 +77,7 @@ packages="$packages gnome-shell-extension-clipboard-indicator-git"
 packages="$packages gnome-shell-extension-blur-my-shell-git"
 packages="$packages gnome-shell-extension-just-perfection-desktop-git"
 packages="$packages gnome-shell-extension-status-area-horizontal-spacing"
-
-# Driver
-#packages="$packages xf86-video-intel"
+packages="$packages gnome-shell-extension-x11gestures touchegg"
 
 # ZSH
 packages="$packages zsh-autosuggestions zsh-syntax-highlighting"
@@ -123,6 +133,7 @@ packages="$packages vim"
 packages="$packages vscodium-bin vscodium-bin-marketplace"
 
 # Spotify
+#curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | gpg --import -
 #packages="$packages spotify-adblock-git"
 
 # Kodi
@@ -154,6 +165,19 @@ fi
 
 sudo systemctl enable smb.service
 sudo systemctl enable nmb.service
+
+##################################################
+# TLP
+##################################################
+if [ -f "/etc/tlp.conf" ]; then
+    sudo sed -i "s/^#CPU_BOOST_ON_AC=1/CPU_BOOST_ON_AC=0/g" "/etc/tlp.conf"
+    sudo sed -i "s/^#CPU_BOOST_ON_BAT=0/CPU_BOOST_ON_BAT=0/g" "/etc/tlp.conf"
+fi
+
+##################################################
+# SERVICES
+##################################################
+sudo systemctl enable touchegg.service --now
 sudo systemctl enable avahi-daemon
 
 ##################################################

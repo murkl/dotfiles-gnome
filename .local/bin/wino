@@ -10,7 +10,7 @@ SCRIPT_FILE="$SCRIPT_DIR/$(basename "$0")"
 SCRIPT_HOME="$HOME/.config/$SCRIPT_ID"
 SCRIPT_CONFIG="$SCRIPT_HOME/config"
 CONTAINER_DIR="$SCRIPT_HOME/container"
-SCRIPT_ICON="$HOME/.local/share/icons/$SCRIPT_ID.svg"
+SCRIPT_ICON="$SCRIPT_ID"
 
 WINE="wine"
 
@@ -82,7 +82,7 @@ main() {
                 echo "[Desktop Entry]"
                 echo "Name=$SCRIPT_TITLE"
                 echo "Icon=$SCRIPT_ICON"
-                echo "Exec=\"$SCRIPT_FILE\" --gui"
+                echo "Exec$SCRIPT_ID --gui"
                 echo "Type=Application"
             } >>"$desktop_file"
             chmod +x "$desktop_file"
