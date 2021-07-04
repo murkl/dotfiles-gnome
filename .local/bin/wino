@@ -82,7 +82,7 @@ main() {
                 echo "[Desktop Entry]"
                 echo "Name=$SCRIPT_TITLE"
                 echo "Icon=$SCRIPT_ICON"
-                echo "Exec$SCRIPT_ID --gui"
+                echo "Exec=$SCRIPT_ID --gui"
                 echo "Type=Application"
             } >>"$desktop_file"
             chmod +x "$desktop_file"

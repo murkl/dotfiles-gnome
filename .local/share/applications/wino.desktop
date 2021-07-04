@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=Wino
 Icon=wino
-Execwino --gui
+Exec=wino --gui
 Type=Application
