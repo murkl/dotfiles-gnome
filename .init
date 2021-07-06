@@ -141,6 +141,9 @@ packages="$packages vscodium-bin vscodium-bin-marketplace"
 # Steam
 #packages="$packages steam"
 
+# Lutris
+#packages="$packages lutris lutris-wine-meta"
+
 # Install packages
 paru --noconfirm --needed --sudoloop -Syyu $packages
 
