@@ -65,18 +65,18 @@ packages="$packages gdm gnome-shell gnome-control-center gnome-terminal nautilus
 # Gnome Shell Extensions
 packages="$packages chrome-gnome-shell-git"
 packages="$packages gnome-shell-extensions"
-#packages="$packages gnome-shell-extension-appindicator-git"
 packages="$packages gnome-shell-extension-tray-icons-reloaded-git"
 packages="$packages gnome-shell-extension-sound-output-device-chooser"
 packages="$packages gnome-shell-extension-arch-update"
 packages="$packages gnome-shell-extension-dash-to-dock-gnome40-git"
 packages="$packages gnome-shell-extension-gsconnect"
 packages="$packages gnome-shell-extension-caffeine-git"
-packages="$packages gnome-shell-extension-clipboard-indicator-git"
 packages="$packages gnome-shell-extension-blur-my-shell-git"
 packages="$packages gnome-shell-extension-just-perfection-desktop-git"
-packages="$packages gnome-shell-extension-status-area-horizontal-spacing"
 packages="$packages gnome-shell-extension-x11gestures touchegg"
+#packages="$packages gnome-shell-extension-appindicator-git"
+#packages="$packages gnome-shell-extension-status-area-horizontal-spacing"
+#packages="$packages gnome-shell-extension-clipboard-indicator-git"
 
 # ZSH
 packages="$packages zsh-autosuggestions zsh-syntax-highlighting"
