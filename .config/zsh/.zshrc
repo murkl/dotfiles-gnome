@@ -22,11 +22,11 @@ function precmd() {
     vcs_info
 }
 autoload -Uz vcs_info
-zstyle ':vcs_info:git:*' formats 'on %F{red} %F{red}%b %F{white}>'
+zstyle ':vcs_info:git:*' formats 'on %F{red} %F{red}%b %F{white}:'
 
 # Default Promt Message
 setopt PROMPT_SUBST
-PROMPT='%F{yellow}%~ %F{white}> %F{green}${vcs_info_msg_0_}%f '
+PROMPT='%F{yellow}%~ %F{white}: %F{green}${vcs_info_msg_0_}%f '
 
 # History
 HISTSIZE=10000
