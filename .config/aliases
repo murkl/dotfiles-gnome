@@ -18,7 +18,9 @@ alias pacrm="sudo pacman -Rns"
 alias pacrmo='pacman -Qtdq > /dev/null && echo "Packages found..." && sudo pacman -Rs $(pacman -Qtdq) || echo "Nothing to clear..."'
 alias pacs="paru -Ss"
 alias pacls="pacman -Qe"
-alias dotu='dots status && dots commit -am auto_commit_update && dots push'
+
+# Dotfiles
+alias dotu='dots status && dots commit -am "auto_commit_update" && dots push'
 
 # Git
 alias gs="git status"

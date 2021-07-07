@@ -82,7 +82,7 @@ main() {
                 echo "[Desktop Entry]"
                 echo "Name=$SCRIPT_TITLE"
                 echo "Icon=$SCRIPT_ICON"
-                echo "Exec=$SCRIPT_ID --gui"
+                echo "Exec=$SCRIPT_ID"
                 echo "Type=Application"
             } >>"$desktop_file"
             chmod +x "$desktop_file"
@@ -117,7 +117,7 @@ main() {
     fi
 
     # Default: Show main menu
-    if [ "$1" = "--gui" ]; then
+    if [ "$1" = "" ]; then
         show_main_menu
         return
     fi
