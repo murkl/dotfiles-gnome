@@ -3,19 +3,20 @@ SCRIPT_TITLE="Wino"
 SCRIPT_ID="wino"
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# WORKING DIR
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+WORKING_DIR="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
+SCRIPT_FILE="$WORKING_DIR/$(basename "$0")"
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # VARIABLES
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-SCRIPT_DIR="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
-SCRIPT_FILE="$SCRIPT_DIR/$(basename "$0")"
 SCRIPT_HOME="$HOME/.config/$SCRIPT_ID"
 SCRIPT_CONFIG="$SCRIPT_HOME/config"
 CONTAINER_DIR="$SCRIPT_HOME/container"
 SCRIPT_ICON="$SCRIPT_ID"
 
 WINE="wine"
-
-# Working dir
-WORKING_DIR="$PWD"
 
 WINE_PREFIX_DIR="$WORKING_DIR/prefix"
 LAUNCH_CONFIG="$WORKING_DIR/$SCRIPT_ID.conf"
@@ -103,7 +104,7 @@ main() {
     # Open file
     if [ -f "$1" ]; then
         # Run in bottle or create new one
-        zenity_run_bottle
+        zenity_bottles_menu
         return
     fi
 
@@ -191,45 +192,28 @@ check_prefix_dir() {
 
 show_main_menu() {
 
-    if ! zenity_result="$(zenity --height=220 --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' 'Bottle Manager' 'Settings' 'Help')"; then
+    if ! local zenity_result="$(zenity --height=220 --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Exit' --ok-label='Ok' 'Bottle Manager' 'Settings' 'Help')"; then
         exit 0
     fi
 
     case "$zenity_result" in
 
     'Bottle Manager'*)
-        zenity_run_bottle
-        show_main_menu
+        zenity_bottles_menu
+        return
         #check_conf_file
         #check_prefix_dir
         #start_wine
         ;;
-    'Settings'*)
-        log "Settings"
+    'Settings')
+        notify "Settings"
         show_main_menu
         #check_conf_file
         #xdg-open "$WORKING_DIR"
         ;;
-    'Help'*)
-        log "Help"
+    'Help')
+        notify "Help"
         show_main_menu
-        ;;
-
-    esac
-}
-
-zenity_bottle_action_menu() {
-    local bottle="$1"
-    local txt_title='\t\t\t\t\t<span font_family="monospace" foreground="#81A1C1" font="12"><b>'$SCRIPT_TITLE'</b></span>'
-
-    if ! zenity_result="$(zenity --height=280 --list --hide-header --column="" --text="$txt_title\n\n <b>Bottle:</b> $bottle" --cancel-label='Back' --ok-label='Ok' 'Start Bottle' 'Edit Bottle' 'Run .exe' 'Wine Config' 'Winetricks' 'Remove Bottle')"; then
-        return 1
-    fi
-
-    case "$zenity_result" in
-    
-    *'Run .exe'*)
-        return
         ;;
 
     esac
@@ -237,7 +221,7 @@ zenity_bottle_action_menu() {
 
 #------------------------------------------------------------
 
-zenity_run_bottle() {
+zenity_bottles_menu() {
 
     # CONTAINER ARRAY
     local container_array=()
@@ -246,26 +230,51 @@ zenity_run_bottle() {
     done < <(find "$CONTAINER_DIR" -name "*.wino" -print0)
 
     # ZENITY
-    local container_result="$(zenity --height=240 --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Back' --extra-button='New ➤' --ok-label='Select' "${container_array[@]}")"
+    local zenity_result="$(zenity --height=240 --list --hide-header --column="" --text="$(print_zenity_header)" --cancel-label='Back' --extra-button='New ➤' --ok-label='Select' "${container_array[@]}")"
 
     # ZENITY RESULT
-    local container_result_button="${?}-${container_result}"
-    case "$container_result_button" in
-    '1-')
+    local zenity_result_button="${?}-${zenity_result}"
+    case "$zenity_result_button" in
+    '0-')
         show_main_menu
-        return 1
+        ;;
+    '0-New ➤')
+        notify "New"
+        show_main_menu
         ;;
     '0-'*)
-        zenity_bottle_action_menu "$container_result"
-        return 0
+        zenity_bottle_action_menu "$zenity_result"
+        zenity_bottles_menu
         ;;
 
-    '1-New ➤'*)
-        notify "New"
-        return 0
-        ;;
     esac
 }
+
+#------------------------------------------------------------
+
+zenity_bottle_action_menu() {
+
+    local bottle="$1"
+    local txt_title='\t\t\t\t\t<span font_family="monospace" foreground="#81A1C1" font="12"><b>'$SCRIPT_TITLE'</b></span>'
+
+    if ! local zenity_result="$(zenity --height=280 --list --hide-header --column="" --text="$txt_title\n\n <b>Bottle:</b>  $bottle" --cancel-label='Back' --ok-label='Ok' 'Edit Configuration' 'Start' 'Run .exe' 'Open Wine Config' 'Open Winetricks' 'Remove Bottle')"; then
+        return 1
+    fi
+
+    case "$zenity_result" in
+
+    'Start Bottle')
+        notify "Start $bottle"
+        ;;
+
+    'Edit Bottle Config')
+        notify "Edit $bottle"
+        ;;
+
+    esac
+
+}
+
 #------------------------------------------------------------
 
 start_wine() {
