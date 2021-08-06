@@ -85,7 +85,7 @@ packages="$packages zsh-autosuggestions zsh-syntax-highlighting"
 packages="$packages gnome-keyring"
 packages="$packages gnome-tweak-tool gnome-system-monitor"
 packages="$packages evince eog gedit gnome-calculator totem"
-packages="$packages gnome-disk-utility"
+packages="$packages gnome-disk-utility gnome-usage"
 packages="$packages gnome-screenshot"
 packages="$packages gnome-backgrounds"
 packages="$packages pacman-contrib"
@@ -142,6 +142,8 @@ packages="$packages vscodium-bin vscodium-bin-marketplace"
 #packages="$packages steam"
 
 # Lutris
+# Wine: https://github.com/lutris/docs/blob/master/WineDependencies.md
+# Graphic Driver: https://github.com/lutris/docs/blob/master/InstallingDrivers.md
 #packages="$packages lutris lutris-wine-meta"
 
 # Install packages
@@ -181,6 +183,7 @@ fi
 ##################################################
 sudo systemctl enable touchegg.service --now
 sudo systemctl enable avahi-daemon
+sudo systemctl enable bluetooth.service
 
 ##################################################
 # GNOME TERMINAL PADDING

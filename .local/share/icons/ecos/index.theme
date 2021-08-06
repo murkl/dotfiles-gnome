@@ -1,7 +1,7 @@
 [Icon Theme]
 Name=ecos-icons
 Comment=Ecos Icons
-Inherits=Qogir
+Inherits=Qogir,elementary
 Directories=apps
 
 [apps]
