@@ -6,7 +6,7 @@ init() {
     install_packages
     enable_services
     enable_gnome_terminal_padding
-    install_theme
+    install_theme_whitesur
 }
 
 # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -263,7 +263,7 @@ vte-terminal {
 }' >"$HOME/.config/gtk-3.0/gtk.css"
 }
 
-install_theme() {
+install_theme_whitesur() {
 
     local THEME_INSTALL_DIR=$HOME/.cache/theme
     local THEME_CSS_FILE=$HOME/.themes/WhiteSur-light/gnome-shell/gnome-shell.css
