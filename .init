@@ -179,6 +179,8 @@ install_packages() {
     packages="$packages geary"
     packages="$packages keepassxc"
     packages="$packages libreoffice-still-de"
+    packages="$packages marker"
+
 
     # Fonts
     packages="$packages ttf-dejavu"
