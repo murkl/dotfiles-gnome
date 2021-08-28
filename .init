@@ -8,6 +8,7 @@ init() {
     enable_services
     enable_gnome_terminal_padding
     install_theme_whitesur
+    exec_pacman_clear
 }
 
 # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,6 +127,10 @@ exec_paru_update() {
 
 exec_paru() {
     paru --noconfirm --needed --sudoloop -S $1
+}
+
+exec_pacman_clear() {
+    sudo pacman --noconfirm -Rs $(pacman -Qtdq)
 }
 
 install_packages() {
