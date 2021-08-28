@@ -197,6 +197,7 @@ install_packages() {
     exec_paru "geary"
     exec_paru "keepassxc"
     exec_paru "libreoffice-still-de"
+    exec_paru "fromscratch-bin"
 
     # Fonts
     exec_paru "ttf-dejavu"
