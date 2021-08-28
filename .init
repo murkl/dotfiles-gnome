@@ -192,6 +192,7 @@ install_packages() {
     exec_paru "gvfs gvfs-mtp gvfs-smb gvfs-nfs"
     exec_paru "gnome-user-share nfs-utils"
     exec_paru "wireless_tools"
+    exec_paru "gestures libinput-gestures xorg-xinput"
     exec_paru "wmctrl zenity ffmpeg youtube-dl rsync curl"
 
     # Hide mouse pointer
