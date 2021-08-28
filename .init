@@ -297,6 +297,8 @@ install_keybindings() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Super>k'
 
     # Extensions
+    gsettings set org.gnome.shell disable-user-extensions false
+    gsettings set org.gnome.shell disabled-extensions "['']"
     gsettings set org.gnome.shell enabled-extensions "['x11gestures@joseexposito.github.io', 'trayIconsReloaded@selfmade.pl', 'sound-output-device-chooser@kgshank.net', 'just-perfection-desktop@just-perfection', 'dash-to-dock@micxgx.gmail.com', 'caffeine@patapon.info', 'arch-update@RaphaelRochet', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx']"
 }
 ##################################################
