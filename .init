@@ -205,7 +205,7 @@ install_packages() {
     exec_paru "lib32-fontconfig"
 
     # Icons
-    exec_paru "qogir-icon-theme-git luv-icon-theme-git"
+    exec_paru "qogir-icon-theme-git elementary-icon-theme luv-icon-theme-git"
 
     # Vim
     exec_paru "vim"
