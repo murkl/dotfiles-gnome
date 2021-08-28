@@ -163,10 +163,10 @@ install_packages() {
     exec_paru "zsh-autosuggestions zsh-syntax-highlighting"
 
     # System Tools
-    exec_paru "gnome-keyring"
+    exec_paru "gnome-keyring seahorse"
     exec_paru "gnome-tweak-tool gnome-system-monitor"
     exec_paru "evince gthumb gedit gnome-calculator totem"
-    exec_paru "gnome-disk-utility gnome-usage"
+    exec_paru "gnome-disk-utility gnome-usage neofetch htop"
     exec_paru "gnome-screenshot"
     exec_paru "gnome-backgrounds"
     exec_paru "pacman-contrib"
