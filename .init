@@ -166,7 +166,7 @@ install_packages() {
 
     # System Tools
     exec_paru "gnome-keyring seahorse"
-    exec_paru "gnome-tweak-tool gnome-system-monitor"
+    exec_paru "gnome-tweak-tool"
     exec_paru "evince gthumb gedit gnome-calculator totem"
     exec_paru "gnome-disk-utility gnome-usage neofetch htop"
     exec_paru "gnome-screenshot"
@@ -211,22 +211,22 @@ install_packages() {
     exec_paru "vim"
 
     # VSCodium
-    exec_paru "vscodium-bin vscodium-bin-marketplace"
+    #exec_paru "vscodium-bin vscodium-bin-marketplace"
 
     # Spotify
     #curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | gpg --import -
-    #packages="$packages spotify-adblock-git"
+    #exec_paru "spotify-adblock-git"
 
     # Kodi
-    #packages="$packages kodi-x11 kodi-addon-inputstream-adaptive"
+    #exec_paru "kodi-x11 kodi-addon-inputstream-adaptive"
 
     # Steam
-    #packages="$packages steam"
+    #exec_paru "steam"
 
     # Lutris
     # Wine: https://github.com/lutris/docs/blob/master/WineDependencies.md
     # Graphic Driver: https://github.com/lutris/docs/blob/master/InstallingDrivers.md
-    #packages="$packages lutris lutris-wine-meta"
+    #exec_paru "lutris lutris-wine-meta"
 }
 
 ##################################################
