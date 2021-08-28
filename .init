@@ -276,7 +276,7 @@ install_theme_whitesur() {
 
     # Theme WhiteSur (https://github.com/vinceliuice/WhiteSur-gtk-theme)
     #     $THEME_INSTALL_DIR/install.sh --color light --icon simple --nautilus-style glassy --monterey --size 280 --background default --highdefinition --theme default --normalshowapps --panel-opacity 30
-    $THEME_INSTALL_DIR/install.sh --icon simple --nautilus-style glassy --size 280 --background blank --theme default --normalshowapps --highdefinition
+    $THEME_INSTALL_DIR/install.sh --icon simple --nautilus-style glassy --size 280 --background blank --theme default --normalshowapps
     $THEME_INSTALL_DIR/tweaks.sh --firefox
 
 
