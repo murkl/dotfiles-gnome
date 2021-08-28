@@ -1,6 +1,8 @@
 #!/bin/bash
 
 init() {
+    set_gnome_settings
+    exit
     check_git
     check_paru
     exec_paru_update
@@ -287,6 +289,9 @@ set_gnome_settings() {
     gsettings set org.gnome.shell.extensions.user-theme name 'WhiteSur-light'
     gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
     gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu'
+    
+    # Wallpaper
+    gsettings set org.gnome.desktop.background picture-uri 'file://'$HOME'/.local/share/wallpaper'
 
     # Custom Key Bindings
     gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']"
