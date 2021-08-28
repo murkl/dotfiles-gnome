@@ -171,7 +171,6 @@ install_packages() {
     exec_paru "gnome-shell-extension-blur-my-shell-git"
     exec_paru "gnome-shell-extension-just-perfection-desktop-git"
     exec_paru "gnome-shell-extension-x11gestures touchegg"
-    exec_paru "gnome-shell-extension-autohide-battery"
     #exec_paru "gnome-shell-extension-appindicator-git"
     #exec_paru "gnome-shell-extension-status-area-horizontal-spacing"
     #exec_paru "gnome-shell-extension-clipboard-indicator-git"
