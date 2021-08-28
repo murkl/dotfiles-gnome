@@ -18,6 +18,10 @@ init() {
 # ++++++++++++++++++++++++++++
 # Touchpad Gestures
 # ++++++++++++++++++++++++++++
+#
+# https://github.com/bulletmark/libinput-gestures
+# sudo gpasswd -a $USER input
+#
 # ~/.config/libinput-gestures.conf gestures for Google Chrome
 # gesture swipe up        4       xdotool key control+plus
 # gesture swipe down      4       xdotool key control+minus
@@ -183,15 +187,16 @@ install_packages() {
     exec_paru "gnome-disk-utility gnome-usage neofetch htop"
     exec_paru "gnome-screenshot"
     exec_paru "gnome-backgrounds"
-    exec_paru "pacman-contrib"
-    exec_paru "man-db"
+    exec_paru "pacman-contrib man-db"
     exec_paru "hunspell hunspell-en_us hunspell-de"
     exec_paru "samba"
     exec_paru "gvfs gvfs-mtp gvfs-smb gvfs-nfs"
     exec_paru "gnome-user-share nfs-utils"
-    exec_paru "wireless_tools"
+    exec_paru "wireless_tools wmctrl xdotool"
+    exec_paru "zenity ffmpeg youtube-dl rsync curl"
+
+    # Gestures
     exec_paru "gestures libinput-gestures xorg-xinput"
-    exec_paru "wmctrl zenity ffmpeg youtube-dl rsync curl"
 
     # Hide mouse pointer
     exec_paru "unclutter"
@@ -280,6 +285,9 @@ enable_services() {
     sudo systemctl enable touchegg.service --now
     sudo systemctl enable avahi-daemon --now
     sudo systemctl enable bluetooth.service --now
+
+    # Start Gestures
+    libinput-gestures-setup autostart start
 }
 
 ##################################################
