@@ -1,8 +1,6 @@
 #!/bin/bash
 
 init() {
-    install_keybindings
-    exit
     check_git
     check_paru
     exec_paru_update
