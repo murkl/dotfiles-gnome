@@ -275,6 +275,7 @@ install_keybindings() {
     gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Super>F11']"
     gsettings set org.gnome.desktop.interface icon-theme 'ecos'
     gsettings set org.gnome.desktop.interface gtk-theme 'WhiteSur-light'
+    gsettings set org.gnome.shell.extensions.user-theme name 'WhiteSur-light'
     gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
 
     # Custom Key Bindings
