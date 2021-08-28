@@ -6,7 +6,7 @@ init() {
     exec_paru_update
     install_packages
     enable_services
-    install_keybindings
+    set_gnome_settings
     enable_gnome_terminal_padding
     install_theme_whitesur
     exec_pacman_clear
@@ -119,7 +119,7 @@ check_paru() {
 }
 
 ##################################################
-# INSTALL PACKAGES
+# PARU
 ##################################################
 
 exec_paru_update() {
@@ -133,6 +133,10 @@ exec_paru() {
 exec_pacman_clear() {
     sudo pacman --noconfirm -Rs $(pacman -Qtdq)
 }
+
+##################################################
+# INSTALL PACKAGES
+##################################################
 
 install_packages() {
 
@@ -161,7 +165,7 @@ install_packages() {
     # System Tools
     exec_paru "gnome-keyring"
     exec_paru "gnome-tweak-tool gnome-system-monitor"
-    exec_paru "evince eog gedit gnome-calculator totem"
+    exec_paru "evince gthumb gedit gnome-calculator totem"
     exec_paru "gnome-disk-utility gnome-usage"
     exec_paru "gnome-screenshot"
     exec_paru "gnome-backgrounds"
@@ -172,7 +176,7 @@ install_packages() {
     exec_paru "gvfs gvfs-mtp gvfs-smb gvfs-nfs"
     exec_paru "gnome-user-share nfs-utils"
     exec_paru "wireless_tools"
-    exec_paru "wmctrl zenity ffmpeg youtube-dl rsync"
+    exec_paru "wmctrl zenity ffmpeg youtube-dl rsync curl"
 
     # Hide mouse pointer
     exec_paru "unclutter"
@@ -259,10 +263,10 @@ enable_services() {
 }
 
 ##################################################
-# INSTALL KEYBINDINGS
+# SET GNOME SETTINGS
 ##################################################
 
-install_keybindings() {
+set_gnome_settings() {
 
     # https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
 
@@ -275,6 +279,7 @@ install_keybindings() {
     gsettings set org.gnome.desktop.interface gtk-theme 'WhiteSur-light'
     gsettings set org.gnome.shell.extensions.user-theme name 'WhiteSur-light'
     gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
+    gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu'
 
     # Custom Key Bindings
     gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']"
@@ -298,7 +303,16 @@ install_keybindings() {
     # Extensions
     gsettings set org.gnome.shell disable-user-extensions false
     gsettings set org.gnome.shell disabled-extensions "['']"
-    gsettings set org.gnome.shell enabled-extensions "['x11gestures@joseexposito.github.io', 'trayIconsReloaded@selfmade.pl', 'sound-output-device-chooser@kgshank.net', 'just-perfection-desktop@just-perfection', 'dash-to-dock@micxgx.gmail.com', 'caffeine@patapon.info', 'arch-update@RaphaelRochet', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx']"
+    gsettings set org.gnome.shell enabled-extensions "['x11gestures@joseexposito.github.io', 'trayIconsReloaded@selfmade.pl', 'just-perfection-desktop@just-perfection', 'dash-to-dock@micxgx.gmail.com', 'caffeine@patapon.info', 'arch-update@RaphaelRochet', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx']"
+
+    # Arch Update Indicator
+    gsettings set org.gnome.shell.extensions.arch-update always-visible false
+    gsettings set org.gnome.shell.extensions.arch-update check-cmd "/bin/sh -c \"(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1\""
+    gsettings set org.gnome.shell.extensions.arch-update update-cmd "gnome-terminal -e 'sh -c  \"ecos-update\"'"
+
+    # Blur My Shell
+    gsettings set org.gnome.shell.extensions.blur-my-shell blur-dash false
+    gsettings set org.gnome.shell.extensions.blur-my-shell blur-panel false
 }
 ##################################################
 # ADDITIONALS
