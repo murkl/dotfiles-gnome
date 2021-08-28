@@ -161,7 +161,7 @@ install_packages() {
     packages="$packages wireless_tools"
 
     # Misc
-    packages="$packages wmctrl zenity ffmpeg youtube-dl rsync"b
+    packages="$packages wmctrl zenity ffmpeg youtube-dl rsync"
 
     # Hide mouse pointer
     packages="$packages unclutter"
