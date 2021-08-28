@@ -281,9 +281,9 @@ install_theme_whitesur() {
 
 
     # Disable App Icon
-    local APP_START='#panel .panel-button .app-menu-icon {'
-    local APP_CONTENT='  width: 0;\n  height: 0;\n  margin: 0;'
-    local APP_END='}'
+    #local APP_START='#panel .panel-button .app-menu-icon {'
+    #local APP_CONTENT='  width: 0;\n  height: 0;\n  margin: 0;'
+    #local APP_END='}'
 
     local # Modify Tray Icon Space
     local STATUS_START='#panel .panel-button .system-status-icon {'
@@ -296,8 +296,8 @@ install_theme_whitesur() {
 
     # https://fahdshariff.blogspot.com/2012/12/sed-mutli-line-replacement-between-two.html
     sed -ni "/$STATUS_START/{p;:a;N;/$STATUS_END/!ba;s/.*\n/$STATUS_CONTENT\n/};p" "$THEME_CSS_FILE"
-    sed -ni "/$APP_START/{p;:a;N;/$APP_END/!ba;s/.*\n/$APP_CONTENT\n/};p" "$THEME_CSS_FILE"
     sed -ni "/$STATUS_PADDING_START/{p;:a;N;/$STATUS_PADDING_END/!ba;s/.*\n/$STATUS_PADDING_CONTENT\n/};p" "$THEME_CSS_FILE"
+    #sed -ni "/$APP_START/{p;:a;N;/$APP_END/!ba;s/.*\n/$APP_CONTENT\n/};p" "$THEME_CSS_FILE"
 
 }
 
