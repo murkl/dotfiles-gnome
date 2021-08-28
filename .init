@@ -206,7 +206,8 @@ install_packages() {
     exec_paru "lib32-fontconfig"
 
     # Icons
-    exec_paru "qogir-icon-theme-git elementary-icon-theme luv-icon-theme-git"
+    #exec_paru "qogir-icon-theme-git elementary-icon-theme luv-icon-theme-git"
+    exec_paru "qogir-icon-theme-git"
 
     # Vim
     exec_paru "vim"
@@ -223,6 +224,9 @@ install_packages() {
 
     # Steam
     #exec_paru "steam"
+    
+    # VirtualBox
+    #exec_paru "virtualbox virtualbox-host-modules-arch"
 
     # Lutris
     # Wine: https://github.com/lutris/docs/blob/master/WineDependencies.md
