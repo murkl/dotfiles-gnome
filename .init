@@ -279,6 +279,7 @@ install_theme_whitesur() {
     $THEME_INSTALL_DIR/install.sh --icon simple --nautilus-style glassy --size 280 --background blank --theme default --normalshowapps --highdefinition
     $THEME_INSTALL_DIR/tweaks.sh --firefox
 
+
     # Disable App Icon
     local APP_START='#panel .panel-button .app-menu-icon {'
     local APP_CONTENT='  width: 0;\n  height: 0;\n  margin: 0;'
