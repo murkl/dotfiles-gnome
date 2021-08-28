@@ -18,6 +18,19 @@ init() {
 # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #
 # ++++++++++++++++++++++++++++
+# Touchpad Gestures
+# ++++++++++++++++++++++++++++
+# ~/.config/libinput-gestures.conf gestures for Google Chrome
+# gesture swipe up        4       xdotool key control+plus
+# gesture swipe down      4       xdotool key control+minus
+# gesture swipe left      4       xdotool key alt+Right
+# gesture swipe right     4       xdotool key alt+Left
+# gesture swipe right_up  4       xdotool key control+Tab
+# gesture swipe left_up   4       xdotool key control+shift+Tab
+# gesture swipe left_down 4       xdotool key control+w
+# gesture swipe right_down 4      xdotool key control+shift+t
+#
+# ++++++++++++++++++++++++++++
 # Intel + Vulkan Driver
 # ++++++++++++++++++++++++++++
 # paru -S xf86-video-intel
@@ -226,7 +239,7 @@ install_packages() {
 
     # Steam
     #exec_paru "steam"
-    
+
     # VirtualBox
     #exec_paru "virtualbox virtualbox-host-modules-arch"
 
@@ -289,7 +302,8 @@ set_gnome_settings() {
     gsettings set org.gnome.shell.extensions.user-theme name 'WhiteSur-light'
     gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
     gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu'
-    
+    gsettings set org.gnome.mutter center-new-windows true
+
     # Wallpaper
     gsettings set org.gnome.desktop.background picture-uri 'file://'$HOME'/.local/share/wallpaper'
 
