@@ -232,6 +232,9 @@ install_packages() {
     # Vim
     exec_paru "vim"
 
+    # Wine & Dependencies
+    exec_paru "lutris-wine-meta winetricks"
+
     # VSCodium
     #exec_paru "vscodium-bin vscodium-bin-marketplace"
 
@@ -347,7 +350,8 @@ set_gnome_settings() {
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-panel false
 
     # X11 Gestures
-    gsettings set /org/gnome/shell/extensions/x11gestures/swipe-fingers 4
+    #gsettings set /org/gnome/shell/extensions/x11gestures/swipe-fingers 4
+
 }
 ##################################################
 # ADDITIONALS
