@@ -286,7 +286,8 @@ enable_services() {
     sudo systemctl enable avahi-daemon --now
     sudo systemctl enable bluetooth.service --now
 
-    # Start Gestures
+    # Start Mouse Gestures
+    sudo gpasswd -a $USER input
     libinput-gestures-setup autostart start
 }
 
