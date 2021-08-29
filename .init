@@ -298,6 +298,7 @@ set_gnome_settings() {
     # https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
 
     gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q']"
+    gsettings set org.gnome.desktop.wm.keybindings minimize ['<Super>h']
     gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source "[]"
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "[]"
@@ -344,6 +345,9 @@ set_gnome_settings() {
     # Blur My Shell
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-dash false
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-panel false
+
+    # X11 Gestures
+    gsettings set /org/gnome/shell/extensions/x11gestures/swipe-fingers 4
 }
 ##################################################
 # ADDITIONALS
