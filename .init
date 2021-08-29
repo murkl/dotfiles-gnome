@@ -349,6 +349,9 @@ set_gnome_settings() {
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-dash false
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-panel false
 
+    # Dash to Dock
+    gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
+
     # X11 Gestures
     #gsettings set /org/gnome/shell/extensions/x11gestures/swipe-fingers 4
 
