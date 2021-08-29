@@ -16,6 +16,7 @@ TIMESTAMP="$(date +%Y-%m-%d)"
 EXCLUDE_FILE="$SCRIPT_HOME/excludes"
 LOG_FILE="$HOME/.cache/$SCRIPT_ID.log"
 STATE_FILE="$HOME/.cache/$SCRIPT_ID.state"
+TIMESTAMP_CACHED_FILE="$HOME/.cache/$SCRIPT_ID.timestamp"
 
 RSYNC_ARGS="--numeric-ids --links --hard-links --one-file-system --itemize-changes --times --recursive --perms --owner --group --stats --human-readable"
 
@@ -123,6 +124,11 @@ print_zenity_header() {
     status_icon='∅'
     status_color='#BF616A'
     status_txt='HDD not mounted'
+    if [ -f "$TIMESTAMP_CACHED_FILE" ]; then
+        status_icon='↺'
+        status_color='#5d88cf'
+        status_txt=$(<"$TIMESTAMP_CACHED_FILE")
+    fi
     if [ -d "$BACKUP_DESTINATION" ]; then
         status_icon='↺'
         status_color='#B48EAD'
@@ -133,12 +139,15 @@ print_zenity_header() {
         status_color='#A3BE8C'
         latest_path=$(readlink "$BACKUP_DESTINATION/latest")
         status_txt="$(basename "${latest_path}")"
+        echo "$status_txt" >"$TIMESTAMP_CACHED_FILE"
     fi
-    status_icon='  <span font_family="monospace" foreground="'$status_color'" font="12"><b>'$status_icon'</b></span> '
-    status_txt=' <span font_family="monospace" foreground="#2E3440" font="9"><b>'$status_txt'</b></span>'
+    status_icon='  <span font_family="monospace" foreground="'$status_color'" font="14"><b>'$status_icon'</b></span> '
+    status_txt=' <span font_family="monospace" foreground="'$status_color'" font="9"><b>'$status_txt'</b></span>'
 
     echo -e "$txt_title\n\n$status_icon$status_txt"
 }
+
+#------------------------------------------------------------
 
 show_main_menu() {
 
