@@ -10,6 +10,8 @@ init() {
     enable_gnome_terminal_padding
     install_theme_whitesur
     exec_pacman_clear
+
+    # Restart GNOME
     killall -3 gnome-shell
 }
 
@@ -306,15 +308,20 @@ set_gnome_settings() {
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source "[]"
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "[]"
     gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Super>F11']"
-    gsettings set org.gnome.desktop.interface icon-theme 'ecos'
-    gsettings set org.gnome.desktop.interface gtk-theme 'WhiteSur-light'
-    gsettings set org.gnome.shell.extensions.user-theme name 'WhiteSur-light'
-    gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
     gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu'
     gsettings set org.gnome.mutter center-new-windows true
 
+    if [ ! -f "$HOME/.cache/ecos.initialized" ]; then
+        gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
+        gsettings set org.gnome.desktop.interface icon-theme 'ecos'
+        gsettings set org.gnome.desktop.interface gtk-theme 'WhiteSur-light'
+        gsettings set org.gnome.shell.extensions.user-theme name 'WhiteSur-light'
+    fi
+
     # Wallpaper
-    gsettings set org.gnome.desktop.background picture-uri 'file://'$HOME'/.local/share/wallpaper'
+    if [ ! -f "$HOME/.cache/ecos.initialized" ]; then
+        gsettings set org.gnome.desktop.background picture-uri 'file://'$HOME'/.local/share/wallpaper'
+    fi
 
     # Custom Key Bindings
     gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']"
@@ -336,9 +343,11 @@ set_gnome_settings() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Super>k'
 
     # Extensions
-    gsettings set org.gnome.shell disable-user-extensions false
-    gsettings set org.gnome.shell disabled-extensions "['']"
-    gsettings set org.gnome.shell enabled-extensions "['x11gestures@joseexposito.github.io', 'trayIconsReloaded@selfmade.pl', 'just-perfection-desktop@just-perfection', 'dash-to-dock@micxgx.gmail.com', 'caffeine@patapon.info', 'arch-update@RaphaelRochet', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx']"
+    if [ ! -f "$HOME/.cache/ecos.initialized" ]; then
+        gsettings set org.gnome.shell disable-user-extensions false
+        gsettings set org.gnome.shell disabled-extensions "['']"
+        gsettings set org.gnome.shell enabled-extensions "['x11gestures@joseexposito.github.io', 'trayIconsReloaded@selfmade.pl', 'just-perfection-desktop@just-perfection', 'dash-to-dock@micxgx.gmail.com', 'caffeine@patapon.info', 'arch-update@RaphaelRochet', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx']"
+    fi
 
     # Arch Update Indicator
     gsettings set org.gnome.shell.extensions.arch-update always-visible false
