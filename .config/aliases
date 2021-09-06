@@ -14,10 +14,10 @@ alias fetch="neofetch"
 # Packages
 alias paci="paru -S --needed --noconfirm"
 alias pacu="paru -Syyu --noconfirm"
-alias pacrm="sudo pacman -Rns"
+alias pacrm="paru -Rns"
 alias pacrmo='pacman -Qtdq > /dev/null && echo "Packages found..." && sudo pacman -Rs $(pacman -Qtdq) || echo "Nothing to clear..."'
 alias pacs="paru -Ss"
-alias pacls="pacman -Qe"
+alias pacls="paru -Qe"
 
 # Dotfiles
 alias dotu='dots status && dots commit -am "auto_commit_update" && dots push'
