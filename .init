@@ -292,6 +292,7 @@ enable_services() {
     sudo systemctl enable touchegg.service --now
     sudo systemctl enable avahi-daemon --now
     sudo systemctl enable bluetooth.service --now
+    sudo systemctl enable cups.service --now
 }
 
 ##################################################
