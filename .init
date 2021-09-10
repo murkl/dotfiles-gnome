@@ -190,7 +190,7 @@ install_packages() {
     # System Tools
     exec_paru "gnome-keyring seahorse"
     exec_paru "gnome-tweak-tool"
-    exec_paru "evince gthumb gedit gnome-calculator totem"
+    exec_paru "evince eog gthumb gedit gnome-calculator totem"
     exec_paru "gnome-disk-utility gnome-usage neofetch htop"
     exec_paru "gnome-screenshot"
     exec_paru "gnome-backgrounds"
