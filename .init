@@ -12,7 +12,7 @@ init() {
     exec_pacman_clear
 
     # Create wget dir
-    mkdir -p "$HOME.config/wget/"
+    mkdir -p "$HOME/.config/wget/"
 
     # Restart GNOME
     killall -3 gnome-shell
