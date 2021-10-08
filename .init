@@ -204,6 +204,7 @@ install_packages() {
     exec_paru "gnome-user-share nfs-utils"
     exec_paru "wireless_tools wmctrl xdotool"
     exec_paru "zenity ffmpeg youtube-dl rsync curl"
+    exec_paru "pavucontrol"
 
     # Hide mouse pointer
     exec_paru "unclutter"
