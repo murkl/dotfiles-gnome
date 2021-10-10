@@ -18,6 +18,13 @@ init() {
     killall -3 gnome-shell
 }
 
+remove() {
+    sudo systemctl disable gdm.service
+    echo "Removed"
+}
+
+if [ "$1" = "--remove" ]; then remove; exit 0; fi
+
 # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #
 # ++++++++++++++++++++++++++++
