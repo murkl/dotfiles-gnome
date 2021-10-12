@@ -1,7 +1,7 @@
 #!/bin/bash
 THEME_INSTALL_DIR="$HOME/.cache/theme"
 
-init() {
+install() {
     check_git
     check_paru
     exec_paru_update
@@ -456,5 +456,17 @@ fi
 ##################################################
 # START INIT
 ##################################################
-echo "STARTING INIT SCRIPT..."
-init "$@"
+
+if [ "$1" = "--install" ]; then
+    echo "INSTALLING INIT SCRIPT..."
+    install "$@"
+    exit $?
+fi
+
+##################################################
+# HELP
+##################################################
+echo "USE WITH PARAMETERS"
+echo "--install"
+echo "--update"
+echo "--remove"
