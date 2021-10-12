@@ -5,7 +5,7 @@ export ECOS_HOME="$HOME/.ecos"
 
 # PATH
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$ECOS_HOME/ecos"
+export PATH="$PATH:$ECOS_HOME/bin"
 
 # XDG
 export XDG_CONFIG_HOME="$HOME/.config"
