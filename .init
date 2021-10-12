@@ -1,4 +1,5 @@
 #!/bin/bash
+THEME_INSTALL_DIR="$HOME/.cache/theme"
 
 init() {
     check_git
@@ -16,6 +17,11 @@ init() {
 
     # Restart GNOME
     killall -3 gnome-shell
+}
+
+update() {
+    check_git
+    update_theme_whitesur
 }
 
 remove() {
@@ -390,12 +396,17 @@ vte-terminal {
 }
 
 install_theme_whitesur() {
-
-    local THEME_INSTALL_DIR=$HOME/.cache/theme
-    local THEME_CSS_FILE=$HOME/.themes/WhiteSur-light/gnome-shell/gnome-shell.css
-
     rm -rf "$THEME_INSTALL_DIR"
     git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$THEME_INSTALL_DIR"
+    update_theme_whitesur
+}
+
+update_theme_whitesur() {
+    cd "$THEME_INSTALL_DIR" || exit 1
+    git reset --hard
+    git pull
+
+    local THEME_CSS_FILE=$HOME/.themes/WhiteSur-light/gnome-shell/gnome-shell.css
 
     # Theme WhiteSur (https://github.com/vinceliuice/WhiteSur-gtk-theme)
     #     $THEME_INSTALL_DIR/install.sh --color light --icon simple --nautilus-style glassy --monterey --size 280 --background default --highdefinition --theme default --normalshowapps --panel-opacity 30
@@ -403,25 +414,34 @@ install_theme_whitesur() {
     $THEME_INSTALL_DIR/tweaks.sh --firefox
 
     # Disable App Icon
-    APP_START='#panel .panel-button .app-menu-icon {'
-    APP_CONTENT='  width: 0;\n  height: 0;\n  margin: 0;'
-    APP_END='}'
+    local APP_START='#panel .panel-button .app-menu-icon {'
+    local APP_CONTENT='  width: 0;\n  height: 0;\n  margin: 0;'
+    local APP_END='}'
 
     # Modify Tray Icon Space
-    STATUS_START='#panel .panel-button .system-status-icon {'
-    STATUS_CONTENT='  icon-size: 16px;\n  padding: 4px 10px;\n  margin: 0 1px;'
-    STATUS_END='}'
+    local STATUS_START='#panel .panel-button .system-status-icon {'
+    local STATUS_CONTENT='  icon-size: 16px;\n  padding: 4px 10px;\n  margin: 0 1px;'
+    local STATUS_END='}'
 
-    STATUS_PADDING_START='#panel .panel-button {'
-    STATUS_PADDING_CONTENT='  -natural-hpadding: 4px;\n  -minimum-hpadding: 4px;\n  font-weight: normal;\n  color: white;\n  transition-duration: 150ms;\n  border-radius: 6px;'
-    STATUS_PADDING_END='}'
+    local STATUS_PADDING_START='#panel .panel-button {'
+    local STATUS_PADDING_CONTENT='  -natural-hpadding: 4px;\n  -minimum-hpadding: 4px;\n  font-weight: normal;\n  color: white;\n  transition-duration: 150ms;\n  border-radius: 6px;'
+    local STATUS_PADDING_END='}'
 
     # https://fahdshariff.blogspot.com/2012/12/sed-mutli-line-replacement-between-two.html
     sed -ni "/$STATUS_START/{p;:a;N;/$STATUS_END/!ba;s/.*\n/$STATUS_CONTENT\n/};p" "$THEME_CSS_FILE"
     sed -ni "/$STATUS_PADDING_START/{p;:a;N;/$STATUS_PADDING_END/!ba;s/.*\n/$STATUS_PADDING_CONTENT\n/};p" "$THEME_CSS_FILE"
     sed -ni "/$APP_START/{p;:a;N;/$APP_END/!ba;s/.*\n/$APP_CONTENT\n/};p" "$THEME_CSS_FILE"
-
 }
+
+##################################################
+# START UPDATE INIT
+##################################################
+
+if [ "$1" = "--update" ]; then
+    echo "UPDATING INIT SCRIPT..."
+    update
+    exit $?
+fi
 
 ##################################################
 # START REMOVE INIT
@@ -430,11 +450,11 @@ install_theme_whitesur() {
 if [ "$1" = "--remove" ]; then
     echo "REMOVING INIT SCRIPT..."
     remove
-    exit 0
+    exit $?
 fi
 
 ##################################################
 # START INIT
 ##################################################
-echo "STARTING PERSONAL INIT SCRIPT..."
+echo "STARTING INIT SCRIPT..."
 init "$@"
