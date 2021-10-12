@@ -10,10 +10,8 @@ install() {
     set_gnome_settings
     enable_gnome_terminal_padding
     install_theme_whitesur
+    update_theme_whitesur
     exec_pacman_clear
-
-    # Create wget dir
-    mkdir -p "$HOME/.config/wget/"
 
     # Restart GNOME
     killall -3 gnome-shell
@@ -22,6 +20,9 @@ install() {
 update() {
     check_git
     update_theme_whitesur
+    
+    # Restart GNOME
+    killall -3 gnome-shell
 }
 
 remove() {
