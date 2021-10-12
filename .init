@@ -6,10 +6,10 @@ install() {
     check_paru
     exec_paru_update
     install_packages
+    install_package_config
     enable_services
     set_gnome_settings
     enable_gnome_terminal_padding
-    install_theme_whitesur
     update_theme_whitesur
     exec_pacman_clear
 
@@ -20,7 +20,7 @@ install() {
 update() {
     check_git
     update_theme_whitesur
-    
+
     # Restart GNOME
     killall -3 gnome-shell
 }
@@ -276,13 +276,12 @@ install_packages() {
 }
 
 ##################################################
-# ENABE SERVICES
+# INSTALL PACKAGE CONFIG
 ##################################################
 
-enable_services() {
+install_package_config() {
 
     # GNOME DISPLAY MANAGER
-    sudo systemctl enable gdm.service
     sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "/etc/gdm/custom.conf"
 
     # SAMBA
@@ -295,20 +294,26 @@ enable_services() {
         sudo mv "/tmp/smb.conf" "/etc/samba/smb.conf"
     fi
 
-    sudo systemctl enable smb.service
-    sudo systemctl enable nmb.service
-
     # TLP
     if [ -f "/etc/tlp.conf" ]; then
         sudo sed -i "s/^#CPU_BOOST_ON_AC=1/CPU_BOOST_ON_AC=0/g" "/etc/tlp.conf"
         sudo sed -i "s/^#CPU_BOOST_ON_BAT=0/CPU_BOOST_ON_BAT=0/g" "/etc/tlp.conf"
     fi
+}
 
-    # Start services
-    sudo systemctl enable touchegg.service --now
-    sudo systemctl enable avahi-daemon --now
-    sudo systemctl enable bluetooth.service --now
-    sudo systemctl enable cups.service --now
+##################################################
+# ENABE SERVICES
+##################################################
+
+enable_services() {
+
+    sudo systemctl enable gdm.service
+    sudo systemctl enable smb.service
+    sudo systemctl enable nmb.service
+    sudo systemctl enable touchegg.service now
+    sudo systemctl enable avahi-daemon now
+    sudo systemctl enable bluetooth.service now
+    sudo systemctl enable cups.service now
 }
 
 ##################################################
@@ -399,11 +404,16 @@ vte-terminal {
 install_theme_whitesur() {
     rm -rf "$THEME_INSTALL_DIR"
     git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$THEME_INSTALL_DIR"
-    update_theme_whitesur
 }
 
 update_theme_whitesur() {
+
+    if [ ! -d "$THEME_INSTALL_DIR" ]; then
+        install_theme_whitesur
+    fi
+
     cd "$THEME_INSTALL_DIR" || exit 1
+
     git reset --hard
     git pull
 
