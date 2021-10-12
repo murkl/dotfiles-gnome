@@ -40,5 +40,9 @@ export JAVA_HOME="$JDK_HOME"
 #export _JAVA_AWT_WM_NONREPARENTING=1
 
 # STARTUP APPS
+
 # Hide mouse pointer
 unclutter --timeout 5 -jitter 50 --ignore-scrolling &
+
+# ECOS Autostart
+(sleep 5 && gnome-terminal -- bash -c $ECOS_HOME/ecos --ecos-autostart) &
