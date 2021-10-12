@@ -20,9 +20,6 @@ install() {
 update() {
     check_git
     update_theme_whitesur
-
-    # Restart GNOME
-    killall -3 gnome-shell
 }
 
 remove() {
