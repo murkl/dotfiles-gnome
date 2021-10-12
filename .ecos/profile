@@ -46,4 +46,4 @@ export JAVA_HOME="$JDK_HOME"
 unclutter --timeout 5 -jitter 50 --ignore-scrolling &
 
 # ECOS Autostart
-(sleep 5 && gnome-terminal -- bash -c $ECOS --ecos-autostart) &
+(sleep 5 && gnome-terminal -- bash -c "$ECOS --ecos-autostart") &
