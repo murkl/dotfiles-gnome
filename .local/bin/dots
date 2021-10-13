@@ -1,2 +1,0 @@
-#!/bin/sh
-git --git-dir="$HOME/.local/share/dotfiles" --work-tree="$HOME" "$@"
