@@ -1,3 +1,5 @@
 #!/bin/bash
 export ECOS_HOME="$HOME/.ecos"
-bash -c "$ECOS_HOME/bin/ecos --run"
+export ECOS_CORE="$ECOS_HOME/bin/ecos"
+export PATH="$PATH:$ECOS_HOME/bin"
+source "$ECOS_HOME/profile"
