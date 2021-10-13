@@ -42,6 +42,7 @@ install() {
 
 update() {
     check_git
+    set_update_indicator_settings
     update_theme_whitesur
 }
 
@@ -385,16 +386,14 @@ set_gnome_settings() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Super>k'
 
     # Extensions
-    if [ ! -f "$HOME/.cache/ecos.initialized" ]; then
+    if [ ! -f "$HOME/.ecos/.initialized" ]; then
         gsettings set org.gnome.shell disable-user-extensions false
         gsettings set org.gnome.shell disabled-extensions "['']"
         gsettings set org.gnome.shell enabled-extensions "['x11gestures@joseexposito.github.io', 'appindicatorsupport@rgcjonas.gmail.com', 'just-perfection-desktop@just-perfection', 'dash-to-dock@micxgx.gmail.com', 'arch-update@RaphaelRochet', 'blur-my-shell@aunetx']"
     fi
 
     # Arch Update Indicator
-    gsettings set org.gnome.shell.extensions.arch-update always-visible false
-    gsettings set org.gnome.shell.extensions.arch-update check-cmd "/bin/sh -c \"(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1\""
-    gsettings set org.gnome.shell.extensions.arch-update update-cmd "gnome-terminal -e 'bash -c  \"ecos --update\"'"
+    set_update_indicator_settings
 
     # Blur My Shell
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-dash false
@@ -405,6 +404,14 @@ set_gnome_settings() {
 
     # X11 Gestures
     #gsettings set /org/gnome/shell/extensions/x11gestures/swipe-fingers 4
+
+}
+
+set_update_indicator_settings() {
+    # Arch Update Indicator
+    gsettings set org.gnome.shell.extensions.arch-update always-visible false
+    gsettings set org.gnome.shell.extensions.arch-update check-cmd "/bin/sh -c \"(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1\""
+    gsettings set org.gnome.shell.extensions.arch-update update-cmd "gnome-terminal -e 'bash -c  \"ecos --update\"'"
 
 }
 ##################################################
