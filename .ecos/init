@@ -354,7 +354,7 @@ set_gnome_settings() {
     gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu'
     gsettings set org.gnome.mutter center-new-windows true
 
-    if [ ! -f "$HOME/.cache/ecos.initialized" ]; then
+    if [ ! -f "$ECOS_HOME/.initialized" ]; then
         gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
         gsettings set org.gnome.desktop.interface icon-theme 'ecos'
         gsettings set org.gnome.desktop.interface gtk-theme 'WhiteSur-light'
@@ -362,7 +362,7 @@ set_gnome_settings() {
     fi
 
     # Wallpaper
-    if [ ! -f "$HOME/.cache/ecos.initialized" ]; then
+    if [ ! -f "$ECOS_HOME/.initialized" ]; then
         gsettings set org.gnome.desktop.background picture-uri 'file://'$HOME'/.local/share/wallpaper'
     fi
 
@@ -386,7 +386,7 @@ set_gnome_settings() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Super>k'
 
     # Extensions
-    if [ ! -f "$HOME/.ecos/.initialized" ]; then
+    if [ ! -f "$ECOS_HOME/.initialized" ]; then
         gsettings set org.gnome.shell disable-user-extensions false
         gsettings set org.gnome.shell disabled-extensions "['']"
         gsettings set org.gnome.shell enabled-extensions "['x11gestures@joseexposito.github.io', 'appindicatorsupport@rgcjonas.gmail.com', 'just-perfection-desktop@just-perfection', 'dash-to-dock@micxgx.gmail.com', 'arch-update@RaphaelRochet', 'blur-my-shell@aunetx']"
