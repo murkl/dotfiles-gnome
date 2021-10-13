@@ -1,13 +1,5 @@
 #!/bin/sh
 
-# ECOS
-export ECOS_HOME="$HOME/.ecos"
-export ECOS="$ECOS_HOME/bin/ecos"
-
-# PATH
-export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$ECOS_HOME/bin"
-
 # XDG
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -45,5 +37,5 @@ export JAVA_HOME="$JDK_HOME"
 # Hide mouse pointer
 unclutter --timeout 5 -jitter 50 --ignore-scrolling &
 
-# ECOS Autostart
-(sleep 5 && gnome-terminal -- bash -c "$ECOS --ecos-autostart") &
+# ECOS Changelog
+(sleep 5 && gnome-terminal -- bash -c "$ECOS_CORE --changelog") &
