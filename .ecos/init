@@ -1,4 +1,5 @@
 #!/bin/bash
+
 ECOS_URL="https://raw.githubusercontent.com/murkl/ecos/main/ecos"
 
 ECOS_HOME="$HOME/.ecos"
