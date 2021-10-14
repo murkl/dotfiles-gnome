@@ -25,6 +25,7 @@ install() {
     set_gnome_settings
     enable_gnome_terminal_padding
     install_theme_whitesur
+    set_synology_icons
     exec_pacman_clear
 
     # Restart GNOME
@@ -34,6 +35,7 @@ install() {
 update() {
     check_git
     set_update_indicator_settings
+    set_synology_icons
     install_theme_whitesur
 }
 
