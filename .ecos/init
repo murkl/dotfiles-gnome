@@ -9,7 +9,6 @@ ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
 
 THEME_INSTALL_DIR="$ECOS_REPOS/theme"
 
-
 install_ecos_core() {
 
     mkdir -p "$ECOS_HOME/bin"
