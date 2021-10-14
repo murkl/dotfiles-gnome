@@ -9,20 +9,9 @@ ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
 
 THEME_INSTALL_DIR="$ECOS_REPOS/theme"
 
-install_ecos_core() {
-
-    mkdir -p "$ECOS_HOME/bin"
-
-    # Download new version
-    if ! curl -s -L "$ECOS_URL" >"$ECOS_CORE"; then
-        echo "ERROR: ECOS CORE DOWNLOAD"
-        exit 1
-    fi
-    if ! chmod +x "$ECOS_CORE"; then
-        echo "ERROR: ECOS CORE NOT FOUND"
-        exit 1
-    fi
-}
+##################################################
+# FUNCTIONS
+##################################################
 
 install() {
     install_ecos_core
@@ -120,6 +109,25 @@ remove() {
 # sudo reflector --verbose --country 'Germany' -l 15 -p https --sort rate --save /etc/pacman.d/mirrorlist
 #
 # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+##################################################
+# INSTALL CORE
+##################################################
+
+install_ecos_core() {
+
+    mkdir -p "$ECOS_HOME/bin"
+
+    # Download new version
+    if ! curl -s -L "$ECOS_URL" >"$ECOS_CORE"; then
+        echo "ERROR: ECOS CORE DOWNLOAD"
+        exit 1
+    fi
+    if ! chmod +x "$ECOS_CORE"; then
+        echo "ERROR: ECOS CORE NOT FOUND"
+        exit 1
+    fi
+}
 
 ##################################################
 # CHECK DEPENDENCIES
@@ -257,7 +265,7 @@ install_packages() {
     exec_paru "geary"
     exec_paru "keepassxc"
     exec_paru "libreoffice-still-de"
-    exec_paru "fromscratch-bin"
+    #exec_paru "fromscratch-bin"
 
     # Fonts
     exec_paru "ttf-dejavu"
@@ -328,14 +336,13 @@ install_package_config() {
 ##################################################
 
 enable_services() {
-
     sudo systemctl enable gdm.service
     sudo systemctl enable smb.service
     sudo systemctl enable nmb.service
-    sudo systemctl enable touchegg.service now
-    sudo systemctl enable avahi-daemon now
-    sudo systemctl enable bluetooth.service now
-    sudo systemctl enable cups.service now
+    sudo systemctl enable touchegg.service
+    sudo systemctl enable avahi-daemon
+    sudo systemctl enable bluetooth.service
+    sudo systemctl enable cups.service
 }
 
 ##################################################
