@@ -5,6 +5,7 @@ ECOS_URL="https://raw.githubusercontent.com/murkl/ecos/main/ecos"
 ECOS_HOME="$HOME/.ecos"
 ECOS_CORE="$ECOS_HOME/bin/ecos"
 ECOS_REPOS="$ECOS_HOME/repos"
+ECOS_RES="$ECOS_HOME/res"
 ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
 
 THEME_INSTALL_DIR="$ECOS_REPOS/theme"
@@ -415,6 +416,7 @@ set_gnome_settings() {
     #gsettings set /org/gnome/shell/extensions/x11gestures/swipe-fingers 4
 
     # Direcotry Icons
+    #gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon-name' 'folder-recent'
     gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon' "file://$HOME/.local/share/icons/ecos/apps/folder-projects.svg"
 }
 
@@ -474,6 +476,12 @@ install_theme_whitesur() {
     sed -ni "/$STATUS_START/{p;:a;N;/$STATUS_END/!ba;s/.*\n/$STATUS_CONTENT\n/};p" "$THEME_CSS_FILE"
     sed -ni "/$STATUS_PADDING_START/{p;:a;N;/$STATUS_PADDING_END/!ba;s/.*\n/$STATUS_PADDING_CONTENT\n/};p" "$THEME_CSS_FILE"
     sed -ni "/$APP_START/{p;:a;N;/$APP_END/!ba;s/.*\n/$APP_CONTENT\n/};p" "$THEME_CSS_FILE"
+}
+
+set_synology_icons() {
+    cp $ECOS_RES/cloud-sync.png $HOME/.SynologyDrive/SynologyDrive.app/images/tray/win-linux-black/syncing.png
+    cp $ECOS_RES/cloud-normal.png $HOME/.SynologyDrive/SynologyDrive.app/images/tray/win-linux-black/uptodate.png
+    cp $ECOS_RES/cloud-normal.png $HOME/.SynologyDrive/SynologyDrive.app/images/tray/win-linux-black/normal.png
 }
 
 ##################################################
