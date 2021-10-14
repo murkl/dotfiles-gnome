@@ -23,7 +23,7 @@ install() {
     enable_services
     set_gnome_settings
     enable_gnome_terminal_padding
-    update_theme_whitesur
+    install_theme_whitesur
     exec_pacman_clear
 
     # Restart GNOME
@@ -33,7 +33,7 @@ install() {
 update() {
     check_git
     set_update_indicator_settings
-    update_theme_whitesur
+    install_theme_whitesur
 }
 
 remove() {
@@ -436,14 +436,10 @@ vte-terminal {
 }
 
 install_theme_whitesur() {
-    rm -rf "$THEME_INSTALL_DIR"
-    git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$THEME_INSTALL_DIR"
-}
-
-update_theme_whitesur() {
 
     if [ ! -d "$THEME_INSTALL_DIR" ]; then
-        install_theme_whitesur
+        rm -rf "$THEME_INSTALL_DIR"
+        git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$THEME_INSTALL_DIR"
     fi
 
     cd "$THEME_INSTALL_DIR" || exit 1
@@ -455,8 +451,8 @@ update_theme_whitesur() {
 
     # Theme WhiteSur (https://github.com/vinceliuice/WhiteSur-gtk-theme)
     #     $THEME_INSTALL_DIR/install.sh --color light --icon simple --nautilus-style glassy --monterey --size 280 --background default --highdefinition --theme default --normalshowapps --panel-opacity 30
-    $THEME_INSTALL_DIR/install.sh --icon simple --nautilus-style glassy --size 280 --background blank --theme default --normalshowapps
-    $THEME_INSTALL_DIR/tweaks.sh --firefox
+    sudo $THEME_INSTALL_DIR/install.sh --silent-mode --icon simple --nautilus-style glassy --size 280 --background blank --theme default --normalshowapps
+    sudo $THEME_INSTALL_DIR/tweaks.sh --silent-mode --firefox
 
     # Disable App Icon
     local APP_START='#panel .panel-button .app-menu-icon {'
