@@ -416,8 +416,8 @@ set_gnome_settings() {
     #gsettings set /org/gnome/shell/extensions/x11gestures/swipe-fingers 4
 
     # Direcotry Icons
-    #gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon-name' 'folder-recent'
-    gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon' "file://$HOME/.local/share/icons/ecos/apps/folder-projects.svg"
+    #gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon' "file://$HOME/.local/share/icons/ecos/apps/folder-projects.svg"
+    gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon-name' 'folder-favorites'
 }
 
 set_update_indicator_settings() {
