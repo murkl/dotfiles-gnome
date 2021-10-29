@@ -250,6 +250,7 @@ install_packages() {
     exec_paru "wireless_tools wmctrl xdotool"
     exec_paru "zenity ffmpeg youtube-dl rsync curl"
     exec_paru "pavucontrol"
+    exec_paru "cava"
 
     # Hide mouse pointer
     exec_paru "unclutter"
