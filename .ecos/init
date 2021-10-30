@@ -296,10 +296,6 @@ install() {
         gsettings set org.gnome.shell enabled-extensions "['user-theme@gnome-shell-extensions.gcampax.github.com', 'x11gestures@joseexposito.github.io', 'appindicatorsupport@rgcjonas.gmail.com', 'just-perfection-desktop@just-perfection', 'dash-to-dock@micxgx.gmail.com', 'arch-update@RaphaelRochet', 'blur-my-shell@aunetx']"
     fi
 
-    # Arch Update Indicator
-    #gsettings set org.gnome.shell.extensions.arch-update always-visible false
-    set_update_indicator_settings
-
     # Blur My Shell
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-dash false
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-panel false
@@ -314,7 +310,10 @@ install() {
     #gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon' "file://$HOME/.local/share/icons/ecos/apps/folder-projects.svg"
     gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon-name' 'folder-favorites'
 
-    #set_update_indicator_settings() {
+    ##################################################
+    # SET UPDATE INDICATOR
+    ##################################################
+    #gsettings set org.gnome.shell.extensions.arch-update always-visible false
     gsettings set org.gnome.shell.extensions.arch-update check-cmd "/bin/sh -c \"(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1\""
     gsettings set org.gnome.shell.extensions.arch-update update-cmd "gnome-terminal -e 'bash -c  \"ecos --manager\"'"
 
@@ -355,7 +354,6 @@ vte-terminal {
 ##################################################
 
 update() {
-    set_update_indicator_settings
     $ECOS_CORE --tweak update theme_whitesur
     $ECOS_CORE --tweak update synology-drive
 }
