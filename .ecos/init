@@ -1,44 +1,10 @@
 #!/bin/bash
 
-ECOS_URL="https://raw.githubusercontent.com/murkl/ecos/main/ecos"
+ECOS_CORE_URL="https://raw.githubusercontent.com/murkl/ecos/main/ecos"
 
 ECOS_HOME="$HOME/.ecos"
 ECOS_CORE="$ECOS_HOME/bin/ecos"
-ECOS_REPOS="$ECOS_HOME/repos"
-ECOS_RES="$ECOS_HOME/res"
 ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
-
-THEME_INSTALL_DIR="$ECOS_REPOS/theme"
-
-##################################################
-# FUNCTIONS
-##################################################
-
-install() {
-    install_ecos_core
-    exec_paru_update
-    install_packages
-    install_package_config
-    enable_services
-    set_gnome_settings
-    enable_gnome_terminal_padding
-    $ECOS_CORE --tweak install theme_whitesur
-    $ECOS_CORE --tweak install synology-drive
-    exec_pacman_clear
-    # Restart GNOME
-    killall -3 gnome-shell
-}
-
-update() {
-    set_update_indicator_settings
-    $ECOS_CORE --tweak update theme_whitesur
-    $ECOS_CORE --tweak update synology-drive
-}
-
-remove() {
-    sudo systemctl disable gdm.service
-    echo "Removed"
-}
 
 # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #
@@ -110,15 +76,21 @@ remove() {
 # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ##################################################
-# INSTALL CORE
+# INSTALL
 ##################################################
 
-install_ecos_core() {
+install() {
+    exec_paru() {
+        paru --noconfirm --needed --sudoloop -S $1
+    }
 
+    ##################################################
+    # INSTALL ECOS CORE
+    ##################################################
     mkdir -p "$ECOS_HOME/bin"
 
     # Download new version
-    if ! curl -s -L "$ECOS_URL" >"$ECOS_CORE"; then
+    if ! curl -s -L "$ECOS_CORE_URL" >"$ECOS_CORE"; then
         echo "ERROR: ECOS CORE DOWNLOAD"
         exit 1
     fi
@@ -126,29 +98,17 @@ install_ecos_core() {
         echo "ERROR: ECOS CORE NOT FOUND"
         exit 1
     fi
-}
 
-##################################################
-# PARU
-##################################################
-
-exec_paru_update() {
+    ##################################################
+    # UPDATE PARU
+    ##################################################
     paru -Syyu
-}
 
-exec_paru() {
-    paru --noconfirm --needed --sudoloop -S $1
-}
+    ##################################################
+    # INSTALL PACKAGES
+    ##################################################
 
-exec_pacman_clear() {
-    sudo pacman --noconfirm -Rs $(pacman -Qtdq)
-}
-
-##################################################
-# INSTALL PACKAGES
-##################################################
-
-install_packages() {
+    # install_packages() {
 
     # Gnome Minimal -  https://archlinux.org/groups/x86_64/gnome/
     exec_paru "gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
@@ -247,13 +207,10 @@ install_packages() {
     # Wine: https://github.com/lutris/docs/blob/master/WineDependencies.md
     # Graphic Driver: https://github.com/lutris/docs/blob/master/InstallingDrivers.md
     #exec_paru "lutris lutris-wine-meta"
-}
 
-##################################################
-# INSTALL PACKAGE CONFIG
-##################################################
-
-install_package_config() {
+    ##################################################
+    # INSTALL PACKAGE CONFIG
+    ##################################################
 
     # GNOME DISPLAY MANAGER
     sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "/etc/gdm/custom.conf"
@@ -273,13 +230,11 @@ install_package_config() {
         sudo sed -i "s/^#CPU_BOOST_ON_AC=1/CPU_BOOST_ON_AC=0/g" "/etc/tlp.conf"
         sudo sed -i "s/^#CPU_BOOST_ON_BAT=0/CPU_BOOST_ON_BAT=0/g" "/etc/tlp.conf"
     fi
-}
 
-##################################################
-# ENABE SERVICES
-##################################################
+    ##################################################
+    # ENABE SERVICES
+    ##################################################
 
-enable_services() {
     sudo systemctl enable gdm.service
     sudo systemctl enable smb.service
     sudo systemctl enable nmb.service
@@ -287,13 +242,10 @@ enable_services() {
     sudo systemctl enable avahi-daemon
     sudo systemctl enable bluetooth.service
     sudo systemctl enable cups.service
-}
 
-##################################################
-# SET GNOME SETTINGS
-##################################################
-
-set_gnome_settings() {
+    ##################################################
+    # SET GNOME SETTINGS
+    ##################################################
 
     # https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
 
@@ -361,18 +313,15 @@ set_gnome_settings() {
     # Direcotry Icons
     #gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon' "file://$HOME/.local/share/icons/ecos/apps/folder-projects.svg"
     gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon-name' 'folder-favorites'
-}
 
-set_update_indicator_settings() {
+    #set_update_indicator_settings() {
     gsettings set org.gnome.shell.extensions.arch-update check-cmd "/bin/sh -c \"(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1\""
     gsettings set org.gnome.shell.extensions.arch-update update-cmd "gnome-terminal -e 'bash -c  \"ecos --manager\"'"
-}
 
-##################################################
-# ADDITIONALS
-##################################################
+    ##################################################
+    # ENABLE GNOME TERMINAL PADDING
+    ##################################################
 
-enable_gnome_terminal_padding() {
     mkdir -p "$HOME/.config/gtk-3.0"
     echo 'VteTerminal,
 TerminalScreen,
@@ -380,10 +329,38 @@ vte-terminal {
     padding: 24px 32px 32px 32px;
     -VteTerminal-inner-border: 12px 12px 12px 12px;
 }' >"$HOME/.config/gtk-3.0/gtk.css"
+
+    $ECOS_CORE --tweak install theme_whitesur
+    $ECOS_CORE --tweak install synology-drive
+
+    # Clear pacman
+    sudo pacman --noconfirm -Rs $(pacman -Qtdq)
+
+    # Restart GNOME
+    killall -3 gnome-shell
 }
 
 ##################################################
-# START UPDATE INIT
+# UPDATE
+##################################################
+
+update() {
+    set_update_indicator_settings
+    $ECOS_CORE --tweak update theme_whitesur
+    $ECOS_CORE --tweak update synology-drive
+}
+
+##################################################
+# REMOVE
+##################################################
+
+remove() {
+    sudo systemctl disable gdm.service
+    echo "Removed"
+}
+
+##################################################
+# ARGUMENTS
 ##################################################
 
 if [ "$1" = "--update" ]; then
@@ -392,19 +369,11 @@ if [ "$1" = "--update" ]; then
     exit $?
 fi
 
-##################################################
-# START REMOVE INIT
-##################################################
-
 if [ "$1" = "--remove" ]; then
     echo "REMOVING INIT SCRIPT..."
     remove
     exit $?
 fi
-
-##################################################
-# START INIT
-##################################################
 
 if [ "$1" = "--install" ]; then
     echo "INSTALLING INIT SCRIPT..."
@@ -412,9 +381,7 @@ if [ "$1" = "--install" ]; then
     exit $?
 fi
 
-##################################################
-# HELP
-##################################################
+# Help
 echo "USE WITH PARAMETERS"
 echo "--install"
 echo "--update"
