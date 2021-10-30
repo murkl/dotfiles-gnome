@@ -330,13 +330,23 @@ vte-terminal {
     -VteTerminal-inner-border: 12px 12px 12px 12px;
 }' >"$HOME/.config/gtk-3.0/gtk.css"
 
+    ##################################################
+    # ECOS TWEAKS
+    ##################################################
+
     $ECOS_CORE --tweak install theme_whitesur
     $ECOS_CORE --tweak install synology-drive
 
-    # Clear pacman
+    ##################################################
+    # CLEAR PACMAN
+    ##################################################
+
     sudo pacman --noconfirm -Rs $(pacman -Qtdq)
 
-    # Restart GNOME
+    ##################################################
+    # RESTART GNOME
+    ##################################################
+
     killall -3 gnome-shell
 }
 
