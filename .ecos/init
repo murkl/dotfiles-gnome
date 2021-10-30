@@ -16,27 +16,23 @@ THEME_INSTALL_DIR="$ECOS_REPOS/theme"
 
 install() {
     install_ecos_core
-    check_git
-    check_paru
     exec_paru_update
     install_packages
     install_package_config
     enable_services
     set_gnome_settings
     enable_gnome_terminal_padding
-    install_theme_whitesur
-    set_synology_icons
+    $ECOS_CORE --tweak install theme_whitesur
+    $ECOS_CORE --tweak install synology-drive
     exec_pacman_clear
-
     # Restart GNOME
     killall -3 gnome-shell
 }
 
 update() {
-    check_git
     set_update_indicator_settings
-    set_synology_icons
-    install_theme_whitesur
+    $ECOS_CORE --tweak update theme_whitesur
+    $ECOS_CORE --tweak update synology-drive
 }
 
 remove() {
@@ -129,62 +125,6 @@ install_ecos_core() {
     if ! chmod +x "$ECOS_CORE"; then
         echo "ERROR: ECOS CORE NOT FOUND"
         exit 1
-    fi
-}
-
-##################################################
-# CHECK DEPENDENCIES
-##################################################
-
-check_git() {
-
-    if ! pacman -Qi git >/dev/null; then
-        echo "Create Git config"
-        mkdir -p "$HOME/.config/git"
-        if [ -f "$HOME/.config/git/config" ]; then
-            mv "$HOME/.config/git/config" "$HOME/.config/git/config.bak"
-        fi
-        {
-            echo "[user]"
-            echo "    email = ${USER}@$(cat /etc/hostname)"
-            echo "    name = ${USER}"
-            echo "[credential]"
-            echo "    helper = /usr/lib/git-core/git-credential-libsecret"
-            echo "[pull]"
-            echo "    rebase = false"
-        } >"$HOME/.config/git/config"
-
-        echo "Installing Git"
-        sudo pacman --noconfirm --needed -Syyu git
-    fi
-}
-
-check_paru() {
-
-    if ! pacman -Qi paru >/dev/null; then
-        echo "Installing AUR Helper Paru (may take a while)..."
-
-        # Prepare
-        local paru_build_tmp="$HOME/.cache/paru"
-        rm -rf "$paru_build_tmp"
-        mkdir -p "$paru_build_tmp"
-
-        # Clone
-        git clone "https://aur.archlinux.org/paru-bin.git" "$paru_build_tmp"
-        cd "$paru_build_tmp" || exit 1
-
-        # Install aur helper
-        makepkg -si --noconfirm --needed
-
-        # Remove download dir
-        rm -rf "$paru_build_tmp"
-
-        # Symlink to yay
-        sudo ln -sf /usr/bin/paru /usr/bin/yay
-
-        # Config
-        sudo sed -i 's/^#BottomUp/BottomUp/g' /etc/paru.conf
-        sudo sed -i 's/^#SudoLoop/SudoLoop/g' /etc/paru.conf
     fi
 }
 
@@ -440,51 +380,6 @@ vte-terminal {
     padding: 24px 32px 32px 32px;
     -VteTerminal-inner-border: 12px 12px 12px 12px;
 }' >"$HOME/.config/gtk-3.0/gtk.css"
-}
-
-install_theme_whitesur() {
-
-    if [ ! -d "$THEME_INSTALL_DIR" ]; then
-        rm -rf "$THEME_INSTALL_DIR"
-        git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git "$THEME_INSTALL_DIR"
-    fi
-
-    cd "$THEME_INSTALL_DIR" || exit 1
-
-    git reset --hard
-    git pull
-
-    local THEME_CSS_FILE=$HOME/.themes/WhiteSur-light/gnome-shell/gnome-shell.css
-
-    # Theme WhiteSur (https://github.com/vinceliuice/WhiteSur-gtk-theme)
-    #     $THEME_INSTALL_DIR/install.sh --color light --icon simple --nautilus-style glassy --monterey --size 280 --background default --highdefinition --theme default --normalshowapps --panel-opacity 30
-    sudo $THEME_INSTALL_DIR/install.sh --silent-mode --icon simple --nautilus-style glassy --size 280 --background blank --theme default --normalshowapps
-    sudo $THEME_INSTALL_DIR/tweaks.sh --silent-mode --firefox
-
-    # Disable App Icon
-    local APP_START='#panel .panel-button .app-menu-icon {'
-    local APP_CONTENT='  width: 0;\n  height: 0;\n  margin: 0;'
-    local APP_END='}'
-
-    # Modify Tray Icon Space
-    local STATUS_START='#panel .panel-button .system-status-icon {'
-    local STATUS_CONTENT='  icon-size: 16px;\n  padding: 4px 10px;\n  margin: 0 1px;'
-    local STATUS_END='}'
-
-    local STATUS_PADDING_START='#panel .panel-button {'
-    local STATUS_PADDING_CONTENT='  -natural-hpadding: 4px;\n  -minimum-hpadding: 4px;\n  font-weight: normal;\n  color: white;\n  transition-duration: 150ms;\n  border-radius: 6px;'
-    local STATUS_PADDING_END='}'
-
-    # https://fahdshariff.blogspot.com/2012/12/sed-mutli-line-replacement-between-two.html
-    sed -ni "/$STATUS_START/{p;:a;N;/$STATUS_END/!ba;s/.*\n/$STATUS_CONTENT\n/};p" "$THEME_CSS_FILE"
-    sed -ni "/$STATUS_PADDING_START/{p;:a;N;/$STATUS_PADDING_END/!ba;s/.*\n/$STATUS_PADDING_CONTENT\n/};p" "$THEME_CSS_FILE"
-    sed -ni "/$APP_START/{p;:a;N;/$APP_END/!ba;s/.*\n/$APP_CONTENT\n/};p" "$THEME_CSS_FILE"
-}
-
-set_synology_icons() {
-    cp $ECOS_RES/cloud-sync.png $HOME/.SynologyDrive/SynologyDrive.app/images/tray/win-linux-black/syncing.png
-    cp $ECOS_RES/cloud-normal.png $HOME/.SynologyDrive/SynologyDrive.app/images/tray/win-linux-black/uptodate.png
-    cp $ECOS_RES/cloud-normal.png $HOME/.SynologyDrive/SynologyDrive.app/images/tray/win-linux-black/normal.png
 }
 
 ##################################################
