@@ -1,22 +1,15 @@
 #!/bin/bash
 
-ECOS_CORE_URL="https://raw.githubusercontent.com/murkl/ecos/main/ecos"
-
-ECOS_HOME="$HOME/.ecos"
-ECOS_CORE="$ECOS_HOME/bin/ecos"
-ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
-
-# ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#
-# ++++++++++++++++++++++++++++
+##################################################
 # Touchpad Gestures
-# ++++++++++++++++++++++++++++
+##################################################
+
 # https://github.com/bulletmark/libinput-gestures
-#
+
 # paru -S gestures libinput-gestures xorg-xinput
 # sudo gpasswd -a $USER input
 # libinput-gestures-setup autostart start
-#
+
 # ~/.config/libinput-gestures.conf gestures for Google Chrome
 # gesture swipe up        4       xdotool key control+plus
 # gesture swipe down      4       xdotool key control+minus
@@ -26,23 +19,25 @@ ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
 # gesture swipe left_up   4       xdotool key control+shift+Tab
 # gesture swipe left_down 4       xdotool key control+w
 # gesture swipe right_down 4      xdotool key control+shift+t
-#
-# ++++++++++++++++++++++++++++
+
+##################################################
 # Intel + Vulkan Driver
-# ++++++++++++++++++++++++++++
+##################################################
+
 # paru -S xf86-video-intel
 # paru -S lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-tools
 # sudo vim /etc/X11/xorg.conf.d/20-intel.conf
-#
+
 # Section "Device"
 #    Identifier  "Intel Graphics"
 #    Driver      "intel"
 #    Option      "DRI"    "3"
 # EndSection
 
-# ++++++++++++++++++++++++++++
+##################################################
 # NVIDIA DRIVER (https://wiki.archlinux.org/title/Bumblebee)
-# ++++++++++++++++++++++++++++
+##################################################
+
 # paru -S mesa nvidia-390xx lib32-nvidia-390xx-utils bumblebee bbswitch primus lib32-virtualgl
 # (optional): paru -S xf86-video-intel
 
@@ -53,27 +48,38 @@ ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
 # optirun glxspheres64
 # primusrun glxspheres64
 
-# ++++++++++++++++++++++++++++
+##################################################
 # ARCH UPDATE INDICATOR (https://github.com/RaphaelRochet/arch-update/wiki)
-# ++++++++++++++++++++++++++++
+##################################################
+
 # Settings: Check Update Command
 # /bin/sh -c "(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1"
 
 # Settings: Update Command
 # gnome-terminal -e 'sh -c  "ecos-update"'
 
-# ++++++++++++++++++++++++++++
+##################################################
 # FIREFOX THEME
-# ++++++++++++++++++++++++++++
+# ##################################################
+
 # Start Firefox once and execute command:
 # $HOME/.cache/theme/tweaks.sh --firefox
 
+##################################################
 # Refresh Mirrorlist
-# ++++++++++++++++++++++++++++
+# ##################################################
+
 # paru -S reflector
 # sudo reflector --verbose --country 'Germany' -l 15 -p https --sort rate --save /etc/pacman.d/mirrorlist
-#
-# ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+##################################################
+# VARIABLES
+##################################################
+
+ECOS_HOME="$HOME/.ecos"
+ECOS_CORE="$ECOS_HOME/bin/ecos"
+ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
+ECOS_CORE_URL="https://raw.githubusercontent.com/murkl/ecos/main/ecos"
 
 ##################################################
 # INSTALL
@@ -366,7 +372,6 @@ remove() {
     sudo systemctl disable gdm.service
     $ECOS_CORE --tweak remove theme_whitesur
     $ECOS_CORE --tweak remove synology-drive
-    echo "Removed"
 }
 
 ##################################################
