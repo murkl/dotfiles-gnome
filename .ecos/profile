@@ -38,7 +38,7 @@ export JAVA_HOME="$JDK_HOME"
 # STARTUP APPS
 
 # Hide mouse pointer
-unclutter --timeout 5 -jitter 50 --ignore-scrolling &
+#unclutter --timeout 5 -jitter 50 --ignore-scrolling &
 
 # ECOS Changelog
 if [ -f "$HOME/.cache/ecos/show_changelog" ]; then
