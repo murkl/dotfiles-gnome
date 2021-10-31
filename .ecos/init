@@ -157,6 +157,7 @@ install() {
     exec_paru "zenity ffmpeg youtube-dl rsync curl"
     exec_paru "pavucontrol"
     exec_paru "cava"
+    exec_paru "cups"
 
     # Hide mouse pointer
     exec_paru "unclutter"
