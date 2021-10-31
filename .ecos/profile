@@ -42,5 +42,5 @@ export JAVA_HOME="$JDK_HOME"
 
 # ECOS Changelog
 if [ -f "$HOME/.cache/ecos/show_changelog" ]; then
-    (sleep 5 && gnome-terminal -- bash -c "$ECOS_CORE --changelog") &
+    (sleep 8 && gnome-terminal -- bash -c "$ECOS_CORE --changelog") &
 fi
