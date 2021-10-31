@@ -256,7 +256,7 @@ install() {
     # https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
 
     gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q']"
-    gsettings set org.gnome.desktop.wm.keybindings minimize ['<Super>h']
+    gsettings set org.gnome.desktop.wm.keybindings minimize "['<Super>h']"
     gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source "[]"
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "[]"
