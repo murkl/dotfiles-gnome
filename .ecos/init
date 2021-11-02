@@ -136,6 +136,9 @@ install() {
     #exec_paru "gnome-shell-extension-tray-icons-reloaded-git"
     #exec_paru "gnome-shell-extension-clipboard-indicator-git"
 
+    # dash-to-panel Workaround for Bug: https://github.com/home-sweet-gnome/dash-to-panel/issues/1437
+    sudo curl -Ls https://raw.githubusercontent.com/home-sweet-gnome/dash-to-panel/81af73b23911cbbdce807566ed6ef2a864417d6c/overview.js -o /usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/overview.js
+
     # ZSH
     exec_paru "zsh-autosuggestions zsh-syntax-highlighting"
 
