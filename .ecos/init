@@ -76,10 +76,7 @@
 # VARIABLES
 ##################################################
 
-ECOS_HOME="$HOME/.ecos"
-ECOS_CORE="$ECOS_HOME/bin/ecos"
 ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
-ECOS_CORE_URL="https://raw.githubusercontent.com/murkl/ecos/main/ecos"
 
 ##################################################
 # INSTALL
@@ -91,21 +88,6 @@ install() {
     }
 
     ##################################################
-    # INSTALL ECOS CORE
-    ##################################################
-    mkdir -p "$ECOS_HOME/bin"
-
-    # Download new version
-    if ! curl -s -L "$ECOS_CORE_URL" >"$ECOS_CORE"; then
-        echo "ERROR: ECOS CORE DOWNLOAD"
-        exit 1
-    fi
-    if ! chmod +x "$ECOS_CORE"; then
-        echo "ERROR: ECOS CORE NOT FOUND"
-        exit 1
-    fi
-
-    ##################################################
     # UPDATE PARU
     ##################################################
     paru -Syyu
@@ -113,8 +95,6 @@ install() {
     ##################################################
     # INSTALL PACKAGES
     ##################################################
-
-    # install_packages() {
 
     # Gnome Minimal -  https://archlinux.org/groups/x86_64/gnome/
     exec_paru "gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
@@ -366,8 +346,7 @@ vte-terminal {
 ##################################################
 
 update() {
-    $ECOS_CORE --tweak update theme_whitesur
-    $ECOS_CORE --tweak update synology-drive
+    echo "Nothing to do..."
 }
 
 ##################################################
