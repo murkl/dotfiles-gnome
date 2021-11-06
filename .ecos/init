@@ -59,13 +59,6 @@
 # gnome-terminal -e 'sh -c  "ecos-update"'
 
 ##################################################
-# FIREFOX THEME
-# ##################################################
-
-# Start Firefox once and execute command:
-# $HOME/.cache/theme/tweaks.sh --firefox
-
-##################################################
 # Refresh Mirrorlist
 # ##################################################
 
@@ -73,16 +66,21 @@
 # sudo reflector --verbose --country 'Germany' -l 15 -p https --sort rate --save /etc/pacman.d/mirrorlist
 
 ##################################################
-# VARIABLES
-##################################################
-
-ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
-
-##################################################
 # INSTALL
 ##################################################
 
 install() {
+
+    ##################################################
+    # VARIABLES
+    ##################################################
+
+    ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
+
+    ##################################################
+    # PARU
+    ##################################################
+
     exec_paru() {
         paru --noconfirm --needed --sudoloop -S $1
     }
@@ -307,7 +305,7 @@ install() {
     ##################################################
     #gsettings set org.gnome.shell.extensions.arch-update always-visible false
     gsettings set org.gnome.shell.extensions.arch-update check-cmd "/bin/sh -c \"(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1\""
-    gsettings set org.gnome.shell.extensions.arch-update update-cmd "gnome-terminal -e 'bash -c  \"ecos --manager\"'"
+    gsettings set org.gnome.shell.extensions.arch-update update-cmd "gnome-terminal -e 'bash -c  \"ecos\"'"
 
     ##################################################
     # ENABLE GNOME TERMINAL PADDING
@@ -354,9 +352,9 @@ update() {
 ##################################################
 
 remove() {
-    sudo systemctl disable gdm.service
     $ECOS_CORE --tweak remove theme_whitesur
     $ECOS_CORE --tweak remove synology-drive
+    sudo systemctl disable gdm.service
 }
 
 ##################################################
