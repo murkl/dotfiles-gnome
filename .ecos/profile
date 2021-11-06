@@ -41,6 +41,4 @@ export JAVA_HOME="$JDK_HOME"
 #unclutter --timeout 5 -jitter 50 --ignore-scrolling &
 
 # ECOS Changelog
-if [ -f "$HOME/.cache/ecos/show_changelog" ]; then
-    (sleep 8 && gnome-terminal -- bash -c "$ECOS_CORE --changelog") &
-fi
+(sleep 8 && gnome-terminal -- bash -c "$ECOS_CORE --changelog") &
