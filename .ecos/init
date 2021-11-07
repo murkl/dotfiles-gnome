@@ -202,8 +202,15 @@ install() {
     ##################################################
 
     # GNOME DISPLAY MANAGER
-    sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "/etc/gdm/custom.conf"
-    sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "/etc/gdm/custom.conf"
+    local gdm_config_file="/etc/gdm/custom.conf"
+
+    # Enable X11 instead of Wayland
+    sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "$gdm_config_file"
+
+    # Enable Auto Login
+    if ! grep -qrnw "$gdm_config_file" -e "AutomaticLoginEnable=True"; then
+        sudo sed -i "s/^WaylandEnable=false/WaylandEnable=false\n\nAutomaticLoginEnable=True\nAutomaticLogin=$USER/g" "$gdm_config_file"
+    fi
 
     # SAMBA
     if [ ! -f "/etc/samba/smb.conf" ]; then
