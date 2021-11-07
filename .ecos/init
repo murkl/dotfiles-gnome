@@ -203,6 +203,7 @@ install() {
 
     # GNOME DISPLAY MANAGER
     sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "/etc/gdm/custom.conf"
+    sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "/etc/gdm/custom.conf"
 
     # SAMBA
     if [ ! -f "/etc/samba/smb.conf" ]; then
