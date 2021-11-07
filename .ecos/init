@@ -361,8 +361,6 @@ update() {
 ##################################################
 
 remove() {
-    $ECOS_CORE --tweak remove theme_whitesur
-    $ECOS_CORE --tweak remove synology-drive
     sudo systemctl disable gdm.service
 }
 
