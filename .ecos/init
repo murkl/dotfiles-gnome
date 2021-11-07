@@ -369,19 +369,16 @@ remove() {
 ##################################################
 
 if [ "$1" = "--update" ]; then
-    echo "UPDATING INIT SCRIPT..."
     update
     exit $?
 fi
 
 if [ "$1" = "--remove" ]; then
-    echo "REMOVING INIT SCRIPT..."
     remove
     exit $?
 fi
 
 if [ "$1" = "--install" ]; then
-    echo "INSTALLING INIT SCRIPT..."
     install "$@"
     exit $?
 fi
