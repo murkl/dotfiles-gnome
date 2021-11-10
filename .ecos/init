@@ -75,7 +75,7 @@ install() {
     # VARIABLES
     ##################################################
 
-    ECOS_INITIALIZED="$HOME/.ecos/cache/initialized"
+    ECOS_INITIALIZED="$HOME/.ecos/.workspace/initialized"
 
     ##################################################
     # PARU
