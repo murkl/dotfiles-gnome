@@ -75,7 +75,7 @@ install() {
     # VARIABLES
     ##################################################
 
-    ECOS_INITIALIZED="$HOME/.cache/ecos/initialized"
+    ECOS_INITIALIZED="$HOME/.ecos/cache/initialized"
 
     ##################################################
     # PARU
@@ -105,13 +105,13 @@ install() {
     exec_paru "gnome-shell-extension-blur-my-shell-git"
     exec_paru "gnome-shell-extension-just-perfection-desktop-git"
     exec_paru "gnome-shell-extension-x11gestures"
+    exec_paru "gnome-shell-extension-tray-icons-reloaded-git"
     #exec_paru "gnome-shell-extension-dash-to-dock"
     #exec_paru "gnome-shell-extension-sound-output-device-chooser"
     #exec_paru "gnome-shell-extension-gsconnect"
     #exec_paru "gnome-shell-extension-caffeine-git"
     #exec_paru "gnome-shell-extension-appindicator-git"
     #exec_paru "gnome-shell-extension-status-area-horizontal-spacing"
-    #exec_paru "gnome-shell-extension-tray-icons-reloaded-git"
     #exec_paru "gnome-shell-extension-clipboard-indicator-git"
 
     # dash-to-panel Workaround for Bug: https://github.com/home-sweet-gnome/dash-to-panel/issues/1437
@@ -245,7 +245,6 @@ install() {
     ##################################################
 
     $ECOS_CORE --tweak install theme_whitesur
-    $ECOS_CORE --tweak install synology-drive
 
     ##################################################
     # SET GNOME SETTINGS
