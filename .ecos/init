@@ -1,9 +1,14 @@
 #!/bin/bash
 
 ##################################################
+# Reflector:  Refresh Mirrorlist
+# ##################################################
+# paru -S reflector
+# sudo reflector --verbose --country 'Germany' -l 15 -p https --sort rate --save /etc/pacman.d/mirrorlist
+
+##################################################
 # Touchpad Gestures
 ##################################################
-
 # https://github.com/bulletmark/libinput-gestures
 
 # paru -S gestures libinput-gestures xorg-xinput
@@ -20,79 +25,18 @@
 # gesture swipe left_down 4       xdotool key control+w
 # gesture swipe right_down 4      xdotool key control+shift+t
 
-##################################################
-# Intel + Vulkan Driver
-##################################################
-
-# paru -S xf86-video-intel
-# paru -S lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-tools
-# sudo vim /etc/X11/xorg.conf.d/20-intel.conf
-
-# Section "Device"
-#    Identifier  "Intel Graphics"
-#    Driver      "intel"
-#    Option      "DRI"    "3"
-# EndSection
-
-##################################################
-# NVIDIA DRIVER (https://wiki.archlinux.org/title/Bumblebee)
-##################################################
-
-# paru -S mesa nvidia-390xx lib32-nvidia-390xx-utils bumblebee bbswitch primus lib32-virtualgl
-# (optional): paru -S xf86-video-intel
-
-# sudo gpasswd -a $USER bumblebee
-# sudo systemctl enable bumblebeed.service
-
-# Test
-# optirun glxspheres64
-# primusrun glxspheres64
-
-##################################################
-# ARCH UPDATE INDICATOR (https://github.com/RaphaelRochet/arch-update/wiki)
-##################################################
-
-# Settings: Check Update Command
-# /bin/sh -c "(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1"
-
-# Settings: Update Command
-# gnome-terminal -e 'sh -c  "ecos-update"'
-
-##################################################
-# Refresh Mirrorlist
-# ##################################################
-
-# paru -S reflector
-# sudo reflector --verbose --country 'Germany' -l 15 -p https --sort rate --save /etc/pacman.d/mirrorlist
-
-##################################################
-# INSTALL
-##################################################
-
 install() {
 
-    ##################################################
-    # VARIABLES
-    ##################################################
-
     ECOS_INITIALIZED="$HOME/.ecos/.workspace/initialized"
-
-    ##################################################
-    # PARU
-    ##################################################
 
     exec_paru() {
         paru --noconfirm --needed --sudoloop -S $1
     }
 
     ##################################################
-    # UPDATE PARU
-    ##################################################
-    paru -Syyu
-
-    ##################################################
     # INSTALL PACKAGES
     ##################################################
+    paru -Syyu
 
     # Gnome Minimal -  https://archlinux.org/groups/x86_64/gnome/
     exec_paru "gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
@@ -102,20 +46,6 @@ install() {
     exec_paru "gnome-shell-extensions"
     exec_paru "gnome-shell-extension-blur-my-shell-git"
     exec_paru "gnome-shell-extension-x11gestures"
-    #exec_paru "gnome-shell-extension-tray-icons-reloaded-git"
-    #exec_paru "gnome-shell-extension-arch-update"
-    #exec_paru "gnome-shell-extension-dash-to-panel"
-    #exec_paru "gnome-shell-extension-just-perfection-desktop-git"
-    #exec_paru "gnome-shell-extension-dash-to-dock"
-    #exec_paru "gnome-shell-extension-sound-output-device-chooser"
-    #exec_paru "gnome-shell-extension-gsconnect"
-    #exec_paru "gnome-shell-extension-caffeine-git"
-    #exec_paru "gnome-shell-extension-appindicator-git"
-    #exec_paru "gnome-shell-extension-status-area-horizontal-spacing"
-    #exec_paru "gnome-shell-extension-clipboard-indicator-git"
-
-    # dash-to-panel Workaround for Bug: https://github.com/home-sweet-gnome/dash-to-panel/issues/1437
-    sudo curl -Ls https://raw.githubusercontent.com/home-sweet-gnome/dash-to-panel/81af73b23911cbbdce807566ed6ef2a864417d6c/overview.js -o /usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/overview.js
 
     # ZSH
     exec_paru "zsh-autosuggestions zsh-syntax-highlighting"
@@ -141,9 +71,6 @@ install() {
     exec_paru "cava"
     exec_paru "cups"
 
-    # Hide mouse pointer
-    exec_paru "unclutter"
-
     # Codecs
     exec_paru "gst-libav"
 
@@ -158,7 +85,6 @@ install() {
     exec_paru "geary"
     exec_paru "keepassxc"
     exec_paru "libreoffice-still-de"
-    #exec_paru "fromscratch-bin"
 
     # Fonts
     exec_paru "ttf-dejavu"
@@ -167,7 +93,6 @@ install() {
     exec_paru "lib32-fontconfig"
 
     # Icons
-    #exec_paru "qogir-icon-theme-git elementary-icon-theme luv-icon-theme-git"
     exec_paru "qogir-icon-theme-git"
 
     # Vim
@@ -175,6 +100,9 @@ install() {
 
     # Wine & Dependencies
     exec_paru "wine-staging lutris-wine-meta winetricks"
+
+    # Hide mouse pointer
+    #exec_paru "unclutter"
 
     # VSCodium
     #exec_paru "vscodium-bin vscodium-bin-marketplace"
@@ -186,9 +114,6 @@ install() {
     # Kodi
     #exec_paru "kodi-x11 kodi-addon-inputstream-adaptive"
 
-    # Steam
-    #exec_paru "steam"
-
     # VirtualBox
     #exec_paru "virtualbox virtualbox-host-modules-arch"
 
@@ -198,21 +123,21 @@ install() {
     #exec_paru "lutris lutris-wine-meta"
 
     ##################################################
-    # INSTALL PACKAGE CONFIG
+    # CONFIGURATION
     ##################################################
 
     # GNOME DISPLAY MANAGER
     local gdm_config_file="/etc/gdm/custom.conf"
 
-    # Enable X11 instead of Wayland
+    # GNOME: Enable X11 instead of Wayland
     sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "$gdm_config_file"
 
-    # Enable Auto Login
+    # GNOME AUTO LOGIN
     if ! grep -qrnw "$gdm_config_file" -e "AutomaticLoginEnable=True"; then
         sudo sed -i "s/^WaylandEnable=false/WaylandEnable=false\n\nAutomaticLoginEnable=True\nAutomaticLogin=$USER/g" "$gdm_config_file"
     fi
 
-    # SAMBA
+    # SAMBA CONFIG
     if [ ! -f "/etc/samba/smb.conf" ]; then
         {
             echo "[global]"
@@ -222,16 +147,13 @@ install() {
         sudo mv "/tmp/smb.conf" "/etc/samba/smb.conf"
     fi
 
-    # TLP
+    # TLP CONFIG
     if [ -f "/etc/tlp.conf" ]; then
         sudo sed -i "s/^#CPU_BOOST_ON_AC=1/CPU_BOOST_ON_AC=0/g" "/etc/tlp.conf"
         sudo sed -i "s/^#CPU_BOOST_ON_BAT=0/CPU_BOOST_ON_BAT=0/g" "/etc/tlp.conf"
     fi
 
-    ##################################################
     # ENABE SERVICES
-    ##################################################
-
     sudo systemctl enable gdm.service
     sudo systemctl enable smb.service
     sudo systemctl enable nmb.service
@@ -240,27 +162,18 @@ install() {
     sudo systemctl enable bluetooth.service
     sudo systemctl enable cups.service
 
-    ##################################################
-    # INSTALL TWEAKS
-    ##################################################
-
+    # ECOS TWEAKS
     $ECOS_CORE --tweak install theme_whitesur
+    $ECOS_CORE --tweak install gnome-extension-arch_update_indicator
+    $ECOS_CORE --tweak install gnome-extension-dash_to_panel
+    $ECOS_CORE --tweak install gnome-extension-just_perfection
+    $ECOS_CORE --tweak install gnome-extension-tray_icons_reloaded
 
-    ##################################################
     # SET GNOME SETTINGS
-    ##################################################
-
-    # https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
-
-    gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q']"
-    gsettings set org.gnome.desktop.wm.keybindings minimize "['<Super>h']"
-    gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
-    gsettings set org.gnome.desktop.wm.keybindings switch-input-source "[]"
-    gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "[]"
-    gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Super>F11']"
     gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu'
     gsettings set org.gnome.mutter center-new-windows true
 
+    # SET THEMING
     if [ ! -f "$ECOS_INITIALIZED" ]; then
         gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
         gsettings set org.gnome.desktop.interface icon-theme 'ecos'
@@ -269,12 +182,21 @@ install() {
         gsettings set org.gnome.desktop.interface cursor-theme 'Qogir'
     fi
 
-    # Wallpaper
+    # WALLPAPER
     if [ ! -f "$ECOS_INITIALIZED" ]; then
         gsettings set org.gnome.desktop.background picture-uri 'file://'$HOME'/.local/share/wallpaper'
     fi
 
-    # Custom Key Bindings
+    # GNOME KEYBINDINGS
+    gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q']"
+    gsettings set org.gnome.desktop.wm.keybindings minimize "['<Super>h']"
+    gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
+    gsettings set org.gnome.desktop.wm.keybindings switch-input-source "[]"
+    gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "[]"
+    gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Super>F11']"
+
+    # Custom Bindings
+    # https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
     gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']"
 
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Terminal'
@@ -293,39 +215,21 @@ install() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ command 'toggle --app keepassxc KeePassXC'
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Super>k'
 
-    # Extensions
-    if [ ! -f "$ECOS_INITIALIZED" ]; then
-        gsettings set org.gnome.shell disable-user-extensions false
-        gsettings set org.gnome.shell disabled-extensions "['']"
-        gsettings set org.gnome.shell enabled-extensions "['user-theme@gnome-shell-extensions.gcampax.github.com', 'x11gestures@joseexposito.github.io', 'trayIconsReloaded@selfmade.pl', 'just-perfection-desktop@just-perfection', 'dash-to-panel@jderose9.github.com', 'arch-update@RaphaelRochet', 'blur-my-shell@aunetx']"
-    fi
+    # GNOME EXTENSIONS
+    gsettings set org.gnome.shell disable-user-extensions false
+    gnome-extensions enable "user-theme@gnome-shell-extensions.gcampax.github.com"
+    gnome-extensions enable "x11gestures@joseexposito.github.io"
+    gnome-extensions enable "blur-my-shell@aunetx"
 
-    # Blur My Shell
+    # Extension: Blur My Shell
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-dash false
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-panel false
 
-    # Dash to Dock
-    gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
-
-    # X11 Gestures
-    #gsettings set /org/gnome/shell/extensions/x11gestures/swipe-fingers 4
-
-    # Direcotry Icons
-    #gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon' "file://$HOME/.local/share/icons/ecos/apps/folder-projects.svg"
+    # DIRECTORY ICONS
     mkdir -p "$HOME/Projekte"
     gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon-name' 'folder-favorites'
 
-    ##################################################
-    # SET UPDATE INDICATOR
-    ##################################################
-    #gsettings set org.gnome.shell.extensions.arch-update always-visible false
-    gsettings set org.gnome.shell.extensions.arch-update check-cmd "/bin/sh -c \"(/usr/bin/checkupdates; /usr/bin/paru -Qqu --color never | sed 's/Get .*//') | sort -u -t' ' -k1,1\""
-    gsettings set org.gnome.shell.extensions.arch-update update-cmd "gnome-terminal -e 'bash -c  \"ecos\"'"
-
-    ##################################################
     # ENABLE GNOME TERMINAL PADDING
-    ##################################################
-
     mkdir -p "$HOME/.config/gtk-3.0"
     echo 'VteTerminal,
 TerminalScreen,
@@ -334,39 +238,21 @@ vte-terminal {
     -VteTerminal-inner-border: 12px 12px 12px 12px;
 }' >"$HOME/.config/gtk-3.0/gtk.css"
 
-    ##################################################
     # CLEAR PACMAN
-    ##################################################
-
     sudo pacman --noconfirm -Rs $(pacman -Qtdq)
-
-    ##################################################
-    # RESTART GNOME
-    ##################################################
-    # TODO: not working
-    #killall -3 gnome-shell
 }
 
-##################################################
 # UPDATE
-##################################################
-
 update() {
     echo "Nothing to do..."
 }
 
-##################################################
 # REMOVE
-##################################################
-
 remove() {
     sudo systemctl disable gdm.service
 }
 
-##################################################
 # ARGUMENTS
-##################################################
-
 if [ "$1" = "--update" ]; then
     update
     exit $?
@@ -382,7 +268,7 @@ if [ "$1" = "--install" ]; then
     exit $?
 fi
 
-# Help
+# HELP
 echo "USE WITH PARAMETERS"
 echo "--install"
 echo "--update"
