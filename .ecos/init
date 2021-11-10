@@ -297,7 +297,7 @@ install() {
     if [ ! -f "$ECOS_INITIALIZED" ]; then
         gsettings set org.gnome.shell disable-user-extensions false
         gsettings set org.gnome.shell disabled-extensions "['']"
-        gsettings set org.gnome.shell enabled-extensions "['user-theme@gnome-shell-extensions.gcampax.github.com', 'x11gestures@joseexposito.github.io', 'appindicatorsupport@rgcjonas.gmail.com', 'just-perfection-desktop@just-perfection', 'dash-to-panel@jderose9.github.com', 'arch-update@RaphaelRochet', 'blur-my-shell@aunetx']"
+        gsettings set org.gnome.shell enabled-extensions "['user-theme@gnome-shell-extensions.gcampax.github.com', 'x11gestures@joseexposito.github.io', 'trayIconsReloaded@selfmade.pl', 'just-perfection-desktop@just-perfection', 'dash-to-panel@jderose9.github.com', 'arch-update@RaphaelRochet', 'blur-my-shell@aunetx']"
     fi
 
     # Blur My Shell
