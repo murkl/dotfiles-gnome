@@ -230,8 +230,9 @@ install() {
     gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon-name' 'folder-favorites'
 
     # GNOME TERMINAL
-    local terminal_profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
+    local terminal_profile=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
     gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$terminal_profile/ visible-name 'ECOS'
     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$terminal_profile/ scrollbar-policy 'never'
     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$terminal_profile/ default-size-columns 180
     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$terminal_profile/ default-size-rows 40
