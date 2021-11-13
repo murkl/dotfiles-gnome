@@ -12,7 +12,7 @@ alias gt="gotop"
 alias fetch="neofetch"
 
 # Packages
-alias paci="paru -S --needed --noconfirm"
+alias paci="paru -S --needed"
 alias pacu="paru -Syyu --noconfirm"
 alias pacrm="paru -Rns"
 alias pacrmo='pacman -Qtdq > /dev/null && echo "Packages found..." && sudo pacman -Rs $(pacman -Qtdq) || echo "Nothing to clear..."'
