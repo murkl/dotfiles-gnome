@@ -57,7 +57,7 @@ install() {
     exec_paru "xorg-xrandr"
     exec_paru "gnome-keyring seahorse"
     exec_paru "gnome-tweak-tool"
-    exec_paru "gnome-logs gnome-system-log"
+    exec_paru "gnome-logs"
     exec_paru "evince eog gthumb gedit gnome-calculator totem"
     exec_paru "gnome-disk-utility gnome-usage neofetch htop"
     exec_paru "gnome-screenshot"
