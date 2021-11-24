@@ -58,7 +58,7 @@ install() {
     exec_paru "gnome-keyring seahorse"
     exec_paru "gnome-tweak-tool"
     exec_paru "gnome-logs"
-    exec_paru "baobab"    
+    exec_paru "baobab"
     exec_paru "evince eog gthumb gedit gnome-calculator totem"
     exec_paru "gnome-disk-utility gnome-usage neofetch htop"
     exec_paru "gnome-screenshot"
@@ -171,6 +171,10 @@ install() {
     $ECOS_CORE --tweak install gnome-extension-dash_to_panel
     $ECOS_CORE --tweak install gnome-extension-just_perfection
     $ECOS_CORE --tweak install gnome-extension-tray_icons_reloaded
+    $ECOS_CORE --tweak install app-horst
+    $ECOS_CORE --tweak install app-time_machine
+    $ECOS_CORE --tweak install app-persist
+    $ECOS_CORE --tweak install app-ecowave
 
     # SET GNOME SETTINGS
     gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu'
