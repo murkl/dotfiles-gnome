@@ -227,6 +227,9 @@ install() {
     gnome-extensions enable "user-theme@gnome-shell-extensions.gcampax.github.com"
     gnome-extensions enable "x11gestures@joseexposito.github.io"
     gnome-extensions enable "blur-my-shell@aunetx"
+    gnome-extensions enable "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
+    gnome-extensions enable "drive-menu@gnome-shell-extensions.gcampax.github.com"
+    gnome-extensions enable "windowsNavigator@gnome-shell-extensions.gcampax.github.com"
 
     # Extension: Blur My Shell
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-dash false
