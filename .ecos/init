@@ -141,6 +141,16 @@ install() {
         sudo sed -i "s/^WaylandEnable=false/WaylandEnable=false\n\nAutomaticLoginEnable=True\nAutomaticLogin=$USER/g" "$gdm_config_file"
     fi
 
+    # ///////////////////////////////////////////
+    # GnuPG
+    # ///////////////////////////////////////////
+
+    mkdir -p "$HOME/.local/share/gnupg"
+    echo 'pinentry-program /usr/bin/pinentry-gnome3' >"$HOME/.local/share/gnupg/gpg-agent.conf"
+    # Set correct gnupg permission
+    chmod -R go-rwx "$HOME/.local/share/gnupg"
+    echo -e "DONE"
+
     # SAMBA CONFIG
     if [ ! -f "/etc/samba/smb.conf" ]; then
         {
