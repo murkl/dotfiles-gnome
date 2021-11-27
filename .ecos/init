@@ -27,7 +27,7 @@
 
 install() {
 
-    ECOS_INITIALIZED="$HOME/.ecos/.workspace/initialized"
+    ECOS_INITIALIZED="$HOME/.ecos/.cache/state/ecos_initialized"
 
     exec_paru() {
         paru --noconfirm --needed --sudoloop -S $1
