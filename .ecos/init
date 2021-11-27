@@ -1,4 +1,6 @@
 #!/bin/bash
+VERSION="1"
+
 
 ##################################################
 # Reflector:  Refresh Mirrorlist
@@ -25,7 +27,7 @@
 # gesture swipe left_down 4       xdotool key control+w
 # gesture swipe right_down 4      xdotool key control+shift+t
 
-install() {
+init() {
 
     ECOS_INITIALIZED="$HOME/.ecos/.cache/state/ecos_initialized"
 
@@ -285,24 +287,36 @@ remove() {
     sudo systemctl disable gdm.service
 }
 
-# ARGUMENTS
+##################################################
+# START
+##################################################
+
+if [ "$1" = "--version" ]; then
+    echo -e "$VERSION"
+    exit $?
+fi
+
+if [ "$1" = "--init" ]; then
+    init "$@"
+    exit $?
+fi
+
 if [ "$1" = "--update" ]; then
-    update
+    update "$@"
     exit $?
 fi
 
 if [ "$1" = "--remove" ]; then
-    remove
+    remove "$@"
     exit $?
 fi
 
-if [ "$1" = "--install" ]; then
-    install "$@"
-    exit $?
-fi
-
+##################################################
 # HELP
+##################################################
+
 echo "USE WITH PARAMETERS"
-echo "--install"
+echo "--version"
+echo "--init"
 echo "--update"
 echo "--remove"
