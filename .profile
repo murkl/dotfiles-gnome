@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# ECOS
+source "$HOME/.ecos/profile"
+
 # PATH
 export PATH="$PATH:$HOME/.local/bin"
 
@@ -34,6 +37,3 @@ export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR/npm"
 export JDK_HOME="/usr/lib/jvm/java-11-openjdk/"
 export JAVA_HOME="$JDK_HOME"
 #export _JAVA_AWT_WM_NONREPARENTING=1
-
-# ECOS
-source "$HOME/.ecos/profile"
