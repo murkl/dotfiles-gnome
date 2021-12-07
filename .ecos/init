@@ -70,7 +70,7 @@ init() {
     exec_paru "samba"
     exec_paru "sshpass"
     exec_paru "gvfs gvfs-mtp gvfs-smb gvfs-nfs"
-    exec_paru "gnome-user-share nfs-utils"
+    exec_paru "gnome-user-share nfs-utils inetutils"
     exec_paru "wireless_tools wmctrl xdotool"
     exec_paru "zenity ffmpeg youtube-dl rsync curl"
     exec_paru "pavucontrol"
