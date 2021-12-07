@@ -57,6 +57,7 @@ init() {
 
     # System Tools
     exec_paru "xorg-xrandr"
+    exec_paru "python-nautilus"
     exec_paru "gnome-keyring seahorse"
     exec_paru "gnome-tweak-tool"
     exec_paru "gnome-logs"
