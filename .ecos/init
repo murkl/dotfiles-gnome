@@ -183,7 +183,7 @@ init() {
     # ECOS TWEAKS
     $ECOS_CORE --tweak install theme-whitesur
     $ECOS_CORE --tweak install gnome-extension-arch_update_indicator
-    $ECOS_CORE --tweak install gnome-extension-dash_to_panel
+    $ECOS_CORE --tweak install gnome-extension-dash_to_dock
     $ECOS_CORE --tweak install gnome-extension-just_perfection
     $ECOS_CORE --tweak install gnome-extension-tray_icons_reloaded
     $ECOS_CORE --tweak install app-horst
