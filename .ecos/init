@@ -1,6 +1,5 @@
 #!/bin/bash
-VERSION="1"
-
+VERSION="2"
 
 ##################################################
 # Reflector:  Refresh Mirrorlist
@@ -29,7 +28,7 @@ VERSION="1"
 
 init() {
 
-    ECOS_INITIALIZED="$HOME/.ecos/.cache/state/ecos_initialized"
+    local ECOS_INITIALIZED_STATE_FILE="$1"
 
     exec_paru() {
         paru --noconfirm --needed --sudoloop -S $1
@@ -196,7 +195,7 @@ init() {
     gsettings set org.gnome.mutter center-new-windows true
 
     # SET THEMING
-    if [ ! -f "$ECOS_INITIALIZED" ]; then
+    if [ ! -f "$ECOS_INITIALIZED_STATE_FILE" ]; then
         gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
         gsettings set org.gnome.desktop.interface icon-theme 'ecos'
         gsettings set org.gnome.desktop.interface gtk-theme 'WhiteSur-light'
@@ -205,7 +204,7 @@ init() {
     fi
 
     # WALLPAPER
-    if [ ! -f "$ECOS_INITIALIZED" ]; then
+    if [ ! -f "$ECOS_INITIALIZED_STATE_FILE" ]; then
         gsettings set org.gnome.desktop.background picture-uri 'file://'$HOME'/.local/share/wallpaper'
     fi
 
@@ -280,7 +279,7 @@ vte-terminal {
 
 # UPDATE
 update() {
-    echo "Nothing to do..."
+    return 0
 }
 
 # REMOVE
@@ -298,17 +297,17 @@ if [ "$1" = "--version" ]; then
 fi
 
 if [ "$1" = "--init" ]; then
-    init "$@"
+    init "$2"
     exit $?
 fi
 
 if [ "$1" = "--update" ]; then
-    update "$@"
+    update "$2"
     exit $?
 fi
 
 if [ "$1" = "--remove" ]; then
-    remove "$@"
+    remove "$2"
     exit $?
 fi
 
