@@ -1,46 +1,54 @@
 #!/bin/bash
-VERSION="2"
 
-##################################################
-# Reflector:  Refresh Mirrorlist
-# ##################################################
-# paru -S reflector
+# ////////////////////////////////////////////
+# SPEED UP MIRROR LIST (REFLECTOR)
+# ////////////////////////////////////////////
+#
 # sudo reflector --verbose --country 'Germany' -l 15 -p https --sort rate --save /etc/pacman.d/mirrorlist
+#
+# ////////////////////////////////////////////
 
-##################################################
-# Touchpad Gestures
-##################################################
-# https://github.com/bulletmark/libinput-gestures
+# ////////////////////////////////////////////
+# VERSION
+# ////////////////////////////////////////////
 
-# paru -S gestures libinput-gestures xorg-xinput
-# sudo gpasswd -a $USER input
-# libinput-gestures-setup autostart start
+VERSION="3"
 
-# ~/.config/libinput-gestures.conf gestures for Google Chrome
-# gesture swipe up        4       xdotool key control+plus
-# gesture swipe down      4       xdotool key control+minus
-# gesture swipe left      4       xdotool key alt+Right
-# gesture swipe right     4       xdotool key alt+Left
-# gesture swipe right_up  4       xdotool key control+Tab
-# gesture swipe left_up   4       xdotool key control+shift+Tab
-# gesture swipe left_down 4       xdotool key control+w
-# gesture swipe right_down 4      xdotool key control+shift+t
+# ////////////////////////////////////////////
+# INIT
+# ////////////////////////////////////////////
 
 init() {
 
+    # ////////////////////////////////////////////
+    # VARIABLES
+    # ////////////////////////////////////////////
+
     local ECOS_INITIALIZED_STATE_FILE="$1"
+
+    # ////////////////////////////////////////////
+    # HELPER
+    # ////////////////////////////////////////////
 
     exec_paru() {
         paru --noconfirm --needed --sudoloop -S $1
     }
 
-    ##################################################
-    # INSTALL PACKAGES
-    ##################################################
+    # ////////////////////////////////////////////
+    # UPDATE PACKAGES
+    # ////////////////////////////////////////////
+
     paru -Syyu
+
+    # ////////////////////////////////////////////
+    # INSTALL PACKAGES
+    # ////////////////////////////////////////////
 
     # Gnome Minimal -  https://archlinux.org/groups/x86_64/gnome/
     exec_paru "gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
+
+    # Nautilus
+    exec_paru "python-nautilus sushi nautilus-sendto nautilus-image-converter"
 
     # Gnome Shell Extensions
     exec_paru "chrome-gnome-shell-git"
@@ -56,11 +64,11 @@ init() {
 
     # System Tools
     exec_paru "xorg-xrandr"
-    exec_paru "python-nautilus"
     exec_paru "gnome-keyring seahorse"
     exec_paru "gnome-tweak-tool"
     exec_paru "gnome-logs"
     exec_paru "baobab"
+    exec_paru "reflector"
     exec_paru "evince eog gthumb gedit gnome-calculator totem"
     exec_paru "gnome-disk-utility gnome-usage neofetch htop"
     exec_paru "gnome-screenshot"
@@ -84,7 +92,7 @@ init() {
     exec_paru "file-roller zip unzip unrar"
 
     # Apps
-    exec_paru "firefox"
+    exec_paru "firefox firefox-i18n-de firefox-i18n-en-us"
     exec_paru "gnome-calendar"
     exec_paru "gnome-weather"
     exec_paru "rhythmbox-plugin-alternative-toolbar-git"
@@ -107,30 +115,9 @@ init() {
     # Wine & Dependencies
     exec_paru "wine-staging lutris-wine-meta winetricks"
 
-    # Hide mouse pointer
-    #exec_paru "unclutter"
-
-    # VSCodium
-    #exec_paru "vscodium-bin vscodium-bin-marketplace"
-
-    # Spotify
-    #curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | gpg --import -
-    #exec_paru "spotify-adblock-git"
-
-    # Kodi
-    #exec_paru "kodi-x11 kodi-addon-inputstream-adaptive"
-
-    # VirtualBox
-    #exec_paru "virtualbox virtualbox-host-modules-arch"
-
-    # Lutris
-    # Wine: https://github.com/lutris/docs/blob/master/WineDependencies.md
-    # Graphic Driver: https://github.com/lutris/docs/blob/master/InstallingDrivers.md
-    #exec_paru "lutris lutris-wine-meta"
-
-    ##################################################
-    # CONFIGURATION
-    ##################################################
+    # ////////////////////////////////////////////
+    # CONFIGURATION: GDM
+    # ////////////////////////////////////////////
 
     # GNOME DISPLAY MANAGER
     local gdm_config_file="/etc/gdm/custom.conf"
@@ -144,8 +131,9 @@ init() {
     fi
 
     # ///////////////////////////////////////////
-    # GnuPG
+    # CONFIGURATION: GnuPG
     # ///////////////////////////////////////////
+
     mkdir -p "$HOME/.local/share/gnupg"
     echo 'pinentry-program /usr/bin/pinentry-gnome3' >"$HOME/.local/share/gnupg/gpg-agent.conf"
     # Set correct gnupg permission
@@ -153,8 +141,9 @@ init() {
     echo -e "DONE"
 
     # ///////////////////////////////////////////
-    # SAMBA
+    # CONFIGURATION: SAMBA
     # ///////////////////////////////////////////
+
     if [ ! -f "/etc/samba/smb.conf" ]; then
         {
             echo "[global]"
@@ -164,13 +153,19 @@ init() {
         sudo mv "/tmp/smb.conf" "/etc/samba/smb.conf"
     fi
 
-    # TLP CONFIG
+    # ///////////////////////////////////////////
+    # CONFIGURATION: TLP
+    # ///////////////////////////////////////////
+
     if [ -f "/etc/tlp.conf" ]; then
         sudo sed -i "s/^#CPU_BOOST_ON_AC=1/CPU_BOOST_ON_AC=0/g" "/etc/tlp.conf"
         sudo sed -i "s/^#CPU_BOOST_ON_BAT=0/CPU_BOOST_ON_BAT=0/g" "/etc/tlp.conf"
     fi
 
-    # ENABE SERVICES
+    # ///////////////////////////////////////////
+    # SERVICES
+    # ///////////////////////////////////////////
+
     sudo systemctl enable gdm.service
     sudo systemctl enable smb.service
     sudo systemctl enable nmb.service
@@ -179,7 +174,10 @@ init() {
     sudo systemctl enable bluetooth.service
     sudo systemctl enable cups.service
 
+    # ///////////////////////////////////////////
     # ECOS TWEAKS
+    # ///////////////////////////////////////////
+
     $ECOS_CORE --tweak install theme-whitesur
     $ECOS_CORE --tweak install gnome-extension-arch_update_indicator
     $ECOS_CORE --tweak install gnome-extension-dash_to_dock
@@ -189,6 +187,10 @@ init() {
     $ECOS_CORE --tweak install app-time_machine
     $ECOS_CORE --tweak install app-persist
     $ECOS_CORE --tweak install app-ecowave
+
+    # ///////////////////////////////////////////
+    # GSETTINGS
+    # ///////////////////////////////////////////
 
     # SET GNOME SETTINGS
     gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu'
@@ -236,22 +238,9 @@ init() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ command 'toggle --app keepassxc KeePassXC'
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Super>k'
 
-    # GNOME EXTENSIONS
-    gsettings set org.gnome.shell disable-user-extensions false
-    gnome-extensions enable "user-theme@gnome-shell-extensions.gcampax.github.com"
-    gnome-extensions enable "x11gestures@joseexposito.github.io"
-    gnome-extensions enable "blur-my-shell@aunetx"
-    gnome-extensions enable "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
-    gnome-extensions enable "windowsNavigator@gnome-shell-extensions.gcampax.github.com"
-    #gnome-extensions enable "drive-menu@gnome-shell-extensions.gcampax.github.com"
-
     # Extension: Blur My Shell
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-dash false
     gsettings set org.gnome.shell.extensions.blur-my-shell blur-panel false
-
-    # DIRECTORY ICONS
-    mkdir -p "$HOME/Projekte"
-    gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon-name' 'folder-favorites'
 
     # GNOME TERMINAL
     local terminal_profile=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
@@ -264,7 +253,30 @@ init() {
     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$terminal_profile/ scroll-on-output true
     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$terminal_profile/ palette "['rgb(23,20,33)', 'rgb(192,28,40)', 'rgb(38,162,105)', 'rgb(162,115,76)', 'rgb(18,72,139)', 'rgb(163,71,186)', 'rgb(42,161,179)', 'rgb(208,207,204)', 'rgb(94,92,100)', 'rgb(246,97,81)', 'rgb(51,209,122)', 'rgb(233,173,12)', 'rgb(42,123,222)', 'rgb(192,97,203)', 'rgb(51,199,222)', 'rgb(255,255,255)']"
 
-    # Terminal Padding
+    # ///////////////////////////////////////////
+    # GNOME EXTENSIONS
+    # ///////////////////////////////////////////
+
+    # GNOME EXTENSIONS
+    gsettings set org.gnome.shell disable-user-extensions false
+    gnome-extensions enable "user-theme@gnome-shell-extensions.gcampax.github.com"
+    gnome-extensions enable "x11gestures@joseexposito.github.io"
+    gnome-extensions enable "blur-my-shell@aunetx"
+    gnome-extensions enable "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
+    gnome-extensions enable "windowsNavigator@gnome-shell-extensions.gcampax.github.com"
+    # gnome-extensions enable "drive-menu@gnome-shell-extensions.gcampax.github.com"s
+
+    # ///////////////////////////////////////////
+    # DIRECTORY ICONS
+    # ///////////////////////////////////////////
+
+    mkdir -p "$HOME/Projekte"
+    gio set -t 'string' "$HOME/Projekte" 'metadata::custom-icon-name' 'folder-favorites'
+
+    # ///////////////////////////////////////////
+    # TERMINAL PADDING
+    # ///////////////////////////////////////////
+
     mkdir -p "$HOME/.config/gtk-3.0"
     echo 'VteTerminal,
 TerminalScreen,
@@ -273,23 +285,32 @@ vte-terminal {
     -VteTerminal-inner-border: 12px 12px 12px 12px;
 }' >"$HOME/.config/gtk-3.0/gtk.css"
 
+    # ///////////////////////////////////////////
     # CLEAR PACMAN
+    # ///////////////////////////////////////////
+
     sudo pacman --noconfirm -Rs $(pacman -Qtdq)
 }
 
+# ///////////////////////////////////////////
 # UPDATE
+# ///////////////////////////////////////////
+
 update() {
     return 0
 }
 
+# ///////////////////////////////////////////
 # REMOVE
+# ///////////////////////////////////////////
+
 remove() {
     sudo systemctl disable gdm.service
 }
 
-##################################################
+# ////////////////////////////////////////////
 # START
-##################################################
+# ////////////////////////////////////////////
 
 if [ "$1" = "--version" ]; then
     echo -e "$VERSION"
@@ -311,12 +332,12 @@ if [ "$1" = "--remove" ]; then
     exit $?
 fi
 
-##################################################
+# ////////////////////////////////////////////
 # HELP
-##################################################
+# ////////////////////////////////////////////
 
 echo "USE WITH PARAMETERS"
 echo "--version"
-echo "--init"
+echo "--init /path/to/initialized_file"
 echo "--update"
 echo "--remove"
