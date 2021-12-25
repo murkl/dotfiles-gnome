@@ -103,7 +103,7 @@ init() {
     local gdm_config_file="/etc/gdm/custom.conf"
 
     # GNOME: Enable X11 instead of Wayland
-    sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "$gdm_config_file"
+    #sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "$gdm_config_file"
 
     # GNOME AUTO LOGIN
     if ! grep -qrnw "$gdm_config_file" -e "AutomaticLoginEnable=True"; then
