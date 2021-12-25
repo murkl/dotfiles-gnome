@@ -40,6 +40,7 @@ init() {
 # ///////////////////////////////////////////
 
 update() {
+
     exec_paru() {
         paru --noconfirm --needed --sudoloop -S $1
     }
@@ -105,6 +106,8 @@ update() {
     exec_paru "firefox firefox-i18n-de firefox-i18n-en-us"
     exec_paru "gnome-calendar"
     exec_paru "gnome-weather"
+    exec_paru "gnome-boxes"
+    exec_paru "gnome-connections"
     exec_paru "rhythmbox-plugin-alternative-toolbar-git"
     exec_paru "geary"
     exec_paru "keepassxc"
@@ -245,10 +248,10 @@ update() {
     # GNOME EXTENSIONS
     gsettings set org.gnome.shell disable-user-extensions false
     gnome-extensions enable "user-theme@gnome-shell-extensions.gcampax.github.com"
-    gnome-extensions enable "x11gestures@joseexposito.github.io"
     gnome-extensions enable "blur-my-shell@aunetx"
     gnome-extensions enable "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
     gnome-extensions enable "windowsNavigator@gnome-shell-extensions.gcampax.github.com"
+    # gnome-extensions enable "x11gestures@joseexposito.github.io"
     # gnome-extensions enable "drive-menu@gnome-shell-extensions.gcampax.github.com"s
 
     # ///////////////////////////////////////////
