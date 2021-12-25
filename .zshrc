@@ -1,5 +1,6 @@
 # You may need to manually set your language environment
 #export LANG=de_DE.UTF-8
+#export ZDOTDIR="$HOME/.zsh"
 
 # Colors
 autoload -U colors && colors # Load colors
@@ -31,7 +32,7 @@ PROMPT='%F{magenta}%~  %F{green}➤  %F{blue}${vcs_info_msg_0_}%f'
 # History
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE="${ZDOTDIR}/history"
+HISTFILE="$HOME/.zsh_history"
 
 # BINDINGS
 ##############################################################
@@ -144,4 +145,4 @@ touch "$HOME/.config/aliases"
 source "$HOME/.config/aliases" 2>/dev/null
 
 # ECOS
-source "$HOME/.ecos/profile"
+#source "$HOME/.ecos/profile"
