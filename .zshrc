@@ -143,6 +143,3 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 # Source Aliases
 touch "$HOME/.config/aliases"
 source "$HOME/.config/aliases" 2>/dev/null
-
-# ECOS
-#source "$HOME/.ecos/profile"
