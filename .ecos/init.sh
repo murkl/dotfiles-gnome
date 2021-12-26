@@ -328,6 +328,6 @@ fi
 
 echo "USE WITH PARAMETERS"
 echo "--version"
-echo "--init /path/to/initialized_file"
+echo "--init"
 echo "--update"
 echo "--remove"
