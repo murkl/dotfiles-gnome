@@ -58,7 +58,7 @@ update() {
     # Gnome Minimal -  https://archlinux.org/groups/x86_64/gnome/
     exec_paru "gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
 
-    # Nautilus
+    # Nautilus Addons
     exec_paru "python-nautilus sushi nautilus-sendto nautilus-image-converter"
 
     # Gnome Shell Extensions
@@ -67,7 +67,7 @@ update() {
     exec_paru "gnome-shell-extension-blur-my-shell-git"
     exec_paru "gnome-shell-extension-x11gestures"
 
-    # ZSH
+    # ZSH Addons
     exec_paru "zsh-autosuggestions zsh-syntax-highlighting"
 
     # Mouse Gestures
@@ -76,14 +76,10 @@ update() {
     # System Tools
     exec_paru "xorg-xrandr"
     exec_paru "gnome-keyring seahorse"
-    exec_paru "gnome-tweak-tool"
-    exec_paru "gnome-logs"
     exec_paru "baobab"
     exec_paru "reflector"
-    exec_paru "evince eog gthumb gedit gnome-calculator totem"
-    exec_paru "gnome-disk-utility gnome-usage neofetch htop"
-    exec_paru "gnome-screenshot"
-    exec_paru "gnome-backgrounds"
+    exec_paru "evince eog gthumb gedit totem"
+    exec_paru "neofetch htop"
     exec_paru "pacman-contrib man-db"
     exec_paru "hunspell hunspell-en_us hunspell-de"
     exec_paru "samba"
@@ -93,25 +89,23 @@ update() {
     exec_paru "wireless_tools wmctrl xdotool"
     exec_paru "zenity ffmpeg youtube-dl rsync curl"
     exec_paru "pavucontrol"
-    exec_paru "cava"
     exec_paru "cups"
 
-    # Codecs
-    exec_paru "gst-libav"
-
-    # Archive Manager
-    exec_paru "file-roller zip unzip unrar"
-
-    # Apps
-    exec_paru "firefox firefox-i18n-de firefox-i18n-en-us"
+    # GNOME Apps
+    exec_paru "gnome-calculator"
+    exec_paru "gnome-screenshot"
+    exec_paru "gnome-backgrounds"
+    exec_paru "gnome-tweak-tool"
+    exec_paru "gnome-logs"
     exec_paru "gnome-calendar"
     exec_paru "gnome-weather"
     exec_paru "gnome-boxes"
     exec_paru "gnome-connections"
-    exec_paru "rhythmbox-plugin-alternative-toolbar-git"
-    exec_paru "geary"
-    exec_paru "keepassxc"
-    exec_paru "libreoffice-still-de"
+    exec_paru "gnome-disk-utility"
+    exec_paru "gnome-usage"
+
+    # Codecs
+    exec_paru "gst-libav"
 
     # Fonts
     exec_paru "ttf-dejavu"
@@ -122,11 +116,27 @@ update() {
     # Icons
     exec_paru "qogir-icon-theme-git"
 
+    # Archive Manager
+    exec_paru "file-roller zip unzip unrar"
+
+    # Apps
+    exec_paru "firefox firefox-i18n-de firefox-i18n-en-us"
+    exec_paru "rhythmbox-plugin-alternative-toolbar-git"
+    exec_paru "geary"
+    exec_paru "keepassxc"
+    exec_paru "cava"
+
+    # LibreOffice
+    exec_paru "libreoffice-still libreoffice-still-de"
+
     # Vim
     exec_paru "vim"
 
+    # VSCodium
+    exec_paru "vscodium-bin vscodium-bin-marketplace"
+
     # Wine & Dependencies
-    exec_paru "wine-staging lutris-wine-meta winetricks"
+    exec_paru "wine-staging winetricks lutris lutris-wine-meta"
 
     # ////////////////////////////////////////////
     # CONFIGURATION: GDM
