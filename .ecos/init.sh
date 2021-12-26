@@ -70,9 +70,6 @@ update() {
     # ZSH Addons
     exec_paru "zsh-autosuggestions zsh-syntax-highlighting"
 
-    # Mouse Gestures
-    exec_paru "touchegg touche"
-
     # System Tools
     exec_paru "xorg-xrandr"
     exec_paru "gnome-keyring seahorse"
@@ -118,6 +115,9 @@ update() {
 
     # Archive Manager
     exec_paru "file-roller zip unzip unrar"
+
+    # Mouse Gestures
+    #exec_paru "touchegg touche"
 
     # Apps
     exec_paru "firefox firefox-i18n-de firefox-i18n-en-us"
@@ -192,10 +192,10 @@ update() {
     sudo systemctl enable gdm.service
     sudo systemctl enable smb.service
     sudo systemctl enable nmb.service
-    sudo systemctl enable touchegg.service
     sudo systemctl enable avahi-daemon
     sudo systemctl enable bluetooth.service
     sudo systemctl enable cups.service
+    #sudo systemctl enable touchegg.service
 
     # ///////////////////////////////////////////
     # ECOS TWEAKS
