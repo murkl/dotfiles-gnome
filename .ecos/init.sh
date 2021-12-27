@@ -64,8 +64,7 @@ update() {
     # Gnome Shell Extensions
     exec_paru "chrome-gnome-shell-git"
     exec_paru "gnome-shell-extensions"
-    exec_paru "gnome-shell-extension-blur-my-shell-git"
-    exec_paru "gnome-shell-extension-x11gestures"
+    # exec_paru "gnome-shell-extension-x11gestures"
 
     # ZSH Addons
     exec_paru "zsh-autosuggestions zsh-syntax-highlighting"
