@@ -246,10 +246,6 @@ update() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ command 'toggle --app keepassxc KeePassXC'
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Super>k'
 
-    # Extension: Blur My Shell
-    gsettings set org.gnome.shell.extensions.blur-my-shell blur-dash false
-    gsettings set org.gnome.shell.extensions.blur-my-shell blur-panel false
-
     # ///////////////////////////////////////////
     # GNOME EXTENSIONS
     # ///////////////////////////////////////////
@@ -257,7 +253,6 @@ update() {
     # GNOME EXTENSIONS
     gsettings set org.gnome.shell disable-user-extensions false
     gnome-extensions enable "user-theme@gnome-shell-extensions.gcampax.github.com"
-    gnome-extensions enable "blur-my-shell@aunetx"
     gnome-extensions enable "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
     gnome-extensions enable "windowsNavigator@gnome-shell-extensions.gcampax.github.com"
     # gnome-extensions enable "x11gestures@joseexposito.github.io"
