@@ -205,6 +205,7 @@ update() {
     $ECOS_CORE --tweak install gnome-extension-dash_to_dock
     $ECOS_CORE --tweak install gnome-extension-just_perfection
     $ECOS_CORE --tweak install gnome-extension-tray_icons_reloaded
+    $ECOS_CORE --tweak install gnome-extension-blur_my_shell
     $ECOS_CORE --tweak install app-horst
     $ECOS_CORE --tweak install app-time_machine
     $ECOS_CORE --tweak install app-persist
