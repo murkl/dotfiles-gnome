@@ -16,7 +16,7 @@ init() {
     # SET THEMING
     gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
     gsettings set org.gnome.desktop.interface icon-theme 'ecos'
-    gsettings set org.gnome.desktop.interface gtk-theme 'WhiteSur-light'
+    gsettings set org.gnome.desktop.interface gtk-theme 'WhiteSur-light-solid'
     gsettings set org.gnome.shell.extensions.user-theme name 'WhiteSur-light'
     gsettings set org.gnome.desktop.interface cursor-theme 'Qogir'
 
