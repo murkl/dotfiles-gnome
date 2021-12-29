@@ -116,7 +116,7 @@ update() {
     exec_paru "file-roller zip unzip unrar"
 
     # Mouse Gestures
-    #exec_paru "touchegg touche"
+    #exec_paru "touche touchegg"
 
     # Apps
     exec_paru "firefox firefox-i18n-de firefox-i18n-en-us"
