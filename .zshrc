@@ -142,6 +142,10 @@ bindkey ' ' magic-space
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# Source User Profile
+touch "$HOME/.ecos/user.profile"
+source "$HOME/.ecos/profile" 2>/dev/null
+
 # Source Aliases
 touch "$HOME/.config/aliases"
 source "$HOME/.config/aliases" 2>/dev/null
