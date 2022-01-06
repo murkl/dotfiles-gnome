@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Games
+Exec=gnome-terminal
+Icon=ecos-seperator-games
+Type=Application

@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Apps
+Exec=gnome-terminal
+Icon=ecos-seperator-apps
+Type=Application
