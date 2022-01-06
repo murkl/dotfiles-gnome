@@ -144,7 +144,7 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 # Source User Profile
 touch "$HOME/.ecos/user.profile"
-source "$HOME/.ecos/profile" 2>/dev/null
+source "$HOME/.ecos/user.profile" 2>/dev/null
 
 # Source Aliases
 touch "$HOME/.config/aliases"
