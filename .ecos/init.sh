@@ -124,6 +124,7 @@ update() {
     exec_paru "geary"
     exec_paru "keepassxc"
     exec_paru "cava"
+    exec_paru "xpad"
 
     # LibreOffice
     exec_paru "libreoffice-still libreoffice-still-de"
