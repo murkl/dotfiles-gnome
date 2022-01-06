@@ -219,6 +219,7 @@ update() {
     # SET GNOME SETTINGS
     gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu'
     gsettings set org.gnome.mutter center-new-windows true
+    gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'
 
     # GNOME KEYBINDINGS
     gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q']"
