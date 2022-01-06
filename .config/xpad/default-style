@@ -13,7 +13,7 @@ use_text 1
 fontname Source Code Pro 10
 toolbar 0
 auto_hide_toolbar 1
-scrollbar 1
+scrollbar 0
 buttons New, Delete, Separator, Cut, Copy, Paste, Separator, Undo, Redo
 autostart_wait_systray 0
 autostart_delay 0
