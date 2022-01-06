@@ -1,7 +1,8 @@
 [Icon Theme]
 Name=ecos-icons
 Comment=Ecos Icons
-Inherits=Qogir
+#Inherits=WhiteSur,Qogir
+Inherits=Qogir,WhiteSur
 Directories=apps
 
 [apps]
