@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Lutris
+Comment=video game preservation platform
+Categories=Game;
+Keywords=gaming;wine;emulator;
+Exec=lutris %U
+Icon=lutris-app
+Terminal=false
+Type=Application
+MimeType=x-scheme-handler/lutris;
