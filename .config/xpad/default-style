@@ -6,7 +6,7 @@ edit_lock 0
 sticky_on_start 0
 tray_enabled 0
 tray_click_configuration 1
-back rgb(129,161,193)
+back rgb(235,203,139)
 use_back 1
 text rgb(76,86,106)
 use_text 1
