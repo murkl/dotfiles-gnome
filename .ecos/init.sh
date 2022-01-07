@@ -70,6 +70,7 @@ update() {
     exec_paru "zsh-autosuggestions zsh-syntax-highlighting"
 
     # System Tools
+    exec_paru "linux-headers"
     exec_paru "xorg-xrandr"
     exec_paru "gnome-keyring seahorse"
     exec_paru "baobab"
