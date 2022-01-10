@@ -11,6 +11,11 @@ alias ka="killall"
 alias gt="gotop"
 alias fetch="neofetch"
 
+# Change dir
+alias .="cd .."
+alias ..="cd ../.."
+alias ...="cd ../../.."
+
 # Packages
 alias paci="paru -S --needed"
 alias pacu="paru -Syyu --noconfirm"
