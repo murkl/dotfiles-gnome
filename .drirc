@@ -1,3 +1,6 @@
+# Workaround for: https://github.com/yilozt/mutter-rounded
+# Only when blur-my-shell extensions is enabled
+
 <device screen="0" driver="dri2">
     <application name="Default">
         <option name="vblank_mode" value="0"/>
