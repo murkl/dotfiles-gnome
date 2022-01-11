@@ -1,6 +1,20 @@
-# You may need to manually set your language environment
-#export LANG=de_DE.UTF-8
-#export ZDOTDIR="$HOME/.zsh"
+# ///////////////////////////////////////////////
+# VARIABLES
+# ///////////////////////////////////////////////
+
+ALIASES_FILE="$HOME/.config/aliases"
+ZSH_HISTORY_FILE="$HOME/.zsh_history"
+
+# ///////////////////////////////////////////////
+# EXPORT ENV
+# ///////////////////////////////////////////////
+
+# export ZDOTDIR="$HOME/config/zsh"
+# export LANG=de_DE.UTF-8
+
+# ///////////////////////////////////////////////
+# SETTINGS
+# ///////////////////////////////////////////////
 
 # Colors
 autoload -U colors && colors # Load colors
@@ -31,13 +45,18 @@ setopt PROMPT_SUBST
 #PROMPT='%F{magenta}%~  %F{green}➤  %F{blue}${vcs_info_msg_0_}%f'
 PROMPT='%F{magenta}%~ %F{green}➤  %F{blue}${vcs_info_msg_0_}%f'
 
-# History
+# ///////////////////////////////////////////////
+# HISTORY
+# ///////////////////////////////////////////////
+
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE="$HOME/.zsh_history"
+HISTFILE="$ZSH_HISTORY_FILE"
 
-# BINDINGS
-##############################################################
+# ///////////////////////////////////////////////
+# KEY BINDINGS
+# ///////////////////////////////////////////////
+
 # Source: https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/key-bindings.zsh
 
 # Use emacs key bindings
@@ -138,14 +157,16 @@ bindkey -s '\el' 'ls\n'                          # [Esc-l] - run command: ls
 bindkey '^r' history-incremental-search-backward # [Ctrl-r] - Search backward incrementally for a specified string. The string may begin with ^ to anchor the search to the beginning of the line.
 bindkey ' ' magic-space
 
-# Plugins
+///////////////////////////////////////////////
+# PLUGINS
+///////////////////////////////////////////////
+
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Source User Profile
-touch "$HOME/.ecos/user.profile"
-source "$HOME/.ecos/user.profile" 2>/dev/null
+///////////////////////////////////////////////
+# ALIASES
+///////////////////////////////////////////////
 
-# Source Aliases
-touch "$HOME/.config/aliases"
-source "$HOME/.config/aliases" 2>/dev/null
+touch "$ALIASES_FILE"
+source "$ALIASES_FILE" 2>/dev/null
