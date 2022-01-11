@@ -76,7 +76,7 @@ update() {
     exec_paru "baobab"
     exec_paru "reflector"
     exec_paru "evince eog gthumb gedit totem"
-    exec_paru "neofetch htop"
+    exec_paru "neofetch htop gotop-bin"
     exec_paru "pacman-contrib man-db"
     exec_paru "hunspell hunspell-en_us hunspell-de"
     exec_paru "samba"
