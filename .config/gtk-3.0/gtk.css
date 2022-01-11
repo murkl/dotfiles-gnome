@@ -1,0 +1,56 @@
+VteTerminal,
+TerminalScreen,
+vte-terminal {
+    padding: 24px 32px 32px 32px;
+    -VteTerminal-inner-border: 12px 12px 12px 12px;
+}
+
+
+window.ssd headerbar.titlebar {
+    min-height: 0;
+    padding-top: 1.4px;
+    padding-bottom: 1.4px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+window.ssd headerbar.titlebar button.titlebutton {
+    min-height: 0;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    min-width: 2px;
+
+}
+
+headerbar.titlebar button.titlebutton {
+    margin: 4px 0px 4px 0px;
+}
+
+headerbar.titlebar {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+headerbar {
+    min-height: 38px;
+    padding: 4px 10px 4px 10px
+}
+
+headerbar entry,
+headerbar spinbutton,
+headerbar button,
+headerbar separator {
+    margin-top: 1.5px;
+    margin-bottom: 1.5px;
+    min-width: 2px;
+}
+
+.default-decoration {
+    min-height: 0;
+    padding: 0.5px
+}
+
+.default-decoration .titlebutton {
+    min-height: 10px;
+    min-width: 10px;
+}

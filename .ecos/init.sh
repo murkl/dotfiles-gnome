@@ -275,13 +275,13 @@ update() {
     # TERMINAL PADDING
     # ///////////////////////////////////////////
 
-    mkdir -p "$HOME/.config/gtk-3.0"
-    echo 'VteTerminal,
-TerminalScreen,
-vte-terminal {
-    padding: 24px 32px 32px 32px;
-    -VteTerminal-inner-border: 12px 12px 12px 12px;
-}' >"$HOME/.config/gtk-3.0/gtk.css"
+    #     mkdir -p "$HOME/.config/gtk-3.0"
+    #     echo 'VteTerminal,
+    # TerminalScreen,
+    # vte-terminal {
+    #     padding: 24px 32px 32px 32px;
+    #     -VteTerminal-inner-border: 12px 12px 12px 12px;
+    # }' >"$HOME/.config/gtk-3.0/gtk.css"
 
     # ///////////////////////////////////////////
     # CLEAR PACMAN
