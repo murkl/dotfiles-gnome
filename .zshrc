@@ -157,16 +157,16 @@ bindkey -s '\el' 'ls\n'                          # [Esc-l] - run command: ls
 bindkey '^r' history-incremental-search-backward # [Ctrl-r] - Search backward incrementally for a specified string. The string may begin with ^ to anchor the search to the beginning of the line.
 bindkey ' ' magic-space
 
-///////////////////////////////////////////////
+# ///////////////////////////////////////////////
 # PLUGINS
-///////////////////////////////////////////////
+# ///////////////////////////////////////////////
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-///////////////////////////////////////////////
+# ///////////////////////////////////////////////
 # ALIASES
-///////////////////////////////////////////////
+# ///////////////////////////////////////////////
 
 touch "$ALIASES_FILE"
 source "$ALIASES_FILE" 2>/dev/null
