@@ -186,10 +186,10 @@ update() {
     # CONFIGURATION: TLP
     # ///////////////////////////////////////////
 
-    if [ -f "/etc/tlp.conf" ]; then
-        sudo sed -i "s/^#CPU_BOOST_ON_AC=1/CPU_BOOST_ON_AC=0/g" "/etc/tlp.conf"
-        sudo sed -i "s/^#CPU_BOOST_ON_BAT=0/CPU_BOOST_ON_BAT=0/g" "/etc/tlp.conf"
-    fi
+    # if [ -f "/etc/tlp.conf" ]; then
+    #     sudo sed -i "s/^#CPU_BOOST_ON_AC=1/CPU_BOOST_ON_AC=0/g" "/etc/tlp.conf"
+    #     sudo sed -i "s/^#CPU_BOOST_ON_BAT=0/CPU_BOOST_ON_BAT=0/g" "/etc/tlp.conf"
+    # fi
 
     # ///////////////////////////////////////////
     # SERVICES
