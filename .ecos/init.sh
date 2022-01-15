@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ECOS_CORE="$HOME/.ecos/.system/repo/ecos"
 VERSION="3"
 
 # ////////////////////////////////////////////
