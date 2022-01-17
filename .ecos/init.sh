@@ -8,22 +8,20 @@ VERSION="3"
 
 init() {
 
-    # Install Packages
+    # INSTALL PACKAGES
     update
 
-    # Set Init Configuration
-
-    # SET THEMING
+    # CONFIG: SET THEMING
     gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
     gsettings set org.gnome.desktop.interface icon-theme 'ecos'
     gsettings set org.gnome.desktop.interface gtk-theme 'WhiteSur-light-solid'
     gsettings set org.gnome.shell.extensions.user-theme name 'WhiteSur-light'
     gsettings set org.gnome.desktop.interface cursor-theme 'Qogir'
 
-    # WALLPAPER
+    # CONFIG: WALLPAPER
     gsettings set org.gnome.desktop.background picture-uri 'file://'$HOME'/.local/share/wallpaper'
 
-    # GNOME TERMINAL
+    # CONFIG: GNOME TERMINAL
     local terminal_profile=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
     gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark'
     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$terminal_profile/ visible-name 'ECOS'
@@ -67,7 +65,9 @@ update() {
     # Gnome Shell Extensions
     exec_paru "chrome-gnome-shell-git"
     exec_paru "gnome-shell-extensions"
-    # exec_paru "gnome-shell-extension-x11gestures"
+
+    # X11 Mouse Gestures
+    # exec_paru "touche touchegg gnome-shell-extension-x11gestures"
 
     # ZSH Addons
     exec_paru "zsh-autosuggestions zsh-syntax-highlighting"
@@ -118,9 +118,6 @@ update() {
 
     # Archive Manager
     exec_paru "file-roller zip unzip unrar"
-
-    # Mouse Gestures
-    #exec_paru "touche touchegg"
 
     # Apps
     exec_paru "firefox firefox-i18n-de firefox-i18n-en-us"
@@ -219,13 +216,20 @@ update() {
     $ECOS_CORE --tweak install app-ecowave
 
     # ///////////////////////////////////////////
-    # GSETTINGS
+    # GSETTINGS / DCONF
     # ///////////////////////////////////////////
+
+    # SET GNOME MUTTER SETTINGS
+    gsettings set org.gnome.mutter center-new-windows true
+    gsettings set org.gnome.mutter round-corners-radius 16
+    gsettings set org.gnome.mutter clip-edge-padding '{"global":[1,1,2,1],"apps":{}}'
+
+    # DISABLE MOUSE ACCELATION
+    gsettings set org.gnome.desktop.peripherals.mouse speed 0.0
+    gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'
 
     # SET GNOME SETTINGS
     gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:appmenu'
-    gsettings set org.gnome.mutter center-new-windows true
-    gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'
 
     # GNOME KEYBINDINGS
     gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q']"
@@ -235,8 +239,7 @@ update() {
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "[]"
     gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Super>F11']"
 
-    # Custom Bindings
-    # https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
+    # CUSTOM KEYBINDINGS - https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
     gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']"
 
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Terminal'
@@ -254,6 +257,10 @@ update() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ name 'KeePass'
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ command 'toggle --app keepassxc KeePassXC'
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Super>k'
+
+    # DEFAULT APP LIST
+    # gsettings set org.gnome.shell favorite-apps ['org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.keepassxc.KeePassXC.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'telegramdesktop.desktop', 'whatsapp-for-linux.desktop', 'spotify.desktop', 'xpad.desktop', 'synology-note-station-client.desktop', 'persist.desktop', 'libreoffice-startcenter.desktop', 'codium.desktop', 'ecos-seperator-games.desktop', 'steam.desktop', 'net.lutris.Lutris.desktop', 'd2launcher.desktop', 'teamspeak3.desktop', 'discord.desktop', 'ecos-seperator-system.desktop', 'time-machine.desktop', 'horst.desktop', 'ecos.desktop', 'gnome-control-center.desktop']
+    gsettings set org.gnome.shell favorite-apps ['org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.keepassxc.KeePassXC.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'xpad.desktop', 'persist.desktop', 'libreoffice-startcenter.desktop', 'codium.desktop', 'ecos-seperator-games.desktop', 'net.lutris.Lutris.desktop', 'ecos-seperator-system.desktop', 'time-machine.desktop', 'horst.desktop', 'ecos.desktop', 'gnome-control-center.desktop']
 
     # ///////////////////////////////////////////
     # GNOME EXTENSIONS
