@@ -203,6 +203,7 @@ update() {
     # ECOS TWEAKS
     # ///////////////////////////////////////////
 
+    $ECOS_CORE --tweak install plymouth
     $ECOS_CORE --tweak install theme-whitesur
     $ECOS_CORE --tweak install gnome-extension-arch_update_indicator
     $ECOS_CORE --tweak install gnome-extension-dash_to_dock
