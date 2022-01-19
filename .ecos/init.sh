@@ -129,8 +129,8 @@ update() {
     # LibreOffice
     exec_paru "libreoffice-still libreoffice-still-de"
 
-    # Vim
-    exec_paru "vim"
+    # Terminal Editor
+    exec_paru "vim nano"
 
     # VSCodium
     exec_paru "vscodium-bin vscodium-bin-marketplace"
