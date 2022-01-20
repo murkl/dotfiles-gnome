@@ -53,10 +53,8 @@ update() {
     # ////////////////////////////////////////////
 
     # Gnome Minimal -  https://archlinux.org/groups/x86_64/gnome/
-    exec_paru "gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
-
     # Mutter Rounded Corners (open settings: mutter_settings)
-    exec_paru "mutter-rounded"
+    exec_paru "gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs mutter-rounded"
 
     # Nautilus Addons
     exec_paru "python-nautilus sushi nautilus-sendto nautilus-image-converter"
