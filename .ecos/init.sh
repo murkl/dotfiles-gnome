@@ -97,7 +97,7 @@ update() {
     exec_paru "gnome-backgrounds"
     exec_paru "gnome-tweak-tool"
     exec_paru "gnome-logs"
-    exec_paru "gnome-calendar"
+    exec_paru "gnome-calendar evolution"
     exec_paru "gnome-weather"
     exec_paru "gnome-boxes"
     exec_paru "gnome-connections"
