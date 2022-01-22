@@ -8,7 +8,7 @@ vte-terminal {
 
 /* SOURCE: https://gist.github.com/Gictorbit/ee2f0a7b077ea10381165fb3b6e6dea3 */
 
-window.ssd headerbar.titlebar {
+/* window.ssd headerbar.titlebar {
     min-height: 0;
     padding-top: 1.4px;
     padding-bottom: 1.4px;
@@ -55,4 +55,4 @@ headerbar separator {
 .default-decoration .titlebutton {
     min-height: 10px;
     min-width: 10px;
-}
+} */
