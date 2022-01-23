@@ -55,8 +55,8 @@ update() {
 
     # Gnome Minimal -  https://archlinux.org/groups/x86_64/gnome/
     # Mutter Rounded Corners (open settings: mutter_settings)
-    #exec_paru "mutter-rounded" # Install first to prevent conflict with original mutter
-    exec_paru "gdm gnome-shell mutter-rounded gnome-control-center gnome-terminal nautilus xdg-user-dirs"
+    exec_paru "mutter-rounded" # Install first to prevent conflict with original mutter
+    exec_paru "gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
 
     # Nautilus Addons
     exec_paru "python-nautilus sushi nautilus-sendto nautilus-image-converter"
