@@ -74,6 +74,7 @@ update() {
     # System Tools
     exec_paru "linux-headers"
     exec_paru "xorg-xrandr"
+    exec_paru "iw"
     exec_paru "gnome-keyring seahorse"
     exec_paru "baobab"
     exec_paru "reflector"
