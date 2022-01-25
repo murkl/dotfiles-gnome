@@ -33,7 +33,10 @@ init() {
     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$terminal_profile/ scroll-on-keystroke false
 
     # NAUTILUS
+    gsettings set org.gtk.Settings.FileChooser sort-directories-first true
     gsettings set org.gnome.nautilus.icon-view default-zoom-level 'standard'
+    gsettings set org.gnome.nautilus.window-state initial-size "(1400, 700)"
+    gsettings set org.gnome.nautilus.window-state sidebar-width 280
 }
 
 # ///////////////////////////////////////////
@@ -77,7 +80,7 @@ update() {
     # System Tools
     exec_paru "linux-headers"
     exec_paru "xorg-xrandr"
-    exec_paru "iw"
+    exec_paru "iw wireless_tools"
     exec_paru "gnome-keyring seahorse"
     exec_paru "baobab"
     exec_paru "reflector"
@@ -89,8 +92,8 @@ update() {
     exec_paru "sshpass"
     exec_paru "gvfs gvfs-mtp gvfs-smb gvfs-nfs"
     exec_paru "gnome-user-share nfs-utils inetutils"
-    exec_paru "wireless_tools wmctrl xdotool"
-    exec_paru "zenity ffmpeg youtube-dl rsync curl"
+    exec_paru "wmctrl xdotool"
+    exec_paru "zenity ffmpeg youtube-dl rsync curl jq"
     exec_paru "pavucontrol"
     exec_paru "cups"
 
@@ -109,6 +112,9 @@ update() {
 
     # Codecs
     exec_paru "gst-libav"
+
+    # Libraries
+    exec_paru "sdl_image lib32-sdl_image"
 
     # Fonts
     exec_paru "ttf-dejavu"
