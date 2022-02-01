@@ -50,7 +50,7 @@ update() {
     }
 
     exec_paru_conflict() {
-        yes | LC_ALL=en_US.UTF-8 paru --sudoloop --needed -S mutter-rounded
+        yes | LC_ALL=en_US.UTF-8 paru --sudoloop --needed -S $1
     }
 
     # ////////////////////////////////////////////
