@@ -50,7 +50,7 @@ update() {
     }
 
     exec_paru_conflict() {
-        yes | LC_ALL=en_US.UTF-8 paru --sudoloop --needed -S $1
+        yes | LC_ALL=en_US.UTF-8 paru --sudoloop --needed --skipreview --useask -S $1
     }
 
     # ////////////////////////////////////////////
