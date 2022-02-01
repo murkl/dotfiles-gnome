@@ -50,8 +50,7 @@ update() {
     }
 
     exec_paru_conflict() {
-        exec_paru $1
-        yes | paru --sudoloop -S $1
+        yes | paru --sudoloop --useaks -S $1
     }
 
     # ////////////////////////////////////////////
