@@ -46,7 +46,7 @@ init() {
 update() {
 
     exec_paru() {
-        paru --noconfirm --needed --sudoloop -S $1
+        yes | paru --noconfirm --needed --sudoloop -S $1
     }
 
     # ////////////////////////////////////////////
