@@ -50,13 +50,13 @@ update() {
     }
 
     exec_paru_conflict() {
-        yes | paru --noconfirm --needed --sudoloop -S $1
+        yes | paru --needed --sudoloop -S $1
     }
 
     # ////////////////////////////////////////////
     # UPDATE PACKAGES
     # ////////////////////////////////////////////
-
+    paru -Syu --noconfirm archlinux-keyring
     paru -Syyu
 
     # ////////////////////////////////////////////
