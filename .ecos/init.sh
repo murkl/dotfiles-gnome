@@ -93,7 +93,7 @@ update() {
     exec_paru "gvfs gvfs-mtp gvfs-smb gvfs-nfs"
     exec_paru "gnome-user-share nfs-utils inetutils"
     exec_paru "wmctrl xdotool"
-    exec_paru "zenity ffmpeg youtube-dl rsync curl jq"
+    exec_paru "zenity ffmpeg youtube-dl rsync curl wget jq"
     exec_paru "pavucontrol"
     exec_paru "cups"
 
