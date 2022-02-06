@@ -96,12 +96,13 @@ update() {
     exec_paru "hunspell hunspell-en_us hunspell-de"
     exec_paru "samba"
     exec_paru "sshpass"
-    exec_paru "gvfs gvfs-mtp gvfs-smb gvfs-nfs"
+    exec_paru "gvfs gvfs-mtp gvfs-smb gvfs-nfs gvfs-afc gvfs-goa gvfs-gphoto2 gvfs-google"
     exec_paru "gnome-user-share nfs-utils inetutils"
     exec_paru "wmctrl xdotool"
     exec_paru "zenity ffmpeg youtube-dl rsync curl wget jq"
     exec_paru "pavucontrol"
     exec_paru "cups"
+    exec_paru "xdg-user-dirs-gtk"
 
     # GNOME Apps
     exec_paru "gnome-calculator"
@@ -115,9 +116,17 @@ update() {
     exec_paru "gnome-connections"
     exec_paru "gnome-disk-utility"
     exec_paru "gnome-usage"
+    exec_paru "simple-scan"
+
+    # GNOME TRACKER
+    exec_paru "tracker"
+    exec_paru "tracker3-miners"
+    exec_paru "tracker-miners"
 
     # Codecs
-    exec_paru "gst-libav"
+    exec_paru "rygel"
+    exec_paru "gnome-video-effects"
+    exec_paru "grilo-plugins gst-libav"
 
     # Libraries
     exec_paru "sdl_image lib32-sdl_image"
