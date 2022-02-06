@@ -37,6 +37,10 @@ init() {
     gsettings set org.gnome.nautilus.icon-view default-zoom-level 'standard'
     gsettings set org.gnome.nautilus.window-state initial-size "(1400, 700)"
     gsettings set org.gnome.nautilus.window-state sidebar-width 280
+
+    # DEFAULT APP LIST
+    gsettings set org.gnome.shell favorite-apps "['org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.keepassxc.KeePassXC.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'xpad.desktop', 'persist.desktop', 'libreoffice-startcenter.desktop', 'codium.desktop', 'ecos-seperator-games.desktop', 'net.lutris.Lutris.desktop', 'ecos-seperator-system.desktop', 'time-machine.desktop', 'horst.desktop', 'ecos.desktop', 'gnome-control-center.desktop']"
+
 }
 
 # ///////////////////////////////////////////
@@ -282,10 +286,6 @@ update() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ name 'KeePass'
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ command 'toggle --app keepassxc KeePassXC'
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Super>k'
-
-    # DEFAULT APP LIST
-    # gsettings set org.gnome.shell favorite-apps "['org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.keepassxc.KeePassXC.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'telegramdesktop.desktop', 'whatsapp-for-linux.desktop', 'spotify.desktop', 'xpad.desktop', 'synology-note-station-client.desktop', 'persist.desktop', 'libreoffice-startcenter.desktop', 'codium.desktop', 'ecos-seperator-games.desktop', 'steam.desktop', 'net.lutris.Lutris.desktop', 'd2launcher.desktop', 'teamspeak3.desktop', 'discord.desktop', 'ecos-seperator-system.desktop', 'time-machine.desktop', 'horst.desktop', 'ecos.desktop', 'gnome-control-center.desktop']"
-    gsettings set org.gnome.shell favorite-apps "['org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.keepassxc.KeePassXC.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'xpad.desktop', 'persist.desktop', 'libreoffice-startcenter.desktop', 'codium.desktop', 'ecos-seperator-games.desktop', 'net.lutris.Lutris.desktop', 'ecos-seperator-system.desktop', 'time-machine.desktop', 'horst.desktop', 'ecos.desktop', 'gnome-control-center.desktop']"
 
     # ///////////////////////////////////////////
     # GNOME EXTENSIONS
