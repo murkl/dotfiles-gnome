@@ -323,6 +323,12 @@ update() {
     # ///////////////////////////////////////////
 
     sudo pacman --noconfirm -Rs $(pacman -Qtdq)
+
+    # ///////////////////////////////////////////
+    # RELOAD UPDATE INDICATOR
+    # ///////////////////////////////////////////
+    gnome-extensions disable "arch-update@RaphaelRochet"
+    gnome-extensions enable "arch-update@RaphaelRochet"
 }
 
 # ///////////////////////////////////////////
