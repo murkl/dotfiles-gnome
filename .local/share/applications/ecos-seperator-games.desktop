@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=Games
-Exec=gnome-terminal
+Exec=bash exit
 Icon=ecos-seperator-games
 Type=Application

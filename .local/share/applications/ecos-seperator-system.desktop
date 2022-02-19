@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=System
-Exec=gnome-terminal
+Exec=bash exit
 Icon=ecos-seperator-system
 Type=Application
