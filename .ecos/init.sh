@@ -267,6 +267,7 @@ update() {
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source "[]"
     gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "[]"
     gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Super>F11']"
+    gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "[]"
 
     # CUSTOM KEYBINDINGS - https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
     gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']"
