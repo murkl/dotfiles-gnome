@@ -6,10 +6,10 @@ edit_lock 0
 sticky_on_start 0
 tray_enabled 0
 tray_click_configuration 1
-back NULL
-use_back 0
-text NULL
-use_text 0
+back rgb(255,238,153)
+use_back 1
+text rgb(0,0,0)
+use_text 1
 fontname Source Code Pro 10
 toolbar 0
 auto_hide_toolbar 1

@@ -121,6 +121,8 @@ update() {
     exec_paru "gnome-disk-utility"
     exec_paru "gnome-usage"
     exec_paru "simple-scan"
+    exec_paru "gnome-multi-writer"
+    exec_paru "gcolor3"
 
     # GNOME TRACKER
     exec_paru "tracker"
