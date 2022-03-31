@@ -107,6 +107,7 @@ update() {
     exec_paru "pavucontrol"
     exec_paru "cups"
     exec_paru "xdg-user-dirs-gtk"
+    exec_paru "gdm-settings"
 
     # GNOME Apps
     exec_paru "gnome-calculator"
@@ -122,7 +123,7 @@ update() {
     exec_paru "gnome-usage"
     exec_paru "simple-scan"
     exec_paru "gnome-multi-writer"
-    exec_paru "wl-color-picker" # gcolor3
+    #exec_paru "wl-color-picker" # gcolor3
 
     # GNOME TRACKER
     exec_paru "tracker"
