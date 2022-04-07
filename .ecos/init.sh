@@ -71,7 +71,7 @@ update() {
     # Mutter Rounded Corners (open settings: mutter_settings)
     # exec_paru "mutter-rounded" # Install first to prevent conflict with original mutter
     exec_paru "gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
-    exec_paru_conflict "mutter-rounded"
+    #exec_paru_conflict "mutter-rounded"
 
     # Nautilus Addons
     exec_paru "python-nautilus sushi nautilus-sendto nautilus-image-converter"
@@ -159,16 +159,16 @@ update() {
     exec_paru "xpad"
 
     # LibreOffice
-    exec_paru "libreoffice-still libreoffice-still-de"
+    #exec_paru "libreoffice-still libreoffice-still-de"
 
     # Terminal Editor
     exec_paru "vim nano"
 
     # VSCodium
-    exec_paru "vscodium-bin vscodium-bin-marketplace"
+    #exec_paru "vscodium-bin vscodium-bin-marketplace"
 
     # Wine & Dependencies
-    exec_paru "wine-staging winetricks lutris lutris-wine-meta"
+    #exec_paru "wine-staging winetricks lutris lutris-wine-meta"
 
     # ////////////////////////////////////////////
     # CONFIGURATION: GDM
@@ -181,8 +181,8 @@ update() {
     #sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "$gdm_config_file"
 
     # GNOME AUTO LOGIN
-    sudo systemctl disable getty@tty1
-    sudo rm -rf "/etc/systemd/system/getty@tty1.service.d/"
+    sudo systemctl disable getty@tty5
+    sudo rm -rf "/etc/systemd/system/getty@tty5.service.d/"
     if ! grep -qrnw "$gdm_config_file" -e "AutomaticLoginEnable=True"; then
         sudo sed -i "s/^#WaylandEnable=false/#WaylandEnable=false\n\nAutomaticLoginEnable=True\nAutomaticLogin=$USER/g" "$gdm_config_file"
     fi
@@ -226,7 +226,7 @@ update() {
     sudo systemctl enable gdm.service
     sudo systemctl enable smb.service
     sudo systemctl enable nmb.service
-    sudo systemctl enable avahi-daemon
+    sudo systemctl enable avahi-daemon # Network browsing service
     sudo systemctl enable bluetooth.service
     sudo systemctl enable cups.service
     #sudo systemctl enable touchegg.service
