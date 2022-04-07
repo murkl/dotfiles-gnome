@@ -181,8 +181,8 @@ update() {
     #sudo sed -i "s/^#WaylandEnable=false/WaylandEnable=false/g" "$gdm_config_file"
 
     # GNOME AUTO LOGIN
-    sudo systemctl disable getty@tty5
-    sudo rm -rf "/etc/systemd/system/getty@tty5.service.d/"
+    sudo systemctl disable getty@tty1
+    sudo rm -rf "/etc/systemd/system/getty@tty1.service.d/"
     if ! grep -qrnw "$gdm_config_file" -e "AutomaticLoginEnable=True"; then
         sudo sed -i "s/^#WaylandEnable=false/#WaylandEnable=false\n\nAutomaticLoginEnable=True\nAutomaticLogin=$USER/g" "$gdm_config_file"
     fi
