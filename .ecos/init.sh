@@ -71,7 +71,7 @@ update() {
     # Mutter Rounded Corners (open settings: mutter_settings)
     # exec_paru "mutter-rounded" # Install first to prevent conflict with original mutter
     exec_paru "gdm gnome-shell gnome-control-center gnome-terminal nautilus xdg-user-dirs"
-    #exec_paru_conflict "mutter-rounded"
+    exec_paru_conflict "mutter-rounded"
 
     # Nautilus Addons
     exec_paru "python-nautilus sushi nautilus-sendto nautilus-image-converter"
@@ -123,7 +123,8 @@ update() {
     exec_paru "gnome-usage"
     exec_paru "simple-scan"
     exec_paru "gnome-multi-writer"
-    #exec_paru "wl-color-picker" # gcolor3
+    exec_paru "gcolor3"
+    #exec_paru "wl-color-picker"
 
     # GNOME TRACKER
     exec_paru "tracker"
